@@ -1,0 +1,5 @@
+POST http://localhost:3000
+
+GET http://localhost:3000/classes
+
+GET http://localhost:3000/classes?id=1
