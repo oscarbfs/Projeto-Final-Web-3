@@ -1,6 +1,9 @@
 const http = require('http');
 const url = require('url');
 const classController = require('./classes_controller');
+const activityController = require('./activities_controller');
+const userController = require('./users_controller');
+const warningController = require('./warnings_controller');
 
 const server = http.createServer((request, response) => {
     const parsedUrl = url.parse(request.url, true);
@@ -15,10 +18,19 @@ const server = http.createServer((request, response) => {
     request.on('end', () => {
         if (pathname.includes('/classes')) {
             classController.control(request, response, requestBody, pathname, parsedUrl.query);
+        
+        } else if (pathname.includes('/activities')) {
+            activityController.control(request, response, requestBody, pathname, parsedUrl.query);
+      
+        } else if (pathname.includes('/users')) {
+            userController.control(request, response, requestBody, pathname, parsedUrl.query);
+      
+        } else if (pathname.includes('/warnings')) {
+            warningController.control(request, response, requestBody, pathname, parsedUrl.query);
       
         } else if (pathname === '/') {
-            response.writeHead(200, { 'Content-Type': 'application/json' });
-            response.end('Bemvindo ao backend do Projeto Final WEB 3 de Oscar Borges, aplicação de referência é Google Classroom' );
+            response.writeHead(200);
+            response.end('Bem-vindo ao backend do Projeto Final WEB 3 de Oscar Borges, aplicação de referência é Google Classroom' );
         
         } else {
             response.writeHead(404, { 'Content-Type': 'application/json' });

@@ -1,9 +1,4 @@
-let classes = [
-    {
-        "id": "1",
-        "name": "Turma 1",
-    }
-];
+let classes = [];
 
 function createClass(response, requestBody) {
     const newClass = JSON.parse(requestBody);
@@ -22,7 +17,7 @@ function getClasses(response, queryParams) {
         response.end(JSON.stringify(foundClass));
       } else {
         response.writeHead(404, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: 'Class not found' }));
+        response.end(JSON.stringify({ error: 'Turma não encontrada' }));
       }
     } else {
       response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -41,7 +36,7 @@ function updateClass(response, requestBody) {
       response.end(JSON.stringify(classes[index]));
     } else {
       response.writeHead(404, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify({ error: 'Class not found' }));
+      response.end(JSON.stringify({ error: 'Turma não encontrada' }));
     }
 }
 
@@ -53,36 +48,34 @@ function deleteClass(response, requestBody) {
       const index = classes.findIndex(c => c.id === classId);
   
       if (index !== -1) {
-        const deletedClass = classes.splice(index, 1);
         response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify(deletedClass[0]));
+        response.end(JSON.stringify({ message: 'Turma deletada' }));
       } else {
         response.writeHead(404, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: 'Class not found' }));
+        response.end(JSON.stringify({ error: 'Turma não encontrada' }));
       }
     } else {
       response.writeHead(400, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify({ error: 'Missing or invalid ID parameter in the request body' }));
+      response.end(JSON.stringify({ error: 'Parâmetro de ID ausente ou inválido no corpo da solicitação' }));
     }
 }
   
   function control(request, response, requestBody, pathname, queryParams) {
-    console.log(pathname);
     if (request.method === 'POST') {
       createClass(response, requestBody);
-      console.log(`Ta rolando um createClass`);
+      console.log(`Rodando createClass`);
     
     } else if (request.method === 'GET') {
       getClasses(response, queryParams);
-      console.log(`Ta rolando um getClasses`);
+      console.log(`Rodando getClasses`);
     
     } else if (request.method === 'PUT') {
       updateClass(response, requestBody);
-      console.log(`Ta rolando um updateClass`);
+      console.log(`Rodando updateClass`);
     
     } else if (request.method === 'DELETE') {
       deleteClass(response, requestBody);
-      console.log(`Ta rolando um deleteClass`);
+      console.log(`Rodando deleteClass`);
     
     }
   }
