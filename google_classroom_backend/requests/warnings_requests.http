@@ -1,0 +1,26 @@
+GET http://localhost:3000/warnings
+
+GET http://localhost:3000/warnings?id=2
+
+POST http://localhost:3000/warnings
+content-type: application/json
+
+{
+    "id": "1",
+    "name": "Data de entrega do Projeto Final"
+}
+
+PUT http://localhost:3000/warnings
+content-type: application/json
+
+{
+    "id": "1",
+    "name": "Data de entrega do Projeto Final da disciplina"
+}
+
+DELETE http://localhost:3000/warnings
+content-type: application/json
+
+{
+    "id": "1",
+}

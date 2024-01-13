@@ -1,0 +1,26 @@
+GET http://localhost:3000/users
+
+GET http://localhost:3000/users?id=2
+
+POST http://localhost:3000/users
+content-type: application/json
+
+{
+    "id": "1",
+    "name": "Oscar Borges"
+}
+
+PUT http://localhost:3000/users
+content-type: application/json
+
+{
+    "id": "1",
+    "name": "Elton Faleta"
+}
+
+DELETE http://localhost:3000/users
+content-type: application/json
+
+{
+    "id": "1",
+}

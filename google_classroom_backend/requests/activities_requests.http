@@ -1,0 +1,26 @@
+GET http://localhost:3000/activities
+
+GET http://localhost:3000/activities?id=2
+
+POST http://localhost:3000/activities
+content-type: application/json
+
+{
+    "id": "1",
+    "name": "Projeto Final Web 3"
+}
+
+PUT http://localhost:3000/activities
+content-type: application/json
+
+{
+    "id": "1",
+    "name": "Projeto Final Lab. Web 3"
+}
+
+DELETE http://localhost:3000/activities
+content-type: application/json
+
+{
+    "id": "1",
+}

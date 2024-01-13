@@ -1,5 +1,3 @@
-POST http://localhost:3000
-
 GET http://localhost:3000/classes
 
 GET http://localhost:3000/classes?id=2
@@ -8,21 +6,21 @@ POST http://localhost:3000/classes
 content-type: application/json
 
 {
-    "id": "2",
-    "name": "Turma 2"
+    "id": "1",
+    "name": "Turma 1"
 }
 
 PUT http://localhost:3000/classes
 content-type: application/json
 
 {
-    "id": "2",
-    "name": "Turma Dois"
+    "id": "1",
+    "name": "Turma Um"
 }
 
 DELETE http://localhost:3000/classes
 content-type: application/json
 
 {
-    "id": "2",
+    "id": "1",
 }
