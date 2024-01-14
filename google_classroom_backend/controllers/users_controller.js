@@ -1,89 +1,68 @@
-let users = [];
+const userDB = require('../databases/local_databases/user_database');
 
 function createUser(response, requestBody) {
     const newUser = JSON.parse(requestBody);
-    users.push(newUser);
-    response.writeHead(201, { 'Content-Type': 'application/json' });
-    response.end(JSON.stringify(newUser));
+
+    const result = userDB.createUser(newUser);
+
+    response.writeHead(result.status, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(result.responseData));
 }
 
-function getUsers(response, queryParams) {
-    if (queryParams.id) {
-      const classId = queryParams.id;
-      const foundUser = users.find(c => c.id === classId);
+function getUser(response, queryParams) {
+    const result = userDB.getUser(queryParams.id);
+
+    response.writeHead(result.status, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(result.responseData));
+}
+
+function searchUsers(response, queryParams) {
+    const result = userDB.searchUsers(queryParams.name, queryParams.email);
+
+    response.writeHead(result.status, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(result.responseData));
+  }
   
-      if (foundUser) {
-        response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify(foundUser));
-      } else {
-        response.writeHead(404, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: 'Usuário não encontrado' }));
-      }
-    } else {
-      response.writeHead(200, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(users));
-    }
-}
-
-function updateUser(response, requestBody) {
+  function updateUser(response, requestBody) {
     const updatedUser = JSON.parse(requestBody);
-    const classId = updatedUser.id;
-    const index = users.findIndex(c => c.id === classId);
-  
-    if (index !== -1) {
-      users[index] = { ...users[index], ...updatedUser };
-      response.writeHead(200, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(users[index]));
-    } else {
-      response.writeHead(404, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify({ error: 'Usuário não encontrado' }));
-    }
+    
+    const result = userDB.updateUser(updatedUser);
+    
+    response.writeHead(result.status, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(result.responseData));
 }
 
 function deleteUser(response, requestBody) {
-    const params = JSON.parse(requestBody);
-  
-    if (params.id) {
-      const classId = params.id;
-      const index = users.findIndex(c => c.id === classId);
-  
-      if (index !== -1) {
-        response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ message: 'Usuário deletada' }));
-      } else {
-        response.writeHead(404, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: 'Usuário não encontrado' }));
-      }
+    const deletedUser = JSON.parse(requestBody);
+
+    const result = userDB.deleteUser(deletedUser);
+
+    response.writeHead(result.status, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(result.responseData));
+}
+
+function control(request, response, requestBody, queryParams) {
+    if (request.method === 'POST' && request.url.includes('/users/createUser')) {
+        console.log(`Rodando createUser`);
+        createUser(response, requestBody);
+    } else if (request.method === 'GET' && request.url.includes('/users/getUser')) {
+        console.log(`Rodando getUser`);
+        getUser(response, queryParams);
+    } else if (request.method === 'GET' && request.url.includes('/users/searchUsers')) {
+        console.log(`Rodando searchUsers`);
+        searchUsers(response, queryParams);
+    } else if (request.method === 'PUT' && request.url.includes('/users/updateUser')) {
+        console.log(`Rodando updateUser`);
+        updateUser(response, requestBody);
+    } else if (request.method === 'DELETE' && request.url.includes('/users/deleteUser')) {
+        console.log(`Rodando deleteUser`);
+        deleteUser(response, requestBody);
     } else {
-      response.writeHead(400, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify({ error: 'Parâmetro de ID ausente ou inválido no corpo da solicitação' }));
+        response.writeHead(404, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify({ error: 'Not Found' }));
     }
 }
-  
-  function control(request, response, requestBody, pathname, queryParams) {
-    if (request.method === 'POST') {
-      createUser(response, requestBody);
-      console.log(`Rodando createUser`);
-    
-    } else if (request.method === 'GET') {
-      getUsers(response, queryParams);
-      console.log(`Rodando getUsers`);
-    
-    } else if (request.method === 'PUT') {
-      updateUser(response, requestBody);
-      console.log(`Rodando updateUser`);
-    
-    } else if (request.method === 'DELETE') {
-      deleteUser(response, requestBody);
-      console.log(`Rodando deleteUser`);
-    
-    }
-  }
 
 module.exports = {
-    createUser,
-    getUsers,
-    updateUser,
-    deleteUser,
     control,
-  };
+};

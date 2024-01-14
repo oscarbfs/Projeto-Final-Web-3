@@ -1,26 +1,44 @@
-GET http://localhost:3000/users
+GET http://localhost:3000/users/searchUsers
 
-GET http://localhost:3000/users?id=2
+GET http://localhost:3000/users/searchUsers?name=Oscar Borges
 
-POST http://localhost:3000/users
+GET http://localhost:3000/users/searchUsers?email=oscar.borgesfs@gmail.com
+
+GET http://localhost:3000/users/searchUsers?name=Oscar Borges&email=oscar.borgesfs@gmail.com
+
+GET http://localhost:3000/users/getUser?id=2
+
+POST http://localhost:3000/users/createUser
 content-type: application/json
 
 {
     "id": "1",
-    "name": "Oscar Borges"
+    "name": "Oscar Borges",
+    "email": "oscar.borgesfs@gmail.com",
+    "password": "oscar12345"
 }
 
-PUT http://localhost:3000/users
+POST http://localhost:3000/users/createUser
 content-type: application/json
 
 {
-    "id": "1",
-    "name": "Elton Faleta"
+    "id": "2",
+    "name": "Elton Faleta",
+    "email": "elton@gmail.com",
+    "password": "elton12345"
 }
 
-DELETE http://localhost:3000/users
+PUT http://localhost:3000/users/updateUser
 content-type: application/json
 
 {
-    "id": "1",
+    "id": "2",
+    "name": "Elton Faleta Santana"
+}
+
+DELETE http://localhost:3000/users/deleteUser
+content-type: application/json
+
+{
+    "id": "2"
 }

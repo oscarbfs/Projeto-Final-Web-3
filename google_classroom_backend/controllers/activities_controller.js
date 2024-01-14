@@ -9,8 +9,8 @@ function createActivity(response, requestBody) {
 
 function getActivityes(response, queryParams) {
     if (queryParams.id) {
-      const classId = queryParams.id;
-      const foundActivity = activities.find(c => c.id === classId);
+      const activityId = queryParams.id;
+      const foundActivity = activities.find(c => c.id === activityId);
   
       if (foundActivity) {
         response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -27,8 +27,8 @@ function getActivityes(response, queryParams) {
 
 function updateActivity(response, requestBody) {
     const updatedActivity = JSON.parse(requestBody);
-    const classId = updatedActivity.id;
-    const index = activities.findIndex(c => c.id === classId);
+    const activityId = updatedActivity.id;
+    const index = activities.findIndex(c => c.id === activityId);
   
     if (index !== -1) {
       activities[index] = { ...activities[index], ...updatedActivity };
@@ -44,8 +44,8 @@ function deleteActivity(response, requestBody) {
     const params = JSON.parse(requestBody);
   
     if (params.id) {
-      const classId = params.id;
-      const index = activities.findIndex(c => c.id === classId);
+      const activityId = params.id;
+      const index = activities.findIndex(c => c.id === activityId);
   
       if (index !== -1) {
         response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -60,7 +60,7 @@ function deleteActivity(response, requestBody) {
     }
 }
   
-  function control(request, response, requestBody, pathname, queryParams) {
+  function control(request, response, requestBody, queryParams) {
     if (request.method === 'POST') {
       createActivity(response, requestBody);
       console.log(`Rodando createActivity`);

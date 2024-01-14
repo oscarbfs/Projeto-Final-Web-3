@@ -1,8 +1,9 @@
 const http = require('http');
 const url = require('url');
+const authController = require('./controllers/auth_controller');
+const userController = require('./controllers/users_controller');
 const classController = require('./controllers/classes_controller');
 const activityController = require('./controllers/activities_controller');
-const userController = require('./controllers/users_controller');
 const warningController = require('./controllers/warnings_controller');
 
 const server = http.createServer((request, response) => {
@@ -16,17 +17,20 @@ const server = http.createServer((request, response) => {
     });
   
     request.on('end', () => {
-        if (pathname.includes('/classes')) {
-            classController.control(request, response, requestBody, pathname, parsedUrl.query);
+        if (pathname.includes('/auth')) {
+            authController.control(request, response, requestBody, parsedUrl.query);
         
-        } else if (pathname.includes('/activities')) {
-            activityController.control(request, response, requestBody, pathname, parsedUrl.query);
-      
         } else if (pathname.includes('/users')) {
-            userController.control(request, response, requestBody, pathname, parsedUrl.query);
+            userController.control(request, response, requestBody, parsedUrl.query);
+            
+        } else if (pathname.includes('/classes')) {
+            classController.control(request, response, requestBody, parsedUrl.query);
+            
+        } else if (pathname.includes('/activities')) {
+            activityController.control(request, response, requestBody, parsedUrl.query);
       
         } else if (pathname.includes('/warnings')) {
-            warningController.control(request, response, requestBody, pathname, parsedUrl.query);
+            warningController.control(request, response, requestBody, parsedUrl.query);
       
         } else if (pathname === '/') {
             response.writeHead(200);

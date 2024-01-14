@@ -1,16 +1,16 @@
-let warning = [];
+let warnings = [];
 
 function createWarning(response, requestBody) {
     const newWarning = JSON.parse(requestBody);
-    warning.push(newWarning);
+    warnings.push(newWarning);
     response.writeHead(201, { 'Content-Type': 'application/json' });
     response.end(JSON.stringify(newWarning));
 }
 
 function getWarninges(response, queryParams) {
     if (queryParams.id) {
-      const classId = queryParams.id;
-      const foundWarning = warning.find(c => c.id === classId);
+      const warningId = queryParams.id;
+      const foundWarning = warnings.find(c => c.id === warningId);
   
       if (foundWarning) {
         response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -21,19 +21,19 @@ function getWarninges(response, queryParams) {
       }
     } else {
       response.writeHead(200, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(warning));
+      response.end(JSON.stringify(warnings));
     }
 }
 
 function updateWarning(response, requestBody) {
     const updatedWarning = JSON.parse(requestBody);
-    const classId = updatedWarning.id;
-    const index = warning.findIndex(c => c.id === classId);
+    const warningId = updatedWarning.id;
+    const index = warnings.findIndex(c => c.id === warningId);
   
     if (index !== -1) {
-      warning[index] = { ...warning[index], ...updatedWarning };
+      warnings[index] = { ...warnings[index], ...updatedWarning };
       response.writeHead(200, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(warning[index]));
+      response.end(JSON.stringify(warnings[index]));
     } else {
       response.writeHead(404, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify({ error: 'Aviso não encontrado' }));
@@ -44,8 +44,8 @@ function deleteWarning(response, requestBody) {
     const params = JSON.parse(requestBody);
   
     if (params.id) {
-      const classId = params.id;
-      const index = warning.findIndex(c => c.id === classId);
+      const warningId = params.id;
+      const index = warnings.findIndex(c => c.id === warningId);
   
       if (index !== -1) {
         response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -60,7 +60,7 @@ function deleteWarning(response, requestBody) {
     }
 }
   
-  function control(request, response, requestBody, pathname, queryParams) {
+  function control(request, response, requestBody, queryParams) {
     if (request.method === 'POST') {
       createWarning(response, requestBody);
       console.log(`Rodando createWarning`);

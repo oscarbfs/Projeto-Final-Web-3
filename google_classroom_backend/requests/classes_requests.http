@@ -1,26 +1,49 @@
-GET http://localhost:3000/classes
+GET http://localhost:3000/classes/searchClasses
 
-GET http://localhost:3000/classes?id=2
+GET http://localhost:3000/classes/searchClasses?name=Turma 1
 
-POST http://localhost:3000/classes
+GET http://localhost:3000/classes/searchClasses?discipline=matematica
+
+GET http://localhost:3000/classes/searchClasses?name=Turma 1&discipline=matematica
+
+GET http://localhost:3000/classes/getClass?id=1
+
+GET http://localhost:3000/classes/getUserClasses
 content-type: application/json
 
 {
-    "id": "1",
-    "name": "Turma 1"
+    "token": "hyjl36xt6mojs7mylpnlyk"
 }
 
-PUT http://localhost:3000/classes
+POST http://localhost:3000/classes/createClass
 content-type: application/json
 
 {
     "id": "1",
-    "name": "Turma Um"
+    "name": "Matemática 101",
+    "token": "hyjl36xt6mojs7mylpnlyk"
 }
 
-DELETE http://localhost:3000/classes
+POST http://localhost:3000/classes/joinClass
 content-type: application/json
 
 {
     "id": "1",
+    "token": "edodf45vxc7fvia3xydgqf"
+}
+
+PUT http://localhost:3000/classes/updateClass
+content-type: application/json
+
+{
+    "id": "1",
+    "name": "Matemática 100",
+    "token": ""
+}
+
+DELETE http://localhost:3000/classes/deleteClass
+content-type: application/json
+
+{
+    "id": "1"
 }
