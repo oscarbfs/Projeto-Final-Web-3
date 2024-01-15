@@ -12,15 +12,21 @@ function createClass(response, requestBody) {
     response.end(JSON.stringify(result.responseData));
 }
 
-function getClass(response, queryParams) {
-    const result = classDB.getClass(queryParams.id);
+function getClass(response, queryParams, requestBody) {
+    const authToken = JSON.parse(requestBody);
+    const isValid = authDB.checkToken(authToken.token);
+
+    const result = classDB.getClass(queryParams.id, isValid);
 
     response.writeHead(result.status, { 'Content-Type': 'application/json' });
     response.end(JSON.stringify(result.responseData));
 }
 
-function searchClasses(response, queryParams) {
-    const result = classDB.searchClasses(queryParams.name, queryParams.discipline);
+function searchClasses(response, queryParams, requestBody) {
+    const authToken = JSON.parse(requestBody);
+    const isValid = authDB.checkToken(authToken.token);
+
+    const result = classDB.searchClasses(queryParams.name, queryParams.discipline, isValid);
 
     response.writeHead(result.status, { 'Content-Type': 'application/json' });
     response.end(JSON.stringify(result.responseData));
@@ -39,8 +45,8 @@ function getUserClasses(response, requestBody) {
 
 function updateClass(response, requestBody) {
     const classData = JSON.parse(requestBody);
-    const tokenIsValid = authDB.checkToken(classData.token);
-    classData.tokenIsValid = tokenIsValid;
+    const email = authDB.getEmailByToken(classData.token);
+    classData.creator = email;
 
     const result = classDB.updateClass(classData);
 
@@ -50,8 +56,8 @@ function updateClass(response, requestBody) {
 
 function deleteClass(response, requestBody) {
     const classData = JSON.parse(requestBody);
-    const tokenIsValid = authDB.checkToken(classData.token);
-    classData.tokenIsValid = tokenIsValid;
+    const email = authDB.getEmailByToken(classData.token);
+    classData.creator = email;
 
     const result = classDB.deleteClass(classData);
 
@@ -72,10 +78,10 @@ function joinClass(response, requestBody) {
 function control(request, response, requestBody, queryParams) {
     if (request.method === 'GET' && request.url.includes('/classes/searchClasses')) {
         console.log(`Rodando searchClasses`);
-        searchClasses(response, queryParams);
+        searchClasses(response, queryParams, requestBody);
     } else if (request.method === 'GET' && request.url.includes('/classes/getClass')) {
         console.log(`Rodando getClass`);
-        getClass(response, queryParams);
+        getClass(response, queryParams, requestBody);
     } else if (request.method === 'GET' && request.url.includes('/classes/getUserClasses')) {
         console.log(`Rodando getUserClasses`);
         getUserClasses(response, requestBody);

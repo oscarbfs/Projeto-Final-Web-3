@@ -1,9 +1,11 @@
 let users = [];
+let userIdCounter = 1;
 
 function createUser(user) {
     if (searchUsers(null, user.email).responseData.length > 0) {
-        return { responseData: { error: 'Email já em uso' } , status: 400 };
+        return { responseData: { error: 'Email já em uso' }, status: 400 };
     } else {
+        user.id = userIdCounter++;
         users.push(user);
         const userWithoutPassword = { ...user };
         delete userWithoutPassword.password;
