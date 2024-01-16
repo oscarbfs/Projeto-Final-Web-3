@@ -1,51 +1,33 @@
 const authDB = require('../databases/local_databases/auth_database');
-
 const userDB = require('../databases/local_databases/user_database');
 
-function login(response, requestBody) {
-    const credentials = JSON.parse(requestBody);
-    
-    const isValid = userDB.verifyCredentials(credentials.email, credentials.password);
-    credentials.isValid = isValid;
-
-    const result = authDB.login(credentials);
-
-    response.writeHead(result.status, { 'Content-Type': 'application/json' });
-    response.end(JSON.stringify(result.responseData));
-}
-
-function logout(response, requestBody) {
-    const credentialToken = JSON.parse(requestBody);
-
-    const result = authDB.logout(credentialToken);
-
-    response.writeHead(result.status, { 'Content-Type': 'application/json' });
-    response.end(JSON.stringify(result.responseData));
-}
-
-function checkToken(response, requestBody) {
-    const credentialToken = JSON.parse(requestBody);
-
-    const result = authDB.checkToken(credentialToken);
-
-    response.writeHead(result.status, { 'Content-Type': 'application/json' });
-    response.end(JSON.stringify(result.responseData));
-}
-
 function control(request, response, requestBody) {
+    const data = JSON.parse(requestBody);
+
+    const result = {};
+
     if (request.method === 'POST' && request.url.includes('/auth/login')) {
         console.log(`Rodando login`);
-        login(response, requestBody);
+        const user = userDB.verifyCredentials(data.email, data.password);
+        result = authDB.login(user);
+    
     } else if (request.method === 'DELETE' && request.url.includes('/auth/logout')) {
         console.log(`Rodando logout`);
-        logout(response, requestBody);
+        result = authDB.logout(data.token);
+    
     } else if (request.method === 'GET' && request.url.includes('/auth/checkToken')) {
         console.log(`Rodando checkToken`);
-        checkToken(response, requestBody);
+        result = authDB.checkToken(data.token);
+    
     } else {
-        response.writeHead(404, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: 'Not Found' }));
+        result = { 
+            responseData: { error: "Rota não encontrada" },
+            status: 404
+        }
     }
+
+    response.writeHead(result.status, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(result.responseData));
 }
 
 module.exports = {

@@ -1,23 +1,21 @@
 let tokensByEmail = {};
 
-function login(credentials) {
-    const { email, isValid } = credentials;
+function login(user) {
 
-    if (isValid) {
-        tokensByEmail[email] = generateAuthToken();
+    if (user) {
+        tokensByEmail[user.id] = generateAuthToken();
 
-        return { responseData: { token: tokensByEmail[email] }, status: 200 };
+        return { responseData: { token: tokensByEmail[user.id] }, status: 200 };
     } else {
         return { responseData: { error: 'Credenciais inválidas' }, status: 401 };
     }
 }
 
-function logout(credentialToken) {
-    const token = credentialToken.token;
+function logout(token) {
 
-    const email = getEmailByToken(token);
-    if (email) {
-        delete tokensByEmail[email];
+    const { isValid, user_id } = getTokenData(token);
+    if (isValid) {
+        delete tokensByEmail[user_id];
 
         return { responseData: { message: 'Logout bem-sucedido' }, status: 200 };
     } else {
@@ -25,11 +23,12 @@ function logout(credentialToken) {
     }
 }
 
-function checkAuthToken(credentialToken) {
-    const token = credentialToken.token;
+function checkToken(token) {
+
+    const tokenData = getTokenData(token);
     
-    if( checkToken(token) ) {
-        return { responseData: { isValid: true }, status: 200 };
+    if( tokenData.isValid ) {
+        return { responseData: tokenData, status: 200 };
     } else {
         return { responseData: { isValid: false }, status: 401 };
     }
@@ -39,18 +38,15 @@ function generateAuthToken() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
 
-function getEmailByToken(token) {
-    return Object.keys(tokensByEmail).find(key => tokensByEmail[key] === token);
-}
-
-function checkToken(token) {
-    return Object.values(tokensByEmail).includes(token);
+function getTokenData(token) {
+    return {
+        isValid: Object.values(tokensByEmail).includes(token),
+        user_id: Object.keys(tokensByEmail).find(key => tokensByEmail[key] === token)
+    }
 }
 
 module.exports = {
     login,
     logout,
-    checkAuthToken,
     checkToken,
-    getEmailByToken,
 };
