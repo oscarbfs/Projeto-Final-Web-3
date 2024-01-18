@@ -2,10 +2,10 @@ const classDB = require('../databases/local_databases/class_database');
 const authDB = require('../databases/local_databases/auth_database');
 
 function control(request, response, requestBody, queryParams) {
-    const data = JSON.parse(requestBody);
+    const data = requestBody ? JSON.parse(requestBody) : {};
     const tokenData = authDB.getTokenData(data.token);
 
-    const result = {};
+    let result = {};
 
     if( !tokenData.isValid ) {
         result = { 
@@ -40,6 +40,10 @@ function control(request, response, requestBody, queryParams) {
     } else if (request.method === 'DELETE' && request.url.includes('/classes/deleteClass')) {
         console.log(`Rodando deleteClass`);
         result = classDB.deleteClass(data, tokenData.user_id);
+
+    } else if (request.method === 'DELETE' && request.url.includes('/classes/leaveClass')) {
+        console.log(`Rodando deleteClass`);
+        result = classDB.leaveClass(data, tokenData.user_id);
     
     } else {
         result = { 

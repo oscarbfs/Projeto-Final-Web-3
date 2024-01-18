@@ -1,89 +1,45 @@
-let warnings = [];
+const warningsDB = require('../databases/local_databases/warning_database');
+const authDB = require('../databases/local_databases/auth_database');
 
-function createWarning(response, requestBody) {
-    const newWarning = JSON.parse(requestBody);
-    warnings.push(newWarning);
-    response.writeHead(201, { 'Content-Type': 'application/json' });
-    response.end(JSON.stringify(newWarning));
-}
+function control(request, response, requestBody, queryParams) {
+    const data = requestBody ? JSON.parse(requestBody) : {};
+    const tokenData = authDB.getTokenData(data.token);
 
-function getWarninges(response, queryParams) {
-    if (queryParams.id) {
-      const warningId = queryParams.id;
-      const foundWarning = warnings.find(c => c.id === warningId);
-  
-      if (foundWarning) {
-        response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify(foundWarning));
-      } else {
-        response.writeHead(404, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: 'Aviso não encontrado' }));
-      }
+    let result = {};
+
+    if (!tokenData.isValid) {
+        result = {
+            responseData: { error: "Token inválido" },
+            status: 400
+        };
+
+    } else if (request.method === 'GET' && request.url.includes('/warnings/getClassWarnings')) {
+        console.log(`Rodando getClassWarnings`);
+        result = warningsDB.getClassWarnings(queryParams.class_id);
+
+    } else if (request.method === 'POST' && request.url.includes('/warnings/createWarning')) {
+        console.log(`Rodando createWarning`);
+        result = warningsDB.createWarning(data, tokenData.user_id);
+
+    } else if (request.method === 'PUT' && request.url.includes('/warnings/updateWarning')) {
+        console.log(`Rodando updateWarning`);
+        result = warningsDB.updateWarning(data, tokenData.user_id);
+
+    } else if (request.method === 'DELETE' && request.url.includes('/warnings/deleteWarning')) {
+        console.log(`Rodando deleteWarning`);
+        result = warningsDB.deleteWarning(data, tokenData.user_id);
+
     } else {
-      response.writeHead(200, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(warnings));
+        result = {
+            responseData: { error: "Rota não encontrada" },
+            status: 404
+        };
     }
-}
 
-function updateWarning(response, requestBody) {
-    const updatedWarning = JSON.parse(requestBody);
-    const warningId = updatedWarning.id;
-    const index = warnings.findIndex(c => c.id === warningId);
-  
-    if (index !== -1) {
-      warnings[index] = { ...warnings[index], ...updatedWarning };
-      response.writeHead(200, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(warnings[index]));
-    } else {
-      response.writeHead(404, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify({ error: 'Aviso não encontrado' }));
-    }
+    response.writeHead(result.status, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify(result.responseData));
 }
-
-function deleteWarning(response, requestBody) {
-    const params = JSON.parse(requestBody);
-  
-    if (params.id) {
-      const warningId = params.id;
-      const index = warnings.findIndex(c => c.id === warningId);
-  
-      if (index !== -1) {
-        response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ message: 'Aviso deletada' }));
-      } else {
-        response.writeHead(404, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify({ error: 'Aviso não encontrado' }));
-      }
-    } else {
-      response.writeHead(400, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify({ error: 'Parâmetro de ID ausente ou inválido no corpo da solicitação' }));
-    }
-}
-  
-  function control(request, response, requestBody, queryParams) {
-    if (request.method === 'POST') {
-      createWarning(response, requestBody);
-      console.log(`Rodando createWarning`);
-    
-    } else if (request.method === 'GET') {
-      getWarninges(response, queryParams);
-      console.log(`Rodando getWarninges`);
-    
-    } else if (request.method === 'PUT') {
-      updateWarning(response, requestBody);
-      console.log(`Rodando updateWarning`);
-    
-    } else if (request.method === 'DELETE') {
-      deleteWarning(response, requestBody);
-      console.log(`Rodando deleteWarning`);
-    
-    }
-  }
 
 module.exports = {
-    createWarning,
-    getWarninges,
-    updateWarning,
-    deleteWarning,
     control,
-  };
+};

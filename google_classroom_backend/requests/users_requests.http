@@ -1,18 +1,49 @@
 GET http://localhost:3000/users/searchUsers
+content-type: application/json
+
+{
+    "token": "meumnp16730lod3d00q9s"
+}
 
 GET http://localhost:3000/users/searchUsers?name=Oscar Borges
+content-type: application/json
+
+{
+    "token": "meumnp16730lod3d00q9s"
+}
 
 GET http://localhost:3000/users/searchUsers?email=oscar.borgesfs@gmail.com
+content-type: application/json
+
+{
+    "token": "meumnp16730lod3d00q9s"
+}
 
 GET http://localhost:3000/users/searchUsers?name=Oscar Borges&email=oscar.borgesfs@gmail.com
+content-type: application/json
 
-GET http://localhost:3000/users/getUser?id=2
+{
+    "token": "meumnp16730lod3d00q9s"
+}
+
+GET http://localhost:3000/users/getUser?id=1
+content-type: application/json
+
+{
+    "token": "meumnp16730lod3d00q9s"
+}
+
+GET http://localhost:3000/users/getClassUsers?class_id=1
+content-type: application/json
+
+{
+    "token": "meumnp16730lod3d00q9s"
+}
 
 POST http://localhost:3000/users/createUser
 content-type: application/json
 
 {
-    "id": "1",
     "name": "Oscar Borges",
     "email": "oscar.borgesfs@gmail.com",
     "password": "oscar12345"
@@ -22,7 +53,6 @@ POST http://localhost:3000/users/createUser
 content-type: application/json
 
 {
-    "id": "2",
     "name": "Elton Faleta",
     "email": "elton@gmail.com",
     "password": "elton12345"
@@ -32,7 +62,7 @@ PUT http://localhost:3000/users/updateUser
 content-type: application/json
 
 {
-    "id": "2",
+    "id": 2,
     "name": "Elton Faleta Santana"
 }
 
@@ -40,5 +70,5 @@ DELETE http://localhost:3000/users/deleteUser
 content-type: application/json
 
 {
-    "id": "2"
+    "id": 2
 }

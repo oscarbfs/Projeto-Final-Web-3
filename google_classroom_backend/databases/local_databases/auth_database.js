@@ -49,4 +49,5 @@ module.exports = {
     login,
     logout,
     checkToken,
+    getTokenData,
 };

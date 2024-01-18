@@ -1,43 +1,68 @@
 let warnings = [];
 let warningIdCounter = 1;
 
-function createWarning(warningData) {
-    if (warningData.token) {
-        const userEmail = authDB.getEmailByToken(warningData.token);
+function createWarning(warningData, user_id) {
+    try {
+        const warning = {
+            id: (warningIdCounter++).toString(),
+            user_id: user_id,
+            class_id: warningData.class_id,
+            message: warningData.message,
+        };
 
-        if (userEmail) {
-            delete warningData.token;
-            warningData.id = warningIdCounter++;
-            warningData.userEmail = userEmail;
-            warnings.push(warningData);
-            return { responseData: warningData, status: 201 };
-        } else {
-            return { responseData: { error: 'Token inválido' }, status: 401 };
-        }
-    } else {
-        return { responseData: { error: 'Token ausente' }, status: 400 };
+        warnings.push(warning);
+        return { responseData: warning, status: 201 };
+    } catch (error) {
+        return { responseData: { error: 'Falha ao criar aviso' }, status: 400 };
     }
 }
 
-function getWarningsByClass(classId, token) {
-    if (token) {
-        const userEmail = authDB.getEmailByToken(token);
-
-        if (userEmail) {
-            const classWarnings = warnings.filter(warning => warning.classId === classId);
-            return { responseData: classWarnings, status: 200 };
-        } else {
-            return { responseData: { error: 'Token inválido' }, status: 401 };
-        }
-    } else {
-        return { responseData: { error: 'Token ausente' }, status: 400 };
+function getClassWarnings(class_id) {
+    try {
+        const classWarnings = warnings.filter((warning) => warning.class_id === class_id);
+        return { responseData: classWarnings, status: 200 };
+    } catch (error) {
+        return { responseData: { error: 'Erro ao buscar avisos' }, status: 400 };
     }
 }
 
-// Outros métodos conforme necessário...
+function updateWarning(updatedWarning, user_id) {
+    try {
+        const index = warnings.findIndex(
+            (warning) => warning.id === updatedWarning.id && warning.user_id === user_id
+        );
+
+        if (index !== -1) {
+            warnings[index].message = updatedWarning.message;
+            return { responseData: warnings[index], status: 200 };
+        } else {
+            return { responseData: { error: 'Aviso não encontrado ou você não tem permissão' }, status: 404 };
+        }
+    } catch (error) {
+        return { responseData: { error: 'Erro ao atualizar aviso' }, status: 400 };
+    }
+}
+
+function deleteWarning(warningData, user_id) {
+    try {
+        const index = warnings.findIndex(
+            (warning) => warning.id === warningData.id && warning.user_id === user_id
+        );
+
+        if (index !== -1) {
+            warnings.splice(index, 1);
+            return { responseData: { message: 'Aviso removido com sucesso' }, status: 200 };
+        } else {
+            return { responseData: { error: 'Aviso não encontrado ou você não tem permissão' }, status: 404 };
+        }
+    } catch (error) {
+        return { responseData: { error: 'Erro ao remover aviso' }, status: 400 };
+    }
+}
 
 module.exports = {
     createWarning,
-    getWarningsByClass,
-    // Outros métodos...
+    getClassWarnings,
+    updateWarning,
+    deleteWarning,
 };

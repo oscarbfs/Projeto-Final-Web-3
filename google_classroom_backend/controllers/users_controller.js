@@ -3,12 +3,12 @@ const authDB = require('../databases/local_databases/auth_database');
 const classDB = require('../databases/local_databases/class_database');
 
 function control(request, response, requestBody, queryParams) {
-    const data = JSON.parse(requestBody);
+    const data = requestBody ? JSON.parse(requestBody) : {};
     const tokenData = authDB.getTokenData(data.token);
 
-    const result = {};
+    let result = {};
 
-    if (request.method === 'POST' && request.url.includes('/useres/createUser')) {
+    if (request.method === 'POST' && request.url.includes('/users/createUser')) {
         console.log(`Rodando createUser`);
         result = userDB.createUser(data);
     
@@ -18,24 +18,24 @@ function control(request, response, requestBody, queryParams) {
             status: 400
         }
     
-    } else if (request.method === 'GET' && request.url.includes('/useres/searchUsers')) {
+    } else if (request.method === 'GET' && request.url.includes('/users/searchUsers')) {
         console.log(`Rodando searchUsers`);
-        result = userDB.searchUsers(queryParams.name, queryParams.discipline);
+        result = userDB.searchUsers(queryParams.name, queryParams.email);
     
-    } else if (request.method === 'GET' && request.url.includes('/useres/getUser')) {
+    } else if (request.method === 'GET' && request.url.includes('/users/getUser')) {
         console.log(`Rodando getUser`);
         result = userDB.getUser(queryParams.id);
     
-    } else if (request.method === 'GET' && request.url.includes('/useres/getClassUsers')) {
+    } else if (request.method === 'GET' && request.url.includes('/users/getClassUsers')) {
         console.log(`Rodando getClassUsers`);
-        const { creatorId, membersIds } = classDB.getClass(queryParams.class_id).responseData;
-        result = userDB.getClassUsers(creatorId, membersIds);
+        const { creator_id, members_ids } = classDB.getClass(queryParams.class_id).responseData;
+        result = userDB.getClassUsers(creator_id, members_ids);
     
-    } else if (request.method === 'PUT' && request.url.includes('/useres/updateUser')) {
+    } else if (request.method === 'PUT' && request.url.includes('/users/updateUser')) {
         console.log(`Rodando updateUser`);
         result = userDB.updateUser(data, tokenData.user_id);
     
-    } else if (request.method === 'DELETE' && request.url.includes('/useres/deleteUser')) {
+    } else if (request.method === 'DELETE' && request.url.includes('/users/deleteUser')) {
         console.log(`Rodando deleteUser`);
         result = userDB.deleteUser(data, tokenData.user_id);
     

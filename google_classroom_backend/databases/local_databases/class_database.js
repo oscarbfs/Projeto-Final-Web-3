@@ -3,8 +3,10 @@ let classIdCounter = 1;
 
 function createClass(classData, creator_id) {
     try {
-        classData.id = classIdCounter++;
+        classData.id = (classIdCounter++).toString();
         classData.creator_id = creator_id;
+        classData.members_ids = [];
+        delete classData.token;
         classes.push(classData);
         return { responseData: classData, status: 201 };
     } catch (error) {
@@ -39,7 +41,7 @@ function searchClasses(name, discipline) {
 
 function getUserClasses(user_id) {
     try {
-        const userClasses = classes.filter(cls => cls.creator_id === user_id || cls.membersIds.includes(user_id));
+        const userClasses = classes.filter(cls => cls.creator_id === user_id || cls.members_ids.includes(user_id));
         return { responseData: userClasses, status: 200 };
     } catch (error) {
         return { responseData: { error: 'Erro ao buscar turma' }, status: 400 };
@@ -50,12 +52,13 @@ function getUserClasses(user_id) {
 function updateClass(classData, user_id) {
     try {
         const index = classes.findIndex(cls => cls.id === classData.id);
+        delete classData.token;
         
         if (index !== -1 && classes[index].creator_id === user_id) {
             classes[index] = { ...classes[index], ...classData };
             return { responseData: classes[index], status: 200 };
         } else {
-            return { responseData: { error: 'Turma não encontrada' }, status: 404 };
+            return { responseData: { error: 'Turma não encontrada, ou você não é o criador da turma' }, status: 404 };
         }
     } catch (error) {
         return { responseData: { error: 'Erro ao atualizar turma' }, status: 400 };
@@ -70,7 +73,7 @@ function deleteClass(classData, user_id) {
             classes.splice(index, 1);
             return { responseData: { message: 'Turma deletada com sucesso' }, status: 200 };
         } else {
-            return { responseData: { error: 'Turma não encontrada' }, status: 404 };
+            return { responseData: { error: 'Turma não encontrada, ou você não é o criador da turma' }, status: 404 };
         }
     } catch (error) {
         return { responseData: { error: 'Erro ao deletar turma' }, status: 400 };
@@ -78,21 +81,50 @@ function deleteClass(classData, user_id) {
 }
 
 function joinClass(classData, user_id) {
-    const index = classes.findIndex(cls => cls.id === classData.id);
-
-    if (index !== -1) {
-        if (!classes[index].membersIds) {
-            classes[index].membersIds = [];
-        }
-
-        if (!classes[index].membersIds.includes(user_id) && classes[index].creator_id !== user_id) {
-            classes[index].membersIds.push(user_id);
-            return { responseData: classes[index], status: 200 };
+    try {
+        const index = classes.findIndex(cls => cls.id === classData.id);
+        
+        if (index !== -1) {
+            if (!classes[index].members_ids) {
+                classes[index].members_ids = [];
+            }
+            
+            if (!classes[index].members_ids.includes(user_id) && classes[index].creator_id !== user_id) {
+                classes[index].members_ids.push(user_id);
+                return { responseData: classes[index], status: 200 };
+            } else {
+                return { responseData: { error: 'Usuário já está na turma ou é o criador' }, status: 400 };
+            }
         } else {
-            return { responseData: { error: 'Usuário já está na turma ou é o criador' }, status: 400 };
+            return { responseData: { error: 'Turma não encontrada' }, status: 404 };
         }
-    } else {
-        return { responseData: { error: 'Turma não encontrada' }, status: 404 };
+    } catch (error) {
+        return { responseData: { error: 'Erro ao entrar na turma' }, status: 400 };
+    }
+}
+
+function leaveClass(classData, user_id) {
+    try {
+        const index = classes.findIndex(cls => cls.id === classData.id);
+
+        if (index !== -1) {
+            if (classes[index].creator_id === user_id) {
+                return { responseData: { error: 'O criador não pode sair da turma' }, status: 400 };
+            }
+
+            const memberIndex = classes[index].members_ids.indexOf(user_id);
+
+            if (memberIndex !== -1) {
+                classes[index].members_ids.splice(memberIndex, 1);
+                return { responseData: classes[index], status: 200 };
+            } else {
+                return { responseData: { error: 'Usuário não encontrado na turma' }, status: 404 };
+            }
+        } else {
+            return { responseData: { error: 'Turma não encontrada' }, status: 404 };
+        }
+    } catch (error) {
+        return { responseData: { error: 'Erro ao remover membro da turma' }, status: 400 };
     }
 }
 
@@ -104,4 +136,5 @@ module.exports = {
     updateClass,
     deleteClass,
     joinClass,
+    leaveClass,
 };

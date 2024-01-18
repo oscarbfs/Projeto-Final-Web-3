@@ -2,9 +2,9 @@ const authDB = require('../databases/local_databases/auth_database');
 const userDB = require('../databases/local_databases/user_database');
 
 function control(request, response, requestBody) {
-    const data = JSON.parse(requestBody);
+    const data = requestBody ? JSON.parse(requestBody) : {};
 
-    const result = {};
+    let result = {};
 
     if (request.method === 'POST' && request.url.includes('/auth/login')) {
         console.log(`Rodando login`);

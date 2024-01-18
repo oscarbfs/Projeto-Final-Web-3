@@ -6,7 +6,7 @@ function createUser(user) {
         if (searchUsers(null, user.email).responseData.length > 0) {
             return { responseData: { error: 'Email já em uso' }, status: 400 };
         } else {
-            user.id = userIdCounter++;
+            user.id = (userIdCounter++).toString();
             users.push(user);
             const userWithoutPassword = { ...user };
             delete userWithoutPassword.password;
@@ -33,10 +33,15 @@ function getUser(id) {
     }
 }
 
-function getClassUsers(creatorId, membersIds) {
+function getClassUsers(creator_id, members_ids) {
     try {
-        const classUsers = users.filter(user => user.id === creatorId || membersIds.includes(user.id));
-        return { responseData: classUsers, status: 200 };
+        const classUsers = users.filter(user => user.id === creator_id || members_ids.includes(user.id));
+        const usersWithoutPassword = classUsers.map(user => {
+            const userWithoutPassword = { ...user };
+            delete userWithoutPassword.password;
+            return userWithoutPassword;
+        });
+        return { responseData: usersWithoutPassword, status: 200 };
     } catch (error) {
         return { responseData: { error: 'Erro ao buscar usuários da turma' }, status: 400 };
     }

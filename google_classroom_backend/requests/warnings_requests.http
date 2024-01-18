@@ -1,26 +1,31 @@
-GET http://localhost:3000/warnings
-
-GET http://localhost:3000/warnings?id=2
-
-POST http://localhost:3000/warnings
+GET http://localhost:3000/classes/getUserClasses
 content-type: application/json
 
 {
-    "id": "1",
-    "name": "Data de entrega do Projeto Final"
+    "token": "meumnp16730lod3d00q9s"
 }
 
-PUT http://localhost:3000/warnings
+POST http://localhost:3000/classes/createClass
 content-type: application/json
 
 {
-    "id": "1",
-    "name": "Data de entrega do Projeto Final da disciplina"
+    "name": "Matematica 101",
+    "token": "meumnp16730lod3d00q9s"
 }
 
-DELETE http://localhost:3000/warnings
+PUT http://localhost:3000/classes/updateClass
 content-type: application/json
 
 {
     "id": "1",
+    "name": "Matemática 100",
+    "token": "meumnp16730lod3d00q9s"
+}
+
+DELETE http://localhost:3000/classes/deleteClass
+content-type: application/json
+
+{
+    "id": "1",
+    "token": "meumnp16730lod3d00q9s"
 }
