@@ -1,31 +1,32 @@
-GET http://localhost:3000/classes/getUserClasses
+GET http://localhost:3000/warnings/getClassWarnings?class_id=1
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "4qh2ntasnrtet6jb1ul10c"
 }
 
-POST http://localhost:3000/classes/createClass
+POST http://localhost:3000/warnings/createWarning
 content-type: application/json
 
 {
-    "name": "Matematica 101",
-    "token": "meumnp16730lod3d00q9s"
+    "class_id": "1",
+    "message": "Aviso urgente!",
+    "token": "4qh2ntasnrtet6jb1ul10c"
 }
 
-PUT http://localhost:3000/classes/updateClass
+PUT http://localhost:3000/warnings/updateWarning
 content-type: application/json
 
 {
     "id": "1",
-    "name": "Matemática 100",
-    "token": "meumnp16730lod3d00q9s"
+    "message": "Aviso não tão urgente",
+    "token": "4qh2ntasnrtet6jb1ul10c"
 }
 
-DELETE http://localhost:3000/classes/deleteClass
+DELETE http://localhost:3000/warnings/deleteWarning
 content-type: application/json
 
 {
     "id": "1",
-    "token": "meumnp16730lod3d00q9s"
+    "token": "4qh2ntasnrtet6jb1ul10c"
 }

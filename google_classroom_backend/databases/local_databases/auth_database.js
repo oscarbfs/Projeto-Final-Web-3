@@ -7,7 +7,7 @@ function login(user) {
 
         return { responseData: { token: tokensByEmail[user.id] }, status: 200 };
     } else {
-        return { responseData: { error: 'Credenciais inválidas' }, status: 401 };
+        return { responseData: { error: `Credenciais inválidas.` }, status: 401 };
     }
 }
 
@@ -19,7 +19,7 @@ function logout(token) {
 
         return { responseData: { message: 'Logout bem-sucedido' }, status: 200 };
     } else {
-        return { responseData: { error: 'Token inválido' }, status: 401 };
+        return { responseData: { error: `Token inválido.` }, status: 401 };
     }
 }
 

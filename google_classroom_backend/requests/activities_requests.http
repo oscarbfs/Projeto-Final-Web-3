@@ -1,26 +1,43 @@
-GET http://localhost:3000/activities
-
-GET http://localhost:3000/activities?id=2
-
-POST http://localhost:3000/activities
+GET http://localhost:3000/activitys/getClassActivityes?class_id=1
 content-type: application/json
 
 {
-    "id": "1",
-    "name": "Projeto Final Web 3"
+    "token": "m9st335limkb5u8fqhj78"
 }
 
-PUT http://localhost:3000/activities
+POST http://localhost:3000/activitys/createActivity
 content-type: application/json
 
 {
-    "id": "1",
-    "name": "Projeto Final Lab. Web 3"
+    "class_id": "1",
+    "title": "Atividade 1",
+    "questions": "1. Qual é seu nome?\n2. Quantos anos você tem?",
+    "token": "m9st335limkb5u8fqhj78"
 }
 
-DELETE http://localhost:3000/activities
+POST http://localhost:3000/activitys/addResponse
+content-type: application/json
+
+{
+    "activity_id": "1",
+    "response": "1. Oscar Borges\n2. 20 anos",
+    "token": "m9st335limkb5u8fqhj78"
+}
+
+PUT http://localhost:3000/activitys/updateActivity
 content-type: application/json
 
 {
     "id": "1",
+    "title": "Atividade 1",
+    "questions": "1. Qual é seu nome?",
+    "token": "m9st335limkb5u8fqhj78"
+}
+
+DELETE http://localhost:3000/activitys/deleteActivity
+content-type: application/json
+
+{
+    "id": "1",
+    "token": "m9st335limkb5u8fqhj78"
 }

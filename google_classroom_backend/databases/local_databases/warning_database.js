@@ -13,7 +13,7 @@ function createWarning(warningData, user_id) {
         warnings.push(warning);
         return { responseData: warning, status: 201 };
     } catch (error) {
-        return { responseData: { error: 'Falha ao criar aviso' }, status: 400 };
+        return { responseData: { error: `Falha ao criar aviso. ${error}` }, status: 400 };
     }
 }
 
@@ -22,7 +22,7 @@ function getClassWarnings(class_id) {
         const classWarnings = warnings.filter((warning) => warning.class_id === class_id);
         return { responseData: classWarnings, status: 200 };
     } catch (error) {
-        return { responseData: { error: 'Erro ao buscar avisos' }, status: 400 };
+        return { responseData: { error: `Erro ao buscar avisos. ${error}` }, status: 400 };
     }
 }
 
@@ -33,13 +33,13 @@ function updateWarning(updatedWarning, user_id) {
         );
 
         if (index !== -1) {
-            warnings[index].message = updatedWarning.message;
+            warnings[index] = { ...warnings[index], ...updatedWarning };
             return { responseData: warnings[index], status: 200 };
         } else {
-            return { responseData: { error: 'Aviso não encontrado ou você não tem permissão' }, status: 404 };
+            return { responseData: { error: `Aviso não encontrado ou você não tem permissão.` }, status: 404 };
         }
     } catch (error) {
-        return { responseData: { error: 'Erro ao atualizar aviso' }, status: 400 };
+        return { responseData: { error: `Erro ao atualizar aviso. ${error}` }, status: 400 };
     }
 }
 
@@ -53,10 +53,10 @@ function deleteWarning(warningData, user_id) {
             warnings.splice(index, 1);
             return { responseData: { message: 'Aviso removido com sucesso' }, status: 200 };
         } else {
-            return { responseData: { error: 'Aviso não encontrado ou você não tem permissão' }, status: 404 };
+            return { responseData: { error: `Aviso não encontrado ou você não tem permissão.` }, status: 404 };
         }
     } catch (error) {
-        return { responseData: { error: 'Erro ao remover aviso' }, status: 400 };
+        return { responseData: { error: `Erro ao remover aviso. ${error}` }, status: 400 };
     }
 }
 

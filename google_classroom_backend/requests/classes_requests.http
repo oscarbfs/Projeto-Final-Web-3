@@ -2,50 +2,64 @@ GET http://localhost:3000/classes/searchClasses
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
 }
 
-GET http://localhost:3000/classes/searchClasses?name=Matemática 100
+GET http://localhost:3000/classes/searchClasses?name=Turma 1 ADS
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
 }
 
-GET http://localhost:3000/classes/searchClasses?discipline=matematica
+GET http://localhost:3000/classes/searchClasses?discipline=algoritmo
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
 }
 
-GET http://localhost:3000/classes/searchClasses?name=Turma 1&discipline=matematica
+GET http://localhost:3000/classes/searchClasses?name=Turma 1 ADS&discipline=algoritmo
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
 }
 
 GET http://localhost:3000/classes/getClass?id=1
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
 }
 
 GET http://localhost:3000/classes/getUserClasses
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
 }
 
 POST http://localhost:3000/classes/createClass
 content-type: application/json
 
 {
-    "name": "Matematica 101",
-    "token": "meumnp16730lod3d00q9s"
+    "name": "Turma 1 ADS",
+    "section": "1",
+    "discipline": "algoritmo",
+    "room": "1",
+    "token": "m9st335limkb5u8fqhj78"
+}
+
+POST http://localhost:3000/classes/createClass
+content-type: application/json
+
+{
+    "name": "Turma 1 ADS",
+    "section": "1",
+    "discipline": "IHC",
+    "room": "1",
+    "token": "m9st335limkb5u8fqhj78"
 }
 
 POST http://localhost:3000/classes/joinClass
@@ -53,7 +67,15 @@ content-type: application/json
 
 {
     "id": "1",
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
+}
+
+DELETE http://localhost:3000/classes/leaveClass
+content-type: application/json
+
+{
+    "id": "1",
+    "token": "m9st335limkb5u8fqhj78"
 }
 
 PUT http://localhost:3000/classes/updateClass
@@ -62,7 +84,7 @@ content-type: application/json
 {
     "id": "1",
     "name": "Matemática 100",
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
 }
 
 DELETE http://localhost:3000/classes/deleteClass
@@ -70,5 +92,5 @@ content-type: application/json
 
 {
     "id": "1",
-    "token": "meumnp16730lod3d00q9s"
+    "token": "m9st335limkb5u8fqhj78"
 }

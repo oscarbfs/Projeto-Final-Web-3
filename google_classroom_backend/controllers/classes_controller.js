@@ -1,5 +1,6 @@
 const classDB = require('../databases/local_databases/class_database');
 const authDB = require('../databases/local_databases/auth_database');
+const userDB = require('../databases/local_databases/user_database');
 
 function control(request, response, requestBody, queryParams) {
     const data = requestBody ? JSON.parse(requestBody) : {};
@@ -15,15 +16,37 @@ function control(request, response, requestBody, queryParams) {
     
     } else if (request.method === 'GET' && request.url.includes('/classes/searchClasses')) {
         console.log(`Rodando searchClasses`);
-        result = classDB.searchClasses(queryParams.name, queryParams.discipline);
+        result = classDB.searchClasses(queryParams.name, queryParams.discipline, queryParams.section, queryParams.room);
+
+        if(result.status === 200) {
+            result.responseData = result.responseData.map(cls => {
+                const creator = userDB.getUser(cls.creator_id).responseData;
+                delete cls.creator_id;
+                return { ...cls, creator };
+            });
+        }
     
     } else if (request.method === 'GET' && request.url.includes('/classes/getClass')) {
         console.log(`Rodando getClass`);
         result = classDB.getClass(queryParams.id);
+        
+        if(result.status === 200) {
+            const creator = userDB.getUser(result.responseData.creator_id).responseData;
+            result.responseData = { ...result.responseData, creator };
+            delete result.responseData.creator_id;
+        }
     
     } else if (request.method === 'GET' && request.url.includes('/classes/getUserClasses')) {
         console.log(`Rodando getUserClasses`);
         result = classDB.getUserClasses(tokenData.user_id);
+
+        if(result.status === 200) {
+            result.responseData = result.responseData.map(cls => {
+                const creator = userDB.getUser(cls.creator_id).responseData;
+                delete cls.creator_id;
+                return { ...cls, creator };
+            });
+        }
     
     } else if (request.method === 'POST' && request.url.includes('/classes/joinClass')) {
         console.log(`Rodando joinClass`);
@@ -42,7 +65,7 @@ function control(request, response, requestBody, queryParams) {
         result = classDB.deleteClass(data, tokenData.user_id);
 
     } else if (request.method === 'DELETE' && request.url.includes('/classes/leaveClass')) {
-        console.log(`Rodando deleteClass`);
+        console.log(`Rodando leaveClass`);
         result = classDB.leaveClass(data, tokenData.user_id);
     
     } else {

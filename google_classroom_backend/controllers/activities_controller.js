@@ -17,7 +17,7 @@ function control(request, response, requestBody, queryParams) {
         result = activitysDB.getClassActivityes(queryParams.class_id);
     } else if (request.method === 'POST' && request.url.includes('/activitys/createActivity')) {
         console.log(`Rodando createActivity`);
-        result = activitysDB.createActivity(data);
+        result = activitysDB.createActivity(data, tokenData.user_id);
     } else if (request.method === 'POST' && request.url.includes('/activitys/addResponse')) {
         console.log(`Rodando addResponseToActivity`);
         result = activitysDB.addResponseToActivity(data, tokenData.user_id);

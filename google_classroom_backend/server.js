@@ -26,7 +26,7 @@ const server = http.createServer((request, response) => {
         } else if (pathname.includes('/classes')) {
             classController.control(request, response, requestBody, parsedUrl.query);
             
-        } else if (pathname.includes('/activities')) {
+        } else if (pathname.includes('/activitys')) {
             activityController.control(request, response, requestBody, parsedUrl.query);
       
         } else if (pathname.includes('/warnings')) {
