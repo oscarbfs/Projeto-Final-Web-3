@@ -37,7 +37,8 @@ function control(request, response, requestBody, queryParams) {
     
     } else if (request.method === 'DELETE' && request.url.includes('/users/deleteUser')) {
         console.log(`Rodando deleteUser`);
-        result = userDB.deleteUser(data, tokenData.user_id);
+        authDB.logout(data.token)
+        result = userDB.deleteUser(tokenData.user_id);
     
     } else {
         result = { 

@@ -16,7 +16,7 @@ function control(request, response, requestBody, queryParams) {
     
     } else if (request.method === 'GET' && request.url.includes('/classes/searchClasses')) {
         console.log(`Rodando searchClasses`);
-        result = classDB.searchClasses(queryParams.name, queryParams.discipline, queryParams.section, queryParams.room);
+        result = classDB.searchClasses(queryParams.name, queryParams.discipline, queryParams.section, queryParams.room, tokenData.user_id);
 
         if(result.status === 200) {
             result.responseData = result.responseData.map(cls => {
@@ -28,7 +28,7 @@ function control(request, response, requestBody, queryParams) {
     
     } else if (request.method === 'GET' && request.url.includes('/classes/getClass')) {
         console.log(`Rodando getClass`);
-        result = classDB.getClass(queryParams.id);
+        result = classDB.getClass(queryParams.id, tokenData.user_id);
         
         if(result.status === 200) {
             const creator = userDB.getUser(result.responseData.creator_id).responseData;

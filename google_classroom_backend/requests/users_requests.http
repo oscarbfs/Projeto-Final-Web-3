@@ -2,42 +2,42 @@ GET http://localhost:3000/users/searchUsers
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "fffs3avanci3jjkxpmzlc4"
 }
 
 GET http://localhost:3000/users/searchUsers?name=Oscar Borges
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "fffs3avanci3jjkxpmzlc4"
 }
 
 GET http://localhost:3000/users/searchUsers?email=oscar.borgesfs@gmail.com
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "fffs3avanci3jjkxpmzlc4"
 }
 
 GET http://localhost:3000/users/searchUsers?name=Oscar Borges&email=oscar.borgesfs@gmail.com
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "fffs3avanci3jjkxpmzlc4"
 }
 
 GET http://localhost:3000/users/getUser?id=1
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "fffs3avanci3jjkxpmzlc4"
 }
 
 GET http://localhost:3000/users/getClassUsers?class_id=1
 content-type: application/json
 
 {
-    "token": "meumnp16730lod3d00q9s"
+    "token": "fffs3avanci3jjkxpmzlc4"
 }
 
 POST http://localhost:3000/users/createUser
@@ -62,13 +62,13 @@ PUT http://localhost:3000/users/updateUser
 content-type: application/json
 
 {
-    "id": 2,
-    "name": "Elton Faleta Santana"
+    "name": "Oscar BFS",
+    "token": "fffs3avanci3jjkxpmzlc4"
 }
 
 DELETE http://localhost:3000/users/deleteUser
 content-type: application/json
 
 {
-    "id": 2
+    "token": "fffs3avanci3jjkxpmzlc4"
 }

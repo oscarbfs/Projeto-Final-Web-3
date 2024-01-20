@@ -3,36 +3,48 @@ let classIdCounter = 1;
 
 function createClass(classData, creator_id) {
     try {
-        classData.id = (classIdCounter++).toString();
-        classData.creator_id = creator_id;
-        classData.members_ids = [];
-        delete classData.token;
-        classes.push(classData);
-        return { responseData: classData, status: 201 };
+        if (!classData.name) {
+            return { responseData: { error: "O nome da turma é obrigatório." }, status: 400 };
+        } 
+
+        const cls = {
+            id: (classIdCounter++).toString(),
+            creator_id: creator_id,
+            name: classData.name,
+            section: classData.section,
+            discipline: classData.discipline,
+            room: classData.room,
+            members_ids: [],
+            created_at: new Date().toISOString(),
+            updated_at: null,
+        }
+
+        classes.push(cls);
+        return { responseData: cls, status: 201 };
     } catch (error) {
         return { responseData: { error: `Falha ao criar turma. ${error}`}, status: 400 };
     }
 }
 
-function getClass(id) {
+function getClass(id, user_id) {
     try {
-        const foundClass = classes.find(cls => cls.id === id);
+        const foundClass = classes.find(cls => cls.id === id && (cls.creator_id === user_id || cls.members_ids.includes(user_id)));
         return foundClass 
             ? { responseData: foundClass, status: 200 } 
-            : { responseData: { error: `Turma não encontrada.` }, status: 404 };
+            : { responseData: { error: `Turma não encontrada ou você não tem permissão.` }, status: 404 };
     } catch (error) {
         return { responseData: { error: `Falha ao buscar turma. ${error}` }, status: 400 };
-        
     }
 }
 
-function searchClasses(name, discipline, section, room) {
+function searchClasses(name, discipline, section, room, user_id) {
     try {
         const foundClasses = classes.filter(cls =>
             (!name || cls.name === name) &&
             (!discipline || cls.discipline === discipline) &&
             (!section || cls.section === section) &&
-            (!room || cls.room === room)
+            (!room || cls.room === room) &&
+            (cls.creator_id === user_id || cls.members_ids.includes(user_id))
         );
         const classesLite = foundClasses.map(cls => {
             const clsLite = { ...cls };
@@ -63,11 +75,24 @@ function getUserClasses(user_id) {
 
 function updateClass(classData, user_id) {
     try {
+        if (!classData.id) {
+            return { responseData: { error: "O ID (id) da turma é obrigatório" }, status: 400 };
+        }
+
         const index = classes.findIndex(cls => cls.id === classData.id);
-        delete classData.token;
         
         if (index !== -1 && classes[index].creator_id === user_id) {
-            classes[index] = { ...classes[index], ...classData };
+            classes[index] = {
+                id: classes[index].id,
+                creator_id: classes[index].creator_id,
+                name: classData.name ?? classes[index].name ,
+                section: classData.section ?? classes[index].section ,
+                discipline: classData.discipline ?? classes[index].discipline ,
+                room: classData.room ?? classes[index].room ,
+                members_ids: classes[index].members_ids,
+                created_at: classes[index].created_at,
+                updated_at: new Date().toISOString(),
+            }
             return { responseData: classes[index], status: 200 };
         } else {
             return { responseData: { error: `Turma não encontrada, ou você não é o criador da turma.` }, status: 404 };
@@ -79,6 +104,10 @@ function updateClass(classData, user_id) {
 
 function deleteClass(classData, user_id) {
     try {
+        if (!classData.id) {
+            return { responseData: { error: "O ID (id) da turma é obrigatório" }, status: 400 };
+        }
+
         const index = classes.findIndex(cls => cls.id === classData.id);
         
         if (index !== -1 && classes[index].creator_id === user_id) {
@@ -140,6 +169,27 @@ function leaveClass(classData, user_id) {
     }
 }
 
+function isCreator(classId, userId) {
+    try {
+        const cls = classes.find(cls => cls.id === classId);
+
+        if (!cls) {
+            return undefined;
+        }
+
+        if (cls.creator_id === userId) {
+            return true;
+        } else if (cls.members_ids.includes(userId)) {
+            return false;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        return undefined;
+    }
+}
+
+
 module.exports = {
     createClass,
     getClass,
@@ -149,4 +199,5 @@ module.exports = {
     deleteClass,
     joinClass,
     leaveClass,
+    isCreator,
 };

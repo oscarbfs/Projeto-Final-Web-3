@@ -1,5 +1,6 @@
 const warningsDB = require('../databases/local_databases/warning_database');
 const authDB = require('../databases/local_databases/auth_database');
+const classDB = require('../databases/local_databases/class_database');
 
 function control(request, response, requestBody, queryParams) {
     const data = requestBody ? JSON.parse(requestBody) : {};
@@ -15,11 +16,26 @@ function control(request, response, requestBody, queryParams) {
 
     } else if (request.method === 'GET' && request.url.includes('/warnings/getClassWarnings')) {
         console.log(`Rodando getClassWarnings`);
-        result = warningsDB.getClassWarnings(queryParams.class_id);
+        const isCreator = classDB.isCreator(queryParams.class_id, tokenData.user_id);
+        result = isCreator === true || isCreator === false
+            ? warningsDB.getClassWarnings(queryParams.class_id)
+            : {
+                responseData: { error: "Somente os participantes da turma podem visualizar os avisos" },
+                status: 400
+            };
 
     } else if (request.method === 'POST' && request.url.includes('/warnings/createWarning')) {
         console.log(`Rodando createWarning`);
-        result = warningsDB.createWarning(data, tokenData.user_id);
+        const isCreator = classDB.isCreator(data.class_id, tokenData.user_id);
+        result = isCreator === true || isCreator == false 
+            ? warningsDB.createWarning(data, tokenData.user_id)
+            : {
+                responseData: { error: isCreator === null 
+                    ? "Somente participantes da turma podem criar avisos" 
+                    : "ID da turma não encontrada"
+                },
+                status: 400
+            };
 
     } else if (request.method === 'PUT' && request.url.includes('/warnings/updateWarning')) {
         console.log(`Rodando updateWarning`);
