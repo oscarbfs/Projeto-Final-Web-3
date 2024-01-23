@@ -12,7 +12,7 @@ import { Settings } from '../configs/settings';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticateService {
+export class AuthService {
 
   constructor(private http: HttpClient) {}
 

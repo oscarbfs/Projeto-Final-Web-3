@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthenticateService } from '../../infra/services/auth_service';
+import { AuthService } from '../../infra/services/auth_service';
 import { LoginCommand } from '../../domain/models/commands/login_command';
 import { SetAuthMapper } from '../../domain/models/mappers/set_auth_mapper';
 import { firstValueFrom } from 'rxjs';
@@ -7,8 +7,8 @@ import { firstValueFrom } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticateBusinessService {
-  constructor(private authService: AuthenticateService) {}
+export class AuthBusinessService {
+  constructor(private authService: AuthService) {}
 
   async login(command: LoginCommand): Promise<SetAuthMapper> {
     try {
