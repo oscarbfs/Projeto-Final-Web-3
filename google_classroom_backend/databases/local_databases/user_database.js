@@ -121,10 +121,12 @@ function deleteUser(user_id) {
 }
 
 function verifyCredentials(email, password) {
-    const user = users.find(user => user.email === email && user.password === password);
-    const userWithoutPassword = { ...user };
-    delete userWithoutPassword.password;
-    return userWithoutPassword;
+    if(email && password) {
+        const user = users.find(user => user.email === email && user.password === password);
+        return user;
+    } else {
+        return null;
+    }
 }
 
 module.exports = {

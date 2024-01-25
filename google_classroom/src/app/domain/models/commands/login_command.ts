@@ -1,16 +1,16 @@
 export class LoginCommand {
-  userEmail: string;
-  userPassword: string;
+  email: string;
+  password: string;
 
-  constructor(userEmail: string, userPassword: string) {
-    this.userEmail = userEmail;
-    this.userPassword = userPassword;
+  constructor(email: string, password: string) {
+    this.email = email;
+    this.password = password;
   }
 
-  mapToJson(): { userEmail: string; userPassword: string } {
+  mapToJson(): { email: string; password: string } {
     return {
-      userEmail: this.userEmail,
-      userPassword: this.userPassword
+      email: this.email,
+      password: this.password
     };
   }
 }

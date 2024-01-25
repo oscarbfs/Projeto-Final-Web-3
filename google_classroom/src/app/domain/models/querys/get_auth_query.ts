@@ -11,9 +11,8 @@ export class GetAuthQuery {
   success?: boolean;
   errorMessage?: string | null;
 
-  constructor(private http: HttpClient) {}
-
   mapFromLogin(response: HttpResponse<any>): Observable<void> {
+    console.log("getAuthQuery,", response)
     return new Observable<void>(observer => {
       try {
         const data = response.body;

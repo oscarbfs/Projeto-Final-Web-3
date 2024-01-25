@@ -17,19 +17,20 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(command: LoginCommand): Observable<GetAuthQuery> {
-    const route = '/users/login';
+    const route = '/auth/login';
     
     return this.http.post<SetAuthMapper>(`${Settings.applicationEndPoint}${route}`, command.mapToJson())
       .pipe(
         map(data => {
           const response = new HttpResponse<SetAuthMapper>({ body: data });
-          const query = new GetAuthQuery(this.http);
+          const query = new GetAuthQuery();
           query.mapFromLogin(response);
           return query;
         }),
         catchError(error => {
+          console.log("error:", error)
           const response = new HttpResponse({ body: { error: error.error } });
-          const query = new GetAuthQuery(this.http);
+          const query = new GetAuthQuery();
           query.mapFromLogin(response);
           return throwError(() => [query]);
         })
@@ -37,7 +38,7 @@ export class AuthService {
   }
   
   logout(token: string): Observable<GetAuthQuery> {
-    const route = '/users/logout';
+    const route = '/auth/logout';
     
     return this.http.delete(`${Settings.applicationEndPoint}${route}`, {
       headers: { 'Authorization': `Bearer ${token}` }
@@ -45,13 +46,13 @@ export class AuthService {
       .pipe(
         map(data => {
           const response = new HttpResponse({ body: data });
-          const query = new GetAuthQuery(this.http);
+          const query = new GetAuthQuery();
           query.mapFromLogout(response);
           return query;
         }),
         catchError(error => {
           const response = new HttpResponse({ body: { error: error.error } });
-          const query = new GetAuthQuery(this.http);
+          const query = new GetAuthQuery();
           query.mapFromLogout(response);
           return throwError(() => [query]);
         })
@@ -67,13 +68,13 @@ export class AuthService {
       .pipe(
         map(data => {
           const response = new HttpResponse({ body: data });
-          const query = new GetAuthQuery(this.http);
+          const query = new GetAuthQuery();
           query.mapFromCheckToken(response);
           return query;
         }),
         catchError(error => {
           const response = new HttpResponse({ body: { isValid: error.token_valid, error: error.error } });
-          const query = new GetAuthQuery(this.http);
+          const query = new GetAuthQuery();
           query.mapFromCheckToken(response);
           return throwError(() => [query]);
         })

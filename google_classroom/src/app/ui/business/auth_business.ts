@@ -12,7 +12,9 @@ export class AuthBusinessService {
 
   async login(command: LoginCommand): Promise<SetAuthMapper> {
     try {
+      console.log("business, result", this.authService.login(command))
       const result = await firstValueFrom(this.authService.login(command));
+      console.log("auth_business, result: ", result)
       if (result.success) {
         return result.auth!;
       } else {

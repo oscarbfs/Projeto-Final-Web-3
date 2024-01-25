@@ -7,35 +7,47 @@ const activityController = require('./controllers/activities_controller');
 const warningController = require('./controllers/warnings_controller');
 
 const server = http.createServer((request, response) => {
+    // Adicione os cabeçalhos CORS adequados
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET, PUT, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Manipula solicitações OPTIONS
+    if (request.method === 'OPTIONS') {
+        response.writeHead(200);
+        response.end();
+        return;
+    }
+
     const parsedUrl = url.parse(request.url, true);
     const pathname = parsedUrl.pathname;
-  
+
     let requestBody = '';
-  
+
     request.on('data', (chunk) => {
-      requestBody += chunk.toString();
+        requestBody += chunk.toString();
     });
-  
+
     request.on('end', () => {
         if (pathname.includes('/auth')) {
             authController.control(request, response, requestBody, parsedUrl.query);
-        
+
         } else if (pathname.includes('/users')) {
             userController.control(request, response, requestBody, parsedUrl.query);
-            
+
         } else if (pathname.includes('/classes')) {
             classController.control(request, response, requestBody, parsedUrl.query);
-            
+
         } else if (pathname.includes('/activitys')) {
             activityController.control(request, response, requestBody, parsedUrl.query);
-      
+
         } else if (pathname.includes('/warnings')) {
             warningController.control(request, response, requestBody, parsedUrl.query);
-      
+
         } else if (pathname === '/') {
             response.writeHead(200);
-            response.end('Bem-vindo ao backend do Projeto Final WEB 3 de Oscar Borges, aplicação de referência é Google Classroom' );
-        
+            response.end('Bem-vindo ao backend do Projeto Final WEB 3 de Oscar Borges, aplicação de referência é Google Classroom');
+
         } else {
             response.writeHead(404, { 'Content-Type': 'application/json' });
             response.end(JSON.stringify({ error: 'Not Found' }));
@@ -45,5 +57,5 @@ const server = http.createServer((request, response) => {
 
 const port = 3000;
 server.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running at http://localhost:${port}`);
 });

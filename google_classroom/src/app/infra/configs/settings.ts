@@ -1,4 +1,4 @@
 export const Settings = {
-    applicationEndPoint: 'https://localhost:3000',
+    applicationEndPoint: 'http://localhost:3000',
   };
   
