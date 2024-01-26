@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthBusinessService } from '../../../../business/auth_business';
+import { AuthBusiness } from '../../../../business/auth_business';
 import { LoginCommand } from '../../../../../domain/models/commands/login_command';
 
 @Component({
@@ -14,10 +14,11 @@ import { LoginCommand } from '../../../../../domain/models/commands/login_comman
 })
 export class LoginAuthPageComponent {
   loginForm: FormGroup;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthBusinessService
+    private authBusiness: AuthBusiness
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -31,16 +32,20 @@ export class LoginAuthPageComponent {
       const password = this.loginForm.value.password;
       
       const loginCommand = new LoginCommand(email, password);
-      
+
       try {
-        const result = await this.authService.login(loginCommand);
-        console.log('Login successful:', result);
-        // Aqui você pode redirecionar o usuário ou executar ações adicionais após o login bem-sucedido.
+        const result = await this.authBusiness.login(loginCommand);
+
+        if (result.token) {
+          console.log('Login successful:', result);
+        } else {
+          throw Error("Erro ao fazer login. Por favor, tente novamente mais tarde.")
+        }
       } catch (error: any) {
-        console.log("auth_page, erro:", error)
-        console.error('Login failed:', error.message);
-        // Aqui você pode exibir mensagens de erro ou tomar outras ações em caso de falha no login.
+        console.log('Login failed:', error.message);
+        this.errorMessage = error.message;
       }
     }
   }
 }
+

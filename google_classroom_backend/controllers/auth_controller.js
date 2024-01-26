@@ -3,6 +3,7 @@ const userDB = require('../databases/local_databases/user_database');
 
 function control(request, response, requestBody) {
     const data = requestBody ? JSON.parse(requestBody) : {};
+    const token = headers['authorization'] ? headers['authorization'].split(' ')[1] : null;
 
     let result = {};
 
@@ -13,11 +14,11 @@ function control(request, response, requestBody) {
     
     } else if (request.method === 'DELETE' && request.url.includes('/auth/logout')) {
         console.log(`Rodando logout`);
-        result = authDB.logout(data.token);
+        result = authDB.logout(token);
     
     } else if (request.method === 'GET' && request.url.includes('/auth/checkToken')) {
         console.log(`Rodando checkToken`);
-        result = authDB.checkToken(data.token);
+        result = authDB.checkToken(token);
     
     } else {
         result = { 

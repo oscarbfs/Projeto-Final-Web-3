@@ -3,18 +3,17 @@ import { AuthService } from '../../infra/services/auth_service';
 import { LoginCommand } from '../../domain/models/commands/login_command';
 import { SetAuthMapper } from '../../domain/models/mappers/set_auth_mapper';
 import { firstValueFrom } from 'rxjs';
+import { GetAuthQuery } from '../../domain/models/querys/get_auth_query';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthBusinessService {
+export class AuthBusiness {
   constructor(private authService: AuthService) {}
 
   async login(command: LoginCommand): Promise<SetAuthMapper> {
     try {
-      console.log("business, result", this.authService.login(command))
-      const result = await firstValueFrom(this.authService.login(command));
-      console.log("auth_business, result: ", result)
+      const result = await this.authService.login(command);
       if (result.success) {
         return result.auth!;
       } else {
@@ -27,7 +26,7 @@ export class AuthBusinessService {
 
   async logout(token: string): Promise<boolean> {
     try {
-      const result = await firstValueFrom(this.authService.logout(token));
+      const result = await this.authService.logout(token);
       if (result.success) {
         return true;
       } else {
@@ -40,7 +39,7 @@ export class AuthBusinessService {
 
   async checkToken(token: string): Promise<boolean> {
     try {
-      const result = await firstValueFrom(this.authService.checkToken(token));
+      const result = await this.authService.checkToken(token);
       if (result.success) {
         return result.isValid!;
       } else {

@@ -2,9 +2,10 @@ const userDB = require('../databases/local_databases/user_database');
 const authDB = require('../databases/local_databases/auth_database');
 const classDB = require('../databases/local_databases/class_database');
 
-function control(request, response, requestBody, queryParams) {
+function control(request, response, requestBody, queryParams, headers) {
     const data = requestBody ? JSON.parse(requestBody) : {};
-    const tokenData = authDB.getTokenData(data.token);
+    const token = headers['authorization'] ? headers['authorization'].split(' ')[1] : null;
+    const tokenData = authDB.getTokenData(token);
 
     let result = {};
 

@@ -29,20 +29,22 @@ const server = http.createServer((request, response) => {
     });
 
     request.on('end', () => {
+        const headers = request.headers;
+
         if (pathname.includes('/auth')) {
-            authController.control(request, response, requestBody, parsedUrl.query);
+            authController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname.includes('/users')) {
-            userController.control(request, response, requestBody, parsedUrl.query);
+            userController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname.includes('/classes')) {
-            classController.control(request, response, requestBody, parsedUrl.query);
+            classController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname.includes('/activitys')) {
-            activityController.control(request, response, requestBody, parsedUrl.query);
+            activityController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname.includes('/warnings')) {
-            warningController.control(request, response, requestBody, parsedUrl.query);
+            warningController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname === '/') {
             response.writeHead(200);

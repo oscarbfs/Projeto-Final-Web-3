@@ -11,62 +11,49 @@ export class GetAuthQuery {
   success?: boolean;
   errorMessage?: string | null;
 
-  mapFromLogin(response: HttpResponse<any>): Observable<void> {
-    console.log("getAuthQuery,", response)
-    return new Observable<void>(observer => {
-      try {
-        const data = response.body;
+  mapFromLogin(response: HttpResponse<any>): GetAuthQuery {
+    try {
+      const data = response.body;
+      
+      this.auth = new SetAuthMapper();
+      this.auth.mapFromJson(data);
+      this.code = response.status;
+      this.success = response.statusText === 'OK';
+      this.errorMessage = data.error ?? null;
+    } catch (e) {
+      this.success = response.statusText === 'OK';
+      this.errorMessage = this.success ? null : 'Erro no tratamento dos dados da resposta do servidor';
+    }
 
-        this.auth = new SetAuthMapper();
-        this.auth.mapFromJson(data);
-        this.code = response.status;
-        this.success = response.statusText === 'OK';
-        this.errorMessage = data['error'] ?? null;
-        observer.next();
-        observer.complete();
-      } catch (e) {
-        this.success = response.statusText === 'OK';
-        this.errorMessage = this.success ? null : 'Erro no tratamento dos dados da resposta do servidor';
-        observer.next();
-        observer.complete();
-      }
-    });
+    return this;
   }
 
-  mapFromLogout(response: HttpResponse<any>): Observable<void> {
-    return new Observable<void>(observer => {
-      try {
-        this.status = response.body['status'] === 'Logout successful';
-        this.code = response.status;
-        this.success = response.statusText === 'OK';
-        this.errorMessage = response.body['error'] ?? null;
-        observer.next();
-        observer.complete();
-      } catch (e) {
-        this.success = response.statusText === 'OK';
-        this.errorMessage = this.success ? null : 'Erro no tratamento dos dados da resposta do servidor';
-        observer.next();
-        observer.complete();
-      }
-    });
+  mapFromLogout(response: HttpResponse<any>): GetAuthQuery {
+    try {
+      this.status = response.body['status'] === 'Logout successful';
+      this.code = response.status;
+      this.success = response.statusText === 'OK';
+      this.errorMessage = response.body.error ?? null;
+    } catch (e) {
+      this.success = response.statusText === 'OK';
+      this.errorMessage = this.success ? null : 'Erro no tratamento dos dados da resposta do servidor';
+    }
+
+    return this;
   }
 
-  mapFromCheckToken(response: HttpResponse<any>): Observable<void> {
-    return new Observable<void>(observer => {
-      try {
-        this.isValid = response.body['isValid'];
-        this.code = response.status;
-        this.success = response.statusText === 'OK';
-        this.errorMessage = response.body['error'] ?? null;
-        observer.next();
-        observer.complete();
-      } catch (e) {
-        this.success = response.statusText === 'OK';
-        this.errorMessage = this.success ? null : 'Erro no tratamento dos dados da resposta do servidor';
-        observer.next();
-        observer.complete();
-      }
-    });
+  mapFromCheckToken(response: HttpResponse<any>): GetAuthQuery {
+    try {
+      this.isValid = response.body['isValid'];
+      this.code = response.status;
+      this.success = response.statusText === 'OK';
+      this.errorMessage = response.body.error ?? null;
+    } catch (e) {
+      this.success = response.statusText === 'OK';
+      this.errorMessage = this.success ? null : 'Erro no tratamento dos dados da resposta do servidor';
+    }
+
+    return this;
   }
 
   mapFromJson(json: any): void {
@@ -76,22 +63,5 @@ export class GetAuthQuery {
     } catch (e) {
       this.errorMessage = 'Erro no tratamento dos dados';
     }
-  }
-
-  mapFromUserFeatures(response: HttpResponse<any>): Observable<void> {
-    return new Observable<void>(observer => {
-      try {
-        this.code = response.status;
-        this.success = response.statusText === 'OK';
-        this.errorMessage = response.body['error'] ?? null;
-        observer.next();
-        observer.complete();
-      } catch (e) {
-        this.success = response.statusText === 'OK';
-        this.errorMessage = this.success ? null : 'Erro no tratamento dos dados da resposta do servidor';
-        observer.next();
-        observer.complete();
-      }
-    });
   }
 }
