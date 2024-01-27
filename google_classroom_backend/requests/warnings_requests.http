@@ -1,32 +1,29 @@
 GET http://localhost:3000/warnings/getClassWarnings?class_id=1
 content-type: application/json
-
-{
-    "token": "emh7s79mvcema880k82c99"
-}
+Authorization: token emh7s79mvcema880k82c99
 
 POST http://localhost:3000/warnings/createWarning
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
     "class_id": "1",
-    "message": "Aviso urgente!",
-    "token": "emh7s79mvcema880k82c99"
+    "message": "Aviso urgente!"
 }
 
 PUT http://localhost:3000/warnings/updateWarning
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
     "id": "1",
-    "message": "Aviso não tão urgente",
-    "token": "emh7s79mvcema880k82c99"
+    "message": "Aviso não tão urgente"
 }
 
 DELETE http://localhost:3000/warnings/deleteWarning
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
-    "id": "1",
-    "token": "emh7s79mvcema880k82c99"
+    "id": "1"
 }

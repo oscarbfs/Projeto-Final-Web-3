@@ -1,62 +1,59 @@
 GET http://localhost:3000/activitys/getClassActivityes?class_id=1
 content-type: application/json
-
-{
-    "token": "emh7s79mvcema880k82c99"
-}
+Authorization: token emh7s79mvcema880k82c99
 
 POST http://localhost:3000/activitys/createActivity
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
     "class_id": "1",
     "title": "Atividade 1",
-    "body": "1. Qual é seu nome?\n2. Quantos anos você tem?",
-    "token": "emh7s79mvcema880k82c99"
+    "body": "1. Qual é seu nome?\n2. Quantos anos você tem?"
 }
 
 POST http://localhost:3000/activitys/addResponse
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
     "activity_id": "1",
-    "response": "1. Oscar Borges\n2. 20 anos",
-    "token": "emh7s79mvcema880k82c99"
+    "response": "1. Oscar Borges\n2. 20 anos"
 }
 
 POST http://localhost:3000/activitys/addResponse
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
     "activity_id": "1",
-    "response": "1. Elton Faleta\n2. 29 anos",
-    "token": "emh7s79mvcema880k82c99"
+    "response": "1. Elton Faleta\n2. 29 anos"
 }
 
 POST http://localhost:3000/activitys/updateResponse
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
     "activity_id": "1",
     "response_id": "1",
-    "response": "1. Oscar Borges",
-    "token": "emh7s79mvcema880k82c99"
+    "response": "1. Oscar Borges"
 }
 
 PUT http://localhost:3000/activitys/updateActivity
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
     "id": "1",
     "title": "Atividade 1",
-    "body": "1. Qual é seu nome?",
-    "token": "emh7s79mvcema880k82c99"
+    "body": "1. Qual é seu nome?"
 }
 
 DELETE http://localhost:3000/activitys/deleteActivity
 content-type: application/json
+Authorization: token emh7s79mvcema880k82c99
 
 {
-    "id": "1",
-    "token": "emh7s79mvcema880k82c99"
+    "id": "1"
 }
