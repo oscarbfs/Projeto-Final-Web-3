@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 
 import { SetAuthMapper } from '../mappers/set_auth_mapper';
 

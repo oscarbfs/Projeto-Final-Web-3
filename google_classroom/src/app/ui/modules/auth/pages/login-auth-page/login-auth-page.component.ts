@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthBusiness } from '../../../../business/auth_business';
 import { LoginCommand } from '../../../../../domain/models/commands/login_command';
 
@@ -18,7 +19,8 @@ export class LoginAuthPageComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authBusiness: AuthBusiness
+    private authBusiness: AuthBusiness,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -27,6 +29,7 @@ export class LoginAuthPageComponent {
   }
 
   async onSubmit() {
+    this.errorMessage = null;
     if (this.loginForm.valid) {
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
@@ -46,6 +49,10 @@ export class LoginAuthPageComponent {
         this.errorMessage = error.message;
       }
     }
+  }
+
+  goToSignup() {
+    this.router.navigate(['/signup']);
   }
 }
 

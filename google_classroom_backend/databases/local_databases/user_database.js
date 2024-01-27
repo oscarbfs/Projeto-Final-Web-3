@@ -4,7 +4,7 @@ let userIdCounter = 1;
 function createUser(userData) {
     try {
         if (searchUsers(null, userData.email).responseData.length > 0) {
-            return { responseData: { error: `Email já em uso. ${error}` }, status: 400 };
+            return { responseData: { error: `Email já em uso.` }, status: 400 };
         } else if (!userData.name) {
             return { responseData: { error: "O nome (name) do usuário é obrigatório." }, status: 400 };
         } else if (!userData.email) {

@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 import { LoginCommand } from '../../domain/models/commands/login_command';
 import { GetAuthQuery } from '../../domain/models/querys/get_auth_query';
@@ -10,7 +7,7 @@ import { SetAuthMapper } from '../../domain/models/mappers/set_auth_mapper';
 import { Settings } from '../configs/settings';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
 

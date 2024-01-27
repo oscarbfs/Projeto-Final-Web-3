@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../../infra/services/auth_service';
 import { LoginCommand } from '../../domain/models/commands/login_command';
 import { SetAuthMapper } from '../../domain/models/mappers/set_auth_mapper';
-import { firstValueFrom } from 'rxjs';
-import { GetAuthQuery } from '../../domain/models/querys/get_auth_query';
 
 @Injectable({
   providedIn: 'root'
