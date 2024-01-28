@@ -37,18 +37,6 @@ function control(request, response, requestBody, queryParams, headers) {
             delete result.responseData.creator_id;
         }
     
-    } else if (request.method === 'GET' && request.url.includes('/classes/getUserClasses')) {
-        console.log(`Rodando getUserClasses`);
-        result = classDB.getUserClasses(tokenData.user_id);
-
-        if(result.status === 200) {
-            result.responseData = result.responseData.map(cls => {
-                const creator = userDB.getUser(cls.creator_id).responseData;
-                delete cls.creator_id;
-                return { ...cls, creator };
-            });
-        }
-    
     } else if (request.method === 'POST' && request.url.includes('/classes/joinClass')) {
         console.log(`Rodando joinClass`);
         result = classDB.joinClass(data, tokenData.user_id);

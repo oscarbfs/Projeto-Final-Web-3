@@ -67,7 +67,6 @@ export class UserService {
   }
 
   async create(command: CreateUserCommand): Promise<GetUserQuery> {
-    console.log(command);
     const route = '/users/createUser';
 
     try {

@@ -7,12 +7,21 @@ import { SetAuthMapper } from '../../domain/models/mappers/set_auth_mapper';
   providedIn: 'root'
 })
 export class AuthBusiness {
+
   constructor(private authService: AuthService) {}
+  
+  generateExpireDate(isLogout: boolean): String {
+    const result = new Date();
+    if(!isLogout) result.setDate(result.getDate() + 1);
+    return result.toUTCString();
+  }
 
   async login(command: LoginCommand): Promise<SetAuthMapper> {
     try {
       const result = await this.authService.login(command);
       if (result.success) {
+        const expireDate = this.generateExpireDate(false);
+        document.cookie = `token=${result.auth?.token}; expires=${expireDate}; path=/`;
         return result.auth!;
       } else {
         throw new Error(`${result.errorMessage}`);
@@ -26,6 +35,8 @@ export class AuthBusiness {
     try {
       const result = await this.authService.logout(token);
       if (result.success) {
+        const expireDate = this.generateExpireDate(false);
+        document.cookie = `token=; expires=${expireDate}; path=/`;
         return true;
       } else {
         throw new Error(`${result.errorMessage}`);
@@ -46,5 +57,11 @@ export class AuthBusiness {
     } catch (error) {
       throw error;
     }
+  }
+
+  async getAuthToken(): Promise<String> {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    if(token) return token;
+    throw Error("Token inválido")
   }
 }

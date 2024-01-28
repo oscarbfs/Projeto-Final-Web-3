@@ -1,9 +1,11 @@
 export class UpdateUserCommand {
-    name?: string;
-    email?: string;
-    password?: string;
+    id?: String;
+    name?: String;
+    email?: String;
+    password?: String;
   
-    constructor({ name, email, password }: { name?: string; email?: string; password?: string } = {}) {
+    constructor(id?: String, name?: String, email?: String, password?: String ) {
+      this.id = id;
       this.name = name;
       this.email = email;
       this.password = password;
@@ -12,6 +14,8 @@ export class UpdateUserCommand {
     mapToJson(): any {
       const json: any = {};
   
+      json.id = this.id;
+
       if (this.name !== undefined && this.name !== null) {
         json.name = this.name;
       }

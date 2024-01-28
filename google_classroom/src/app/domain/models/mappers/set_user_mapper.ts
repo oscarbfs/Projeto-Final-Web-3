@@ -21,11 +21,13 @@ export class SetUserMapper {
       this.userPassword = userPassword;
     }
   
-    mapFromJson(json: any): void {
+    mapFromJson(json: any): SetUserMapper {
       this.userId = json['id'];
       this.userName = json['name'];
       this.userEmail = json['email'];
       this.userPassword = json['password'];
+
+      return this;
     }
   
     toJson(): any {

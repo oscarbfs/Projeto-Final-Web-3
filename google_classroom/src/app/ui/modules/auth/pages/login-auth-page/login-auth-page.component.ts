@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthBusiness } from '../../../../business/auth_business';
 import { LoginCommand } from '../../../../../domain/models/commands/login_command';
+import { SetAuthMapper } from '../../../../../domain/models/mappers/set_auth_mapper';
 
 @Component({
   selector: 'gc-login-auth-page',
@@ -14,6 +15,7 @@ import { LoginCommand } from '../../../../../domain/models/commands/login_comman
   imports: [ReactiveFormsModule, CommonModule]
 })
 export class LoginAuthPageComponent {
+  authData: SetAuthMapper | null = null;
   loginForm: FormGroup;
   errorMessage: string | null = null;
 
@@ -40,12 +42,13 @@ export class LoginAuthPageComponent {
         const result = await this.authBusiness.login(loginCommand);
 
         if (result.token) {
-          console.log('Login successful:', result);
+          this.authData = result;
+          console.log(result.token)
+          this.router.navigate(['/classes']);
         } else {
           throw Error("Erro ao fazer login. Por favor, tente novamente mais tarde.")
         }
       } catch (error: any) {
-        console.log('Login failed:', error.message);
         this.errorMessage = error.message;
       }
     }

@@ -25,20 +25,24 @@ export class SetAuthMapper {
       this.token = token;
     }
   
-    mapFromJson(json: any): void {
+    mapFromJson(json: any): SetAuthMapper {
       this.userId = json['id'];
       this.userName = json['name'];
       this.userEmail = json['email'];
       this.userPassword = json['password'];
       this.token = json['token'];
+
+      return this;
     }
   
-    updateAuthData(data: SetAuthMapper): void {
+    updateAuthData(data: SetAuthMapper): SetAuthMapper {
       this.userId = data.userId ?? this.userId;
       this.userName = data.userName ?? this.userName;
       this.userEmail = data.userEmail ?? this.userEmail;
       this.userPassword = data.userPassword ?? this.userPassword;
       this.token = data.token ?? this.token;
+
+      return this;
     }
   
     toJson(): any {

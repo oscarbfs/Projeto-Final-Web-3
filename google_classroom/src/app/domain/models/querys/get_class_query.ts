@@ -1,21 +1,21 @@
 import { HttpResponse } from '@angular/common/http';
 
-import { SetUserMapper } from '../mappers/set_user_mapper';
+import { SetClassMapper } from '../mappers/set_class_mapper';
 
-export class GetUserQuery {
-  users?: [SetUserMapper];
-  user?: SetUserMapper;
+export class GetClassQuery {
+  classes?: [SetClassMapper];
+  class?: SetClassMapper;
   status?: boolean;
   code?: number;
   success?: boolean;
   errorMessage?: string | null;
 
-  mapFromSearch(response: HttpResponse<any>): GetUserQuery {
+  mapFromSearch(response: HttpResponse<any>): GetClassQuery {
     try {
       const data = response.body;
       
-      this.users = data.map((userJson: any) => {
-        return new SetUserMapper().mapFromJson(userJson);
+      this.classes = data.map((classJson: any) => {
+        return new SetClassMapper().mapFromJson(classJson);
       });
       this.code = response.status;
       this.success = response.statusText === 'OK';
@@ -28,11 +28,12 @@ export class GetUserQuery {
     return this;
   }
 
-  mapFromCreateGetUserUpdateDelete(response: HttpResponse<any>): GetUserQuery {
+  mapFromCreateGetClassUpdateDelete(response: HttpResponse<any>): GetClassQuery {
     try {
       const data = response.body;
       
-      this.user = new SetUserMapper().mapFromJson(data);
+      this.class = new SetClassMapper();
+      this.class.mapFromJson(data);
       this.code = response.status;
       this.success = response.statusText === 'OK';
       this.errorMessage = data.error ?? null;

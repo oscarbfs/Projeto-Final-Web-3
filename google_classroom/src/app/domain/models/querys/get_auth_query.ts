@@ -14,8 +14,7 @@ export class GetAuthQuery {
     try {
       const data = response.body;
       
-      this.auth = new SetAuthMapper();
-      this.auth.mapFromJson(data);
+      this.auth = new SetAuthMapper().mapFromJson(data);
       this.code = response.status;
       this.success = response.statusText === 'OK';
       this.errorMessage = data.error ?? null;

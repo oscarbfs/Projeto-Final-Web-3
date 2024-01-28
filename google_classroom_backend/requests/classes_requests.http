@@ -1,30 +1,30 @@
 GET http://localhost:3000/classes/searchClasses
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 GET http://localhost:3000/classes/searchClasses?name=Turma 1 ADS
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 GET http://localhost:3000/classes/searchClasses?discipline=IHC
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 GET http://localhost:3000/classes/searchClasses?name=Turma 1 ADS&discipline=algoritmo
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 GET http://localhost:3000/classes/getClass?id=1
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 GET http://localhost:3000/classes/getUserClasses
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 POST http://localhost:3000/classes/createClass
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 {
     "name": "Turma 1 ADS",
@@ -35,7 +35,7 @@ Authorization: token lcd7bp1m06o02jtkti3gu06
 
 POST http://localhost:3000/classes/createClass
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 {
     "name": "Turma 1 ADS",
@@ -46,7 +46,7 @@ Authorization: token lcd7bp1m06o02jtkti3gu06
 
 POST http://localhost:3000/classes/joinClass
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 {
     "id": "1"
@@ -54,7 +54,7 @@ Authorization: token lcd7bp1m06o02jtkti3gu06
 
 DELETE http://localhost:3000/classes/leaveClass
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 {
     "id": "1"
@@ -62,7 +62,7 @@ Authorization: token lcd7bp1m06o02jtkti3gu06
 
 PUT http://localhost:3000/classes/updateClass
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 {
     "id": "1",
@@ -71,7 +71,7 @@ Authorization: token lcd7bp1m06o02jtkti3gu06
 
 DELETE http://localhost:3000/classes/deleteClass
 content-type: application/json
-Authorization: token lcd7bp1m06o02jtkti3gu06
+Authorization: token hzc35j2vdkq29d5u6gyut
 
 {
     "id": "1"

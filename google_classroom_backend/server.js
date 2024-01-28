@@ -7,12 +7,10 @@ const activityController = require('./controllers/activities_controller');
 const warningController = require('./controllers/warnings_controller');
 
 const server = http.createServer((request, response) => {
-    // Adicione os cabeçalhos CORS adequados
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET, PUT, DELETE');
-    response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    response.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-    // Manipula solicitações OPTIONS
     if (request.method === 'OPTIONS') {
         response.writeHead(200);
         response.end();

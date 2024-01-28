@@ -58,21 +58,6 @@ function searchClasses(name, discipline, section, room, user_id) {
     }
 }
 
-function getUserClasses(user_id) {
-    try {
-        const userClasses = classes.filter(cls => cls.creator_id === user_id || cls.members_ids.includes(user_id));
-        const userClassesLite = userClasses.map(cls => {
-            const clsLite = { ...cls };
-            delete clsLite.members_ids;
-            return clsLite;
-        });
-        return { responseData: userClassesLite, status: 200 };
-    } catch (error) {
-        return { responseData: { error: `Erro ao buscar turma. ${error}` }, status: 400 };
-    }
-    
-}
-
 function updateClass(classData, user_id) {
     try {
         if (!classData.id) {
@@ -194,7 +179,6 @@ module.exports = {
     createClass,
     getClass,
     searchClasses,
-    getUserClasses,
     updateClass,
     deleteClass,
     joinClass,
