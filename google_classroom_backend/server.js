@@ -26,23 +26,23 @@ const server = http.createServer((request, response) => {
         requestBody += chunk.toString();
     });
 
-    request.on('end', () => {
+    request.on('end', async () => {
         const headers = request.headers;
 
         if (pathname.includes('/auth')) {
-            authController.control(request, response, requestBody, parsedUrl.query, headers);
+            await authController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname.includes('/users')) {
-            userController.control(request, response, requestBody, parsedUrl.query, headers);
+            await userController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname.includes('/classes')) {
-            classController.control(request, response, requestBody, parsedUrl.query, headers);
+            await classController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname.includes('/activitys')) {
-            activityController.control(request, response, requestBody, parsedUrl.query, headers);
+            await activityController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname.includes('/warnings')) {
-            warningController.control(request, response, requestBody, parsedUrl.query, headers);
+            await warningController.control(request, response, requestBody, parsedUrl.query, headers);
 
         } else if (pathname === '/') {
             response.writeHead(200);

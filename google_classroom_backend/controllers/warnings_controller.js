@@ -2,10 +2,10 @@ const warningsDB = require('../databases/local_databases/warning_database');
 const authDB = require('../databases/local_databases/auth_database');
 const classDB = require('../databases/local_databases/class_database');
 
-function control(request, response, requestBody, queryParams, headers) {
+async function control(request, response, requestBody, queryParams, headers) {
     const data = requestBody ? JSON.parse(requestBody) : {};
     const token = headers['authorization'] ? headers['authorization'].split(' ')[1] : null;
-    const tokenData = authDB.getTokenData(token);
+    const tokenData = await authDB.getTokenData(token);
 
     let result = {};
 
@@ -17,9 +17,9 @@ function control(request, response, requestBody, queryParams, headers) {
 
     } else if (request.method === 'GET' && request.url.includes('/warnings/getClassWarnings')) {
         console.log(`Rodando getClassWarnings`);
-        const isCreator = classDB.isCreator(queryParams.class_id, tokenData.user_id);
+        const isCreator = await classDB.isCreator(queryParams.class_id, tokenData.user_id);
         result = isCreator === true || isCreator === false
-            ? warningsDB.getClassWarnings(queryParams.class_id)
+            ? await warningsDB.getClassWarnings(queryParams.class_id)
             : {
                 responseData: { error: "Somente os participantes da turma podem visualizar os avisos" },
                 status: 400
@@ -27,9 +27,9 @@ function control(request, response, requestBody, queryParams, headers) {
 
     } else if (request.method === 'POST' && request.url.includes('/warnings/createWarning')) {
         console.log(`Rodando createWarning`);
-        const isCreator = classDB.isCreator(data.class_id, tokenData.user_id);
+        const isCreator = await classDB.isCreator(data.class_id, tokenData.user_id);
         result = isCreator === true || isCreator == false 
-            ? warningsDB.createWarning(data, tokenData.user_id)
+            ? await warningsDB.createWarning(data, tokenData.user_id)
             : {
                 responseData: { error: isCreator === null 
                     ? "Somente participantes da turma podem criar avisos" 
@@ -40,11 +40,11 @@ function control(request, response, requestBody, queryParams, headers) {
 
     } else if (request.method === 'PUT' && request.url.includes('/warnings/updateWarning')) {
         console.log(`Rodando updateWarning`);
-        result = warningsDB.updateWarning(data, tokenData.user_id);
+        result = await warningsDB.updateWarning(data, tokenData.user_id);
 
     } else if (request.method === 'DELETE' && request.url.includes('/warnings/deleteWarning')) {
         console.log(`Rodando deleteWarning`);
-        result = warningsDB.deleteWarning(data, tokenData.user_id);
+        result = await warningsDB.deleteWarning(data, tokenData.user_id);
 
     } else {
         result = {

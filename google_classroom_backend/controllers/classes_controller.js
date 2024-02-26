@@ -2,10 +2,10 @@ const classDB = require('../databases/local_databases/class_database');
 const authDB = require('../databases/local_databases/auth_database');
 const userDB = require('../databases/local_databases/user_database');
 
-function control(request, response, requestBody, queryParams, headers) {
+async function control(request, response, requestBody, queryParams, headers) {
     const data = requestBody ? JSON.parse(requestBody) : {};
     const token = headers['authorization'] ? headers['authorization'].split(' ')[1] : null;
-    const tokenData = authDB.getTokenData(token);
+    const tokenData = await authDB.getTokenData(token);
 
     let result = {};
 
@@ -17,11 +17,11 @@ function control(request, response, requestBody, queryParams, headers) {
     
     } else if (request.method === 'GET' && request.url.includes('/classes/searchClasses')) {
         console.log(`Rodando searchClasses`);
-        result = classDB.searchClasses(queryParams.name, queryParams.discipline, queryParams.section, queryParams.room, tokenData.user_id);
+        result = await classDB.searchClasses(queryParams.name, queryParams.discipline, queryParams.section, queryParams.room, tokenData.user_id);
 
         if(result.status === 200) {
-            result.responseData = result.responseData.map(cls => {
-                const creator = userDB.getUser(cls.creator_id).responseData;
+            result.responseData = result.responseData.map(async cls => {
+                const creator = await userDB.getUser(cls.creator_id).responseData;
                 delete cls.creator_id;
                 return { ...cls, creator };
             });
@@ -29,33 +29,33 @@ function control(request, response, requestBody, queryParams, headers) {
     
     } else if (request.method === 'GET' && request.url.includes('/classes/getClass')) {
         console.log(`Rodando getClass`);
-        result = classDB.getClass(queryParams.id, tokenData.user_id);
+        result = await classDB.getClass(queryParams.id, tokenData.user_id);
         
         if(result.status === 200) {
-            const creator = userDB.getUser(result.responseData.creator_id).responseData;
+            const creator = await userDB.getUser(result.responseData.creator_id).responseData;
             result.responseData = { ...result.responseData, creator };
             delete result.responseData.creator_id;
         }
     
     } else if (request.method === 'POST' && request.url.includes('/classes/joinClass')) {
         console.log(`Rodando joinClass`);
-        result = classDB.joinClass(data, tokenData.user_id);
+        result = await classDB.joinClass(data, tokenData.user_id);
 
     } else if (request.method === 'POST' && request.url.includes('/classes/createClass')) {
         console.log(`Rodando createClass`);
-        result = classDB.createClass(data, tokenData.user_id);
+        result = await classDB.createClass(data, tokenData.user_id);
     
     } else if (request.method === 'PUT' && request.url.includes('/classes/updateClass')) {
         console.log(`Rodando updateClass`);
-        result = classDB.updateClass(data, tokenData.user_id);
+        result = await classDB.updateClass(data, tokenData.user_id);
     
     } else if (request.method === 'DELETE' && request.url.includes('/classes/deleteClass')) {
         console.log(`Rodando deleteClass`);
-        result = classDB.deleteClass(data, tokenData.user_id);
+        result = await classDB.deleteClass(data, tokenData.user_id);
 
     } else if (request.method === 'DELETE' && request.url.includes('/classes/leaveClass')) {
         console.log(`Rodando leaveClass`);
-        result = classDB.leaveClass(data, tokenData.user_id);
+        result = await classDB.leaveClass(data, tokenData.user_id);
     
     } else {
         result = { 

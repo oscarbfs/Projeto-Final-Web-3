@@ -1,7 +1,7 @@
 const authDB = require('../databases/local_databases/auth_database');
 const userDB = require('../databases/local_databases/user_database');
 
-function control(request, response, requestBody, queryParams, headers) {
+async function control(request, response, requestBody, queryParams, headers) {
     const data = requestBody ? JSON.parse(requestBody) : {};
     const token = headers['authorization'] ? headers['authorization'].split(' ')[1] : null;
 
@@ -9,16 +9,16 @@ function control(request, response, requestBody, queryParams, headers) {
 
     if (request.method === 'POST' && request.url.includes('/auth/login')) {
         console.log(`Rodando login`);
-        const user = userDB.verifyCredentials(data.email, data.password);
-        result = authDB.login(user);
+        const user = await userDB.verifyCredentials(data.email, data.password);
+        result = await authDB.login(user);
     
     } else if (request.method === 'DELETE' && request.url.includes('/auth/logout')) {
         console.log(`Rodando logout`);
-        result = authDB.logout(token);
+        result = await authDB.logout(token);
     
     } else if (request.method === 'GET' && request.url.includes('/auth/checkToken')) {
         console.log(`Rodando checkToken`);
-        result = authDB.checkToken(token);
+        result = await authDB.checkToken(token);
     
     } else {
         result = { 
