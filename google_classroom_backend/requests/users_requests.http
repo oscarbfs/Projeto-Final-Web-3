@@ -1,26 +1,26 @@
 GET http://localhost:3000/users/searchUsers
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token mzxdpqgsi79drqz14u7vrb
 
 GET http://localhost:3000/users/searchUsers?name=Oscar Borges
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token mzxdpqgsi79drqz14u7vrb
 
 GET http://localhost:3000/users/searchUsers?email=oscar.borgesfs@gmail.com
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token mzxdpqgsi79drqz14u7vrb
 
 GET http://localhost:3000/users/searchUsers?name=Oscar Borges&email=oscar.borgesfs@gmail.com
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token mzxdpqgsi79drqz14u7vrb
 
 GET http://localhost:3000/users/getUser?id=1
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token mzxdpqgsi79drqz14u7vrb
 
 GET http://localhost:3000/users/getClassUsers?class_id=1
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token mzxdpqgsi79drqz14u7vrb
 
 POST http://localhost:3000/users/createUser
 content-type: application/json
@@ -42,7 +42,7 @@ content-type: application/json
 
 PUT http://localhost:3000/users/updateUser
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token mzxdpqgsi79drqz14u7vrb
 
 {
     "name": "Oscar BFS"
@@ -50,4 +50,4 @@ Authorization: token emh7s79mvcema880k82c99
 
 DELETE http://localhost:3000/users/deleteUser
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token mzxdpqgsi79drqz14u7vrb

@@ -4,18 +4,39 @@ async function createUser(userData) {
     const { name, email, password } = userData;
     const sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
     try {
-        const result = await connectionDB.query(sql, [name, email, password]);
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, [name, email, password], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
         const userWithoutPassword = { id: result.insertId, name, email };
         return { responseData: userWithoutPassword, status: 201 };
     } catch (err) {
-        return { responseData: { error: 'Erro ao criar usuário no banco de dados.' }, status: 500 };
+        if (err.code === 'ER_DUP_ENTRY') {
+            return { responseData: { error: 'Erro ao criar usuário: Email já existente' }, status: 400 };
+        } else {
+            return { responseData: { error: 'Erro ao criar usuário no banco de dados', err }, status: 500 };
+        }
     }
 }
 
 async function getUser(id) {
     const sql = 'SELECT * FROM users WHERE id = ?';
     try {
-        const result = await connectionDB.query(sql, [id]);
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, [id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
         if (result.length > 0) {
             const userWithoutPassword = { ...result[0] };
             delete userWithoutPassword.password;
@@ -36,7 +57,15 @@ async function getClassUsers(creator_id, members_ids) {
         params.push(memberId);
     });
     try {
-        const result = await connectionDB.query(sql, params);
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, params, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
         const usersWithoutPassword = result.map(user => {
             const userWithoutPassword = { ...user };
             delete userWithoutPassword.password;
@@ -60,7 +89,15 @@ async function searchUsers(name, email) {
         params.push(email);
     }
     try {
-        const result = await connectionDB.query(sql, params);
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, params, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
         const usersWithoutPassword = result.map(user => {
             const userWithoutPassword = { ...user };
             delete userWithoutPassword.password;
@@ -76,7 +113,15 @@ async function updateUser(userData, user_id) {
     const { name, email, password } = userData;
     const sql = 'UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?';
     try {
-        const result = await connectionDB.query(sql, [name, email, password, user_id]);
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, [name, email, password, user_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
         if (result.affectedRows > 0) {
             const updatedUserWithoutPassword = { id: user_id, name, email };
             return { responseData: updatedUserWithoutPassword, status: 200 };
@@ -91,7 +136,15 @@ async function updateUser(userData, user_id) {
 async function deleteUser(user_id) {
     const sql = 'DELETE FROM users WHERE id = ?';
     try {
-        const result = await connectionDB.query(sql, [user_id]);
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, [user_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
         if (result.affectedRows > 0) {
             return { responseData: { message: 'Usuário deletado com sucesso' }, status: 200 };
         } else {
@@ -105,11 +158,17 @@ async function deleteUser(user_id) {
 async function verifyCredentials(email, password) {
     const sql = 'SELECT * FROM users WHERE email = ? AND password = ?';
     try {
-        const result = await connectionDB.query(sql, [email, password]);
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, [email, password], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
         if (result.length > 0) {
-            const userWithoutPassword = { ...result[0] };
-            delete userWithoutPassword.password;
-            return userWithoutPassword;
+            return { ...result[0] };
         } else {
             return null;
         }

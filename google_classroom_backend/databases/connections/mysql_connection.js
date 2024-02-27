@@ -10,10 +10,9 @@ const connection = mysql.createConnection({
 
 connection.connect(function(err) {
     if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err);
+        console.error('Erro ao conectar ao banco de dados.');
         return;
     }
-    console.log('Conexão bem-sucedida ao servidor MySQL!');
 
     const createTableUsers = `
         CREATE TABLE IF NOT EXISTS users (
@@ -31,7 +30,6 @@ connection.connect(function(err) {
             console.error('Erro ao criar tabela de usuários:', err);
             return;
         }
-        console.log('Tabela de usuários criada com sucesso!');
     });
 
     const createTableAuth = `
@@ -50,7 +48,6 @@ connection.connect(function(err) {
             console.error('Erro ao criar tabela de autenticação:', err);
             return;
         }
-        console.log('Tabela de autenticação criada com sucesso!');
     });
 
     const createTableClasses = `
@@ -72,7 +69,6 @@ connection.connect(function(err) {
             console.error('Erro ao criar tabela de classes:', err);
             return;
         }
-        console.log('Tabela de classes criada com sucesso!');
     });
 
     const createTableClassMembers = `
@@ -90,7 +86,6 @@ connection.connect(function(err) {
             console.error('Erro ao criar tabela dos membros das classes:', err);
             return;
         }
-        console.log('Tabela dos membros das classes criada com sucesso!');
     });
 
     const createTableActivities = `
@@ -112,7 +107,6 @@ connection.connect(function(err) {
             console.error('Erro ao criar tabela de atividades:', err);
             return;
         }
-        console.log('Tabela de atividades criada com sucesso!');
     });
 
     const createTableActivityResponses = `
@@ -133,7 +127,6 @@ connection.connect(function(err) {
             console.error('Erro ao criar tabela de respostas de atividades:', err);
             return;
         }
-        console.log('Tabela de respostas de atividades criada com sucesso!');
     });
 
     const createTableWarnings = `
@@ -154,7 +147,6 @@ connection.connect(function(err) {
             console.error('Erro ao criar tabela de avisos:', err);
             return;
         }
-        console.log('Tabela de avisos criada com sucesso!');
     });
 
 });

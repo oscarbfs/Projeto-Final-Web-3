@@ -16,8 +16,8 @@ content-type: application/json
 
 GET http://localhost:3000/auth/checkToken
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token sr7qe6bm9j55ll9akgoub
 
 DELETE http://localhost:3000/auth/logout
 content-type: application/json
-Authorization: token emh7s79mvcema880k82c99
+Authorization: token sr7qe6bm9j55ll9akgoub

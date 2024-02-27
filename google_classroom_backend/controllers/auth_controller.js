@@ -1,5 +1,5 @@
-const authDB = require('../databases/local_databases/auth_database');
-const userDB = require('../databases/local_databases/user_database');
+const authDB = require('../databases/mysql_databases/auth_database');
+const userDB = require('../databases/mysql_databases/user_database');
 
 async function control(request, response, requestBody, queryParams, headers) {
     const data = requestBody ? JSON.parse(requestBody) : {};
