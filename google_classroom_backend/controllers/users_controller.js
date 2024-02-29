@@ -1,6 +1,6 @@
 const userDB = require('../databases/mysql_databases/user_database');
 const authDB = require('../databases/mysql_databases/auth_database');
-const classDB = require('../databases/local_databases/class_database');
+const classDB = require('../databases/mysql_databases/class_database');
 
 async function control(request, response, requestBody, queryParams, headers) {
     const data = requestBody ? JSON.parse(requestBody) : {};
