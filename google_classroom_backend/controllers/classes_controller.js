@@ -18,24 +18,10 @@ async function control(request, response, requestBody, queryParams, headers) {
     } else if (request.method === 'GET' && request.url.includes('/classes/searchClasses')) {
         console.log(`Rodando searchClasses`);
         result = await classDB.searchClasses(queryParams.name, queryParams.discipline, queryParams.section, queryParams.room, tokenData.user_id);
-
-        if(result.status === 200) {
-            result.responseData = result.responseData.map(async cls => {
-                const creator = await userDB.getUser(cls.creator_id).responseData;
-                delete cls.creator_id;
-                return { ...cls, creator };
-            });
-        }
     
     } else if (request.method === 'GET' && request.url.includes('/classes/getClass')) {
         console.log(`Rodando getClass`);
         result = await classDB.getClass(queryParams.id, tokenData.user_id);
-        
-        if(result.status === 200) {
-            const creator = await userDB.getUser(result.responseData.creator_id).responseData;
-            result.responseData = { ...result.responseData, creator };
-            delete result.responseData.creator_id;
-        }
     
     } else if (request.method === 'POST' && request.url.includes('/classes/joinClass')) {
         console.log(`Rodando joinClass`);

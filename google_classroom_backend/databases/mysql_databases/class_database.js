@@ -13,30 +13,38 @@ async function createClass(classData, creator_id) {
                 }
             });
         });
-        
+
+        const clsId = result.insertId;
         const cls = {
-            id: result.insertId,
+            id: clsId,
             creator_id,
             name,
             section,
             discipline,
             room,
-            members_ids: [],
             created_at: new Date().toISOString(),
             updated_at: null,
         };
 
         return { responseData: cls, status: 201 };
     } catch (error) {
-        return { responseData: { error: `Falha ao criar turma. ${error}`}, status: 400 };
+        return { responseData: { error: `Falha ao criar turma. ${error}` }, status: 400 };
     }
 }
 
 async function getClass(id, user_id) {
     try {
-        const sql = 'SELECT * FROM classes WHERE id = ? AND (creator_id = ? OR FIND_IN_SET(?, members_ids))';
+        const sql = `
+            SELECT classes.*, users.id AS creator_id, users.email AS creator_email, users.name AS creator_name, 
+            GROUP_CONCAT(members.id) AS member_ids, GROUP_CONCAT(members.email) AS member_emails, GROUP_CONCAT(members.name) AS member_names
+            FROM classes 
+            LEFT JOIN users ON classes.creator_id = users.id 
+            LEFT JOIN class_members ON classes.id = class_members.class_id
+            LEFT JOIN users AS members ON class_members.member_id = members.id
+            WHERE classes.id = ? AND (classes.creator_id = ? OR EXISTS (SELECT * FROM class_members WHERE class_id = ? AND member_id = ?))
+            GROUP BY classes.id`;
         const result = await new Promise((resolve, reject) => {
-            connectionDB.query(sql, [id, user_id, user_id], (err, result) => {
+            connectionDB.query(sql, [id, user_id, id, user_id], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -48,12 +56,20 @@ async function getClass(id, user_id) {
         if (result.length > 0) {
             const cls = {
                 id: result[0].id,
-                creator_id: result[0].creator_id,
+                creator: {
+                    id: result[0].creator_id,
+                    email: result[0].creator_email,
+                    name: result[0].creator_name
+                },
                 name: result[0].name,
                 section: result[0].section,
                 discipline: result[0].discipline,
                 room: result[0].room,
-                members_ids: result[0].members_ids.split(',').map(Number),
+                members: result[0].member_ids ? result[0].member_ids.split(",").map((id, index) => ({
+                    id: id,
+                    email: result[0].member_emails.split(",")[index],
+                    name: result[0].member_names.split(",")[index]
+                })) : [],
                 created_at: result[0].created_at,
                 updated_at: result[0].updated_at,
             };
@@ -67,29 +83,30 @@ async function getClass(id, user_id) {
     }
 }
 
+
 async function searchClasses(name, discipline, section, room, user_id) {
     try {
-        let sql = 'SELECT * FROM classes WHERE 1=1';
+        let sql = 'SELECT classes.*, users.id AS creator_id, users.email AS creator_email, users.name AS creator_name FROM classes LEFT JOIN users ON classes.creator_id = users.id WHERE 1=1';
         const params = [];
 
         if (name) {
-            sql += ' AND name = ?';
+            sql += ' AND classes.name = ?';
             params.push(name);
         }
         if (discipline) {
-            sql += ' AND discipline = ?';
+            sql += ' AND classes.discipline = ?';
             params.push(discipline);
         }
         if (section) {
-            sql += ' AND section = ?';
+            sql += ' AND classes.section = ?';
             params.push(section);
         }
         if (room) {
-            sql += ' AND room = ?';
+            sql += ' AND classes.room = ?';
             params.push(room);
         }
 
-        sql += ' AND (creator_id = ? OR FIND_IN_SET(?, members_ids))';
+        sql += ' AND (classes.creator_id = ? OR EXISTS (SELECT * FROM class_members WHERE class_id = classes.id AND member_id = ?))';
         params.push(user_id, user_id);
 
         const result = await new Promise((resolve, reject) => {
@@ -101,33 +118,39 @@ async function searchClasses(name, discipline, section, room, user_id) {
                 }
             });
         });
-
+        
         const classes = result.map(cls => {
             return {
                 id: cls.id,
-                creator_id: cls.creator_id,
                 name: cls.name,
                 section: cls.section,
                 discipline: cls.discipline,
                 room: cls.room,
-                members_ids: cls.members_ids.split(',').map(Number),
+                creator: {
+                    id: cls.creator_id,
+                    email: cls.creator_email,
+                    name: cls.creator_name
+                },
                 created_at: cls.created_at,
                 updated_at: cls.updated_at,
             };
         });
-
+        
         return { responseData: classes, status: 200 };
     } catch (error) {
         return { responseData: { error: `Erro ao buscar turmas. ${error}` }, status: 400 };
     }
 }
 
+
 async function updateClass(classData, user_id) {
     try {
         const { id, name, section, discipline, room } = classData;
-        const sql = 'UPDATE classes SET name = ?, section = ?, discipline = ?, room = ?, updated_at = ? WHERE id = ? AND creator_id = ?';
-        const result = await new Promise((resolve, reject) => {
-            connectionDB.query(sql, [name, section, discipline, room, new Date().toISOString(), id, user_id], (err, result) => {
+
+        // Verifica se o usuário é o criador da turma
+        const isCreatorQuery = 'SELECT creator_id FROM classes WHERE id = ?';
+        const isCreatorResult = await new Promise((resolve, reject) => {
+            connectionDB.query(isCreatorQuery, [id], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -136,7 +159,42 @@ async function updateClass(classData, user_id) {
             });
         });
 
-        if (result.affectedRows > 0) {
+        if (isCreatorResult.length === 0 || isCreatorResult[0].creator_id !== user_id) {
+            return { responseData: { error: `Turma não encontrada ou você não é o criador da turma.` }, status: 404 };
+        }
+
+        let updateQuery = 'UPDATE classes SET';
+        const updateValues = [];
+        if (name !== null) {
+            updateQuery += ' name = ?,';
+            updateValues.push(name);
+        }
+        if (section !== null) {
+            updateQuery += ' section = ?,';
+            updateValues.push(section);
+        }
+        if (discipline !== null) {
+            updateQuery += ' discipline = ?,';
+            updateValues.push(discipline);
+        }
+        if (room !== null) {
+            updateQuery += ' room = ?,';
+            updateValues.push(room);
+        }
+        updateQuery += ' updated_at = ? WHERE id = ?';
+        updateValues.push(new Date().toISOString(), id);
+
+        const updateResult = await new Promise((resolve, reject) => {
+            connectionDB.query(updateQuery, updateValues, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        if (updateResult.affectedRows > 0) {
             return { responseData: { message: 'Turma atualizada com sucesso' }, status: 200 };
         } else {
             return { responseData: { error: `Turma não encontrada ou você não é o criador da turma.` }, status: 404 };
@@ -149,9 +207,36 @@ async function updateClass(classData, user_id) {
 async function deleteClass(classData, user_id) {
     try {
         const { id } = classData;
-        const sql = 'DELETE FROM classes WHERE id = ? AND creator_id = ?';
+
+        const isCreatorQuery = 'SELECT creator_id FROM classes WHERE id = ?';
+        const isCreatorResult = await new Promise((resolve, reject) => {
+            connectionDB.query(isCreatorQuery, [id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        if (isCreatorResult.length === 0 || isCreatorResult[0].creator_id !== user_id) {
+            return { responseData: { error: `Turma não encontrada ou você não é o criador da turma.` }, status: 404 };
+        }
+
+        const deleteMembersQuery = 'DELETE FROM class_members WHERE class_id = ?';
+        await new Promise((resolve, reject) => {
+            connectionDB.query(deleteMembersQuery, [id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        const deleteClassQuery = 'DELETE FROM classes WHERE id = ?';
         const result = await new Promise((resolve, reject) => {
-            connectionDB.query(sql, [id, user_id], (err, result) => {
+            connectionDB.query(deleteClassQuery, [id], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -170,12 +255,14 @@ async function deleteClass(classData, user_id) {
     }
 }
 
+
 async function joinClass(classData, user_id) {
     try {
         const { id } = classData;
-        const sql = 'UPDATE classes SET members_ids = CONCAT(IFNULL(members_ids, ""), ?, ",") WHERE id = ? AND creator_id != ?';
-        const result = await new Promise((resolve, reject) => {
-            connectionDB.query(sql, [user_id, id, user_id], (err, result) => {
+        
+        const isMemberOrCreatorQuery = 'SELECT * FROM classes WHERE id = ? AND (creator_id = ? OR EXISTS (SELECT * FROM class_members WHERE class_id = ? AND member_id = ?))';
+        const isMemberOrCreatorResult = await new Promise((resolve, reject) => {
+            connectionDB.query(isMemberOrCreatorQuery, [id, user_id, id, user_id], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -184,7 +271,22 @@ async function joinClass(classData, user_id) {
             });
         });
 
-        if (result.affectedRows > 0) {
+        if (isMemberOrCreatorResult.length > 0) {
+            return { responseData: { error: `Você já é membro ou criador desta turma.` }, status: 400 };
+        }
+        
+        const insertQuery = 'INSERT INTO class_members (class_id, member_id) VALUES (?, ?)';
+        const insertResult = await new Promise((resolve, reject) => {
+            connectionDB.query(insertQuery, [id, user_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        if (insertResult.affectedRows > 0) {
             return { responseData: { message: 'Entrou na turma com sucesso' }, status: 200 };
         } else {
             return { responseData: { error: `Turma não encontrada ou você é o criador da turma.` }, status: 404 };
@@ -194,12 +296,13 @@ async function joinClass(classData, user_id) {
     }
 }
 
+
 async function leaveClass(classData, user_id) {
     try {
         const { id } = classData;
-        const sql = 'UPDATE classes SET members_ids = TRIM(BOTH "," FROM REPLACE(CONCAT(",", IFNULL(members_ids, ""), ","), CONCAT(",", ?, ","), ",")) WHERE id = ? AND creator_id != ?';
+        const sql = 'DELETE FROM class_members WHERE class_id = ? AND member_id = ?';
         const result = await new Promise((resolve, reject) => {
-            connectionDB.query(sql, [user_id, id, user_id], (err, result) => {
+            connectionDB.query(sql, [id, user_id], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {

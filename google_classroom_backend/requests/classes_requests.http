@@ -1,30 +1,30 @@
 GET http://localhost:3000/classes/searchClasses
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 GET http://localhost:3000/classes/searchClasses?name=Turma 1 ADS
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 GET http://localhost:3000/classes/searchClasses?discipline=IHC
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 GET http://localhost:3000/classes/searchClasses?name=Turma 1 ADS&discipline=algoritmo
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
-GET http://localhost:3000/classes/getClass?id=1
+GET http://localhost:3000/classes/getClass?id=4
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 GET http://localhost:3000/classes/getUserClasses
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 POST http://localhost:3000/classes/createClass
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 {
     "name": "Turma 1 ADS",
@@ -35,7 +35,7 @@ Authorization: token hzc35j2vdkq29d5u6gyut
 
 POST http://localhost:3000/classes/createClass
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 {
     "name": "Turma 1 ADS",
@@ -46,33 +46,33 @@ Authorization: token hzc35j2vdkq29d5u6gyut
 
 POST http://localhost:3000/classes/joinClass
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 {
-    "id": "1"
+    "id": "4"
 }
 
 DELETE http://localhost:3000/classes/leaveClass
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 {
-    "id": "1"
+    "id": "4"
 }
 
 PUT http://localhost:3000/classes/updateClass
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 {
-    "id": "1",
+    "id": "4",
     "name": "Turma 2 ADS"
 }
 
 DELETE http://localhost:3000/classes/deleteClass
 content-type: application/json
-Authorization: token hzc35j2vdkq29d5u6gyut
+Authorization: token j3l1w0lpn9d1p37f84n3xz
 
 {
-    "id": "1"
+    "id": "3"
 }
