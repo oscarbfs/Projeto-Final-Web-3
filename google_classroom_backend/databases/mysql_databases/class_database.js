@@ -147,7 +147,6 @@ async function updateClass(classData, user_id) {
     try {
         const { id, name, section, discipline, room } = classData;
 
-        // Verifica se o usuário é o criador da turma
         const isCreatorQuery = 'SELECT creator_id FROM classes WHERE id = ?';
         const isCreatorResult = await new Promise((resolve, reject) => {
             connectionDB.query(isCreatorQuery, [id], (err, result) => {
@@ -165,19 +164,19 @@ async function updateClass(classData, user_id) {
 
         let updateQuery = 'UPDATE classes SET';
         const updateValues = [];
-        if (name !== null) {
+        if (name) {
             updateQuery += ' name = ?,';
             updateValues.push(name);
         }
-        if (section !== null) {
+        if (section) {
             updateQuery += ' section = ?,';
             updateValues.push(section);
         }
-        if (discipline !== null) {
+        if (discipline) {
             updateQuery += ' discipline = ?,';
             updateValues.push(discipline);
         }
-        if (room !== null) {
+        if (room) {
             updateQuery += ' room = ?,';
             updateValues.push(room);
         }
@@ -195,7 +194,7 @@ async function updateClass(classData, user_id) {
         });
 
         if (updateResult.affectedRows > 0) {
-            return { responseData: { message: 'Turma atualizada com sucesso' }, status: 200 };
+            return getClass(id, user_id);
         } else {
             return { responseData: { error: `Turma não encontrada ou você não é o criador da turma.` }, status: 404 };
         }
