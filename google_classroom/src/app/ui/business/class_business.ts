@@ -47,9 +47,9 @@ export class ClassBusiness {
     }
   }
 
-  async createClass(command: CreateClassCommand): Promise<boolean> {
+  async createClass(command: CreateClassCommand, token: string): Promise<boolean> {
     try {
-        const result = await this.classService.create(command);
+        const result = await this.classService.create(command, token);
         if (result.success && result.class) {
             return true;
         } else {

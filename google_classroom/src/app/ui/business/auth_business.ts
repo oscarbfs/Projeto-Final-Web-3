@@ -10,7 +10,7 @@ export class AuthBusiness {
 
   constructor(private authService: AuthService) {}
   
-  generateExpireDate(isLogout: boolean): String {
+  generateExpireDate(isLogout: boolean): string {
     const result = new Date();
     if(!isLogout) result.setDate(result.getDate() + 1);
     return result.toUTCString();
@@ -59,7 +59,7 @@ export class AuthBusiness {
     }
   }
 
-  async getAuthToken(): Promise<String> {
+  async getAuthToken(): Promise<string> {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     if(token) return token;
     throw Error("Token inválido")

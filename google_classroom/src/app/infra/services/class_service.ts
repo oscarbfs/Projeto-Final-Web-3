@@ -19,7 +19,7 @@ export class ClassService {
     let route = `/classes/searchClasses?`;
 
     if (options?.name) {
-      route += `name=${name}&`;
+      route += `name=${options?.name}&`;
     }
     if (options?.discipline) {
       route += `discipline=${options.discipline}&`;
@@ -30,7 +30,6 @@ export class ClassService {
     if (options?.room) {
       route += `room=${options.room}&`;
     }
-
 
     try {
       const data = await this.http.get<SetClassMapper>(`${Settings.applicationEndPoint}${route}`, {
@@ -85,11 +84,13 @@ export class ClassService {
     }
   }
 
-  async create(command: CreateClassCommand): Promise<GetClassQuery> {
+  async create(command: CreateClassCommand, token: String): Promise<GetClassQuery> {
     const route = '/classes/createClass';
 
     try {
-      const data = await this.http.post<SetClassMapper>(`${Settings.applicationEndPoint}${route}`, command.mapToJson()).toPromise();
+      const data = await this.http.post<SetClassMapper>(`${Settings.applicationEndPoint}${route}`, command.mapToJson(), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).toPromise();
 
       const response = new HttpResponse<SetClassMapper>({ body: data });
       const query = new GetClassQuery();

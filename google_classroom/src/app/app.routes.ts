@@ -3,6 +3,7 @@ import { LoginAuthPageComponent } from './ui/modules/auth/pages/login-auth-page/
 import { SignupAuthPageComponent } from './ui/modules/auth/pages/signup-auth-page/signup-auth-page.component';
 
 import { OverviewClassPageComponent } from './ui/modules/class/pages/overview-class-page/overview-class-page.component';
+import { CreateClassPageComponent } from './ui/modules/class/pages/create-class-page/create-class-page.component';
 
 const routeConfig: Routes = [
     {
@@ -20,6 +21,11 @@ const routeConfig: Routes = [
         path: 'classes',
         component: OverviewClassPageComponent,
         title: "Turmas"
+    },
+    {
+        path: 'createClasses',
+        component: CreateClassPageComponent,
+        title: "Criar Turmas"
     }
 ];
 

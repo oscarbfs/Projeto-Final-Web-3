@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { ClassBusiness } from '../../../../business/class_business';
 import { AuthBusiness } from '../../../../business/auth_business';
 import { SetClassMapper } from '../../../../../domain/models/mappers/set_class_mapper';
 import { CardClassTileComponent } from '../../tiles/card-class-tile/card-class-tile.component';
+import { CreateClassPageComponent } from '../create-class-page/create-class-page.component';
 
 @Component({
   selector: 'gc-overview-class-page',
@@ -21,6 +23,7 @@ export class OverviewClassPageComponent implements OnInit {
   constructor(
     private classBusiness: ClassBusiness,
     private authBusiness: AuthBusiness,
+    public dialog: MatDialog,
     private router: Router,
   ) {}
 
@@ -45,5 +48,11 @@ export class OverviewClassPageComponent implements OnInit {
       this.errorMessage = error.message;
       this.router.navigate(['/']);
     }
+  }
+
+  openCreateClassForm(): void {
+    this.dialog.open(CreateClassPageComponent, {
+      width: '500px', 
+    });
   }
 }
