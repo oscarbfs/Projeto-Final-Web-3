@@ -1,9 +1,9 @@
 export class CreateUserCommand {
-    name?: string;
-    email?: string;
-    password?: string;
+    name?: String;
+    email?: String;
+    password?: String;
   
-    constructor(name?: string, email?: string, password?: string) {
+    constructor(name?: String, email?: String, password?: String) {
       this.name = name;
       this.email = email;
       this.password = password;

@@ -116,7 +116,7 @@ export class UserService {
     }
   }
   
-  async delete(token: string): Promise<GetUserQuery> {
+  async delete(token: String): Promise<GetUserQuery> {
     const route = '/users/deleteUser';
     
     try {

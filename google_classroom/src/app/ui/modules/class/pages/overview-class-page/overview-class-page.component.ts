@@ -8,6 +8,7 @@ import { AuthBusiness } from '../../../../business/auth_business';
 import { SetClassMapper } from '../../../../../domain/models/mappers/set_class_mapper';
 import { CardClassTileComponent } from '../../tiles/card-class-tile/card-class-tile.component';
 import { CreateClassPageComponent } from '../create-class-page/create-class-page.component';
+import { JoinClassPageComponent } from '../join-class-page/join-class-page.component';
 
 @Component({
   selector: 'gc-overview-class-page',
@@ -17,8 +18,8 @@ import { CreateClassPageComponent } from '../create-class-page/create-class-page
   imports: [CommonModule, CardClassTileComponent]
 })
 export class OverviewClassPageComponent implements OnInit {
-  errorMessage: string | null = null;
-  loadedClasses: SetClassMapper[] | any[] = []; // Altere o tipo conforme necessário
+  errorMessage: String | null = null;
+  loadedClasses: SetClassMapper[] | any[] = [];
 
   constructor(
     private classBusiness: ClassBusiness,
@@ -44,14 +45,18 @@ export class OverviewClassPageComponent implements OnInit {
         throw Error("Erro ao carregar turmas. Por favor, tente novamente mais tarde.")
       }
     } catch (error: any) {
-      console.error('Failed to load classes:', error.message);
       this.errorMessage = error.message;
-      this.router.navigate(['/']);
     }
   }
 
   openCreateClassForm(): void {
     this.dialog.open(CreateClassPageComponent, {
+      width: '500px', 
+    });
+  }
+
+  openJoinClassForm(): void {
+    this.dialog.open(JoinClassPageComponent, {
       width: '500px', 
     });
   }

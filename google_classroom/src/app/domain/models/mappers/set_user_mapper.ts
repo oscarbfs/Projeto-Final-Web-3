@@ -1,8 +1,8 @@
 export class SetUserMapper {
-    userId?: string;
-    userName?: string;
-    userEmail?: string;
-    userPassword?: string;
+    userId?: String;
+    userName?: String;
+    userEmail?: String;
+    userPassword?: String;
   
     constructor({
       userId,
@@ -10,10 +10,10 @@ export class SetUserMapper {
       userEmail,
       userPassword,
     }: {
-      userId?: string;
-      userName?: string;
-      userEmail?: string;
-      userPassword?: string;
+      userId?: String;
+      userName?: String;
+      userEmail?: String;
+      userPassword?: String;
     } = {}) {
       this.userId = userId;
       this.userName = userName;

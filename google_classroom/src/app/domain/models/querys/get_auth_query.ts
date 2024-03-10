@@ -8,7 +8,7 @@ export class GetAuthQuery {
   isValid?: boolean;
   code?: number;
   success?: boolean;
-  errorMessage?: string | null;
+  errorMessage?: String | null;
 
   mapFromLogin(response: HttpResponse<any>): GetAuthQuery {
     try {

@@ -16,8 +16,8 @@ import { CreateUserCommand } from '../../../../../domain/models/commands/create_
 })
 export class SignupAuthPageComponent {
   signupForm: FormGroup;
-  errorMessage: string | null = null;
-  successMessage: string | null = null;
+  errorMessage: String | null = null;
+  successMessage: String | null = null;
 
   constructor(
     private fb: FormBuilder,

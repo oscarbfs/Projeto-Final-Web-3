@@ -53,7 +53,7 @@ export class UserBusiness {
     }
   }
 
-  async updateUser(command: UpdateUserCommand, token: string): Promise<boolean> {
+  async updateUser(command: UpdateUserCommand, token: String): Promise<boolean> {
     try {
       const result = await this.userService.update(command, token);
       if (result.success && result.user) {
@@ -67,7 +67,7 @@ export class UserBusiness {
     }
   }
 
-  async deleteUser(token: string): Promise<boolean> {
+  async deleteUser(token: String): Promise<boolean> {
     try {
       const result = await this.userService.delete(token);
       if (result.success) {

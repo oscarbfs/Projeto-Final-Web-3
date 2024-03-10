@@ -7,7 +7,7 @@ export class DeleteClassCommand {
   
     mapToJson(): any {
         return {
-          name: this.id,
+          id: this.id,
         };
     }
   }

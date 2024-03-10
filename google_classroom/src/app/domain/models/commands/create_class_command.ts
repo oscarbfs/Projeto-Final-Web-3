@@ -4,7 +4,7 @@ export class CreateClassCommand {
     discipline?: String;
     room?: String;
   
-    constructor(name?: string, section?: string, discipline?: string, room?: string) {
+    constructor(name?: String, section?: String, discipline?: String, room?: String) {
       this.name = name;
       this.section = section;
       this.discipline = discipline;

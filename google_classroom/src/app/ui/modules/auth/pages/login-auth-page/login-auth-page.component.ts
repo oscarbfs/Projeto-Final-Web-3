@@ -17,7 +17,7 @@ import { SetAuthMapper } from '../../../../../domain/models/mappers/set_auth_map
 export class LoginAuthPageComponent {
   authData: SetAuthMapper | null = null;
   loginForm: FormGroup;
-  errorMessage: string | null = null;
+  errorMessage: String | null = null;
 
   constructor(
     private fb: FormBuilder,

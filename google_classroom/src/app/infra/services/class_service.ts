@@ -7,6 +7,7 @@ import { Settings } from '../configs/settings';
 import { CreateClassCommand } from '../../domain/models/commands/create_class_command';
 import { UpdateClassCommand } from '../../domain/models/commands/update_class_command';
 import { DeleteClassCommand } from '../../domain/models/commands/delete_class_command';
+import { JoinClassCommand } from '../../domain/models/commands/join_class_command';
 
 @Injectable({
   providedIn: 'root',
@@ -54,7 +55,7 @@ export class ClassService {
     }
   }
 
-  async getClass(classId?: String, token?: String): Promise<GetClassQuery> {
+  async getClass(token?: String, classId?: String): Promise<GetClassQuery> {
     let route = '/classes/getClass?';
 
     if (classId) {
@@ -136,7 +137,7 @@ export class ClassService {
     }
   }
   
-  async delete(command: DeleteClassCommand, token: string): Promise<GetClassQuery> {
+  async delete(command: DeleteClassCommand, token: String): Promise<GetClassQuery> {
     const route = '/classes/deleteClass';
     
     try {
@@ -156,6 +157,32 @@ export class ClassService {
         const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
         const query = new GetClassQuery();
         query.mapFromCreateGetClassUpdateDelete(response); 
+        return query;
+      }
+
+      return new GetClassQuery();
+    }
+  }
+
+  async join(command: JoinClassCommand, token: String): Promise<GetClassQuery> {
+    const route = '/classes/joinClass';
+
+    try {
+      const data = await this.http.post<SetClassMapper>(`${Settings.applicationEndPoint}${route}`, command.mapToJson(), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).toPromise();
+
+      const response = new HttpResponse<SetClassMapper>({ body: data });
+      const query = new GetClassQuery();
+      query.mapFromJoinLeave(response);
+
+      return query;
+    } catch (error) {
+
+      if (error instanceof HttpErrorResponse) {
+        const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
+        const query = new GetClassQuery();
+        query.mapFromJoinLeave(response); 
         return query;
       }
 

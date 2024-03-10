@@ -37,7 +37,7 @@ export class AuthService {
     }
   }
   
-  async logout(token: string): Promise<GetAuthQuery> {
+  async logout(token: String): Promise<GetAuthQuery> {
     const route = '/auth/logout';
     
     try {
@@ -63,7 +63,7 @@ export class AuthService {
     }
   }
   
-  async checkToken(token: string): Promise<GetAuthQuery> {
+  async checkToken(token: String): Promise<GetAuthQuery> {
     const route = '/users/checkToken';
     
     try {

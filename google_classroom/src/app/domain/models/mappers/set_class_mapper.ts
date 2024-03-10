@@ -1,14 +1,15 @@
 import { SetUserMapper } from "./set_user_mapper";
 
 export class SetClassMapper {
-    classId?: string;
-    className?: string;
-    classSection?: string;
-    classDiscipline?: string;
-    classRoom?: string;
+    classId?: String;
+    className?: String;
+    classSection?: String;
+    classDiscipline?: String;
+    classRoom?: String;
     classCreator?: SetUserMapper;
-    classCreatedAt?: string;
-    classUpdatedAt?: string;
+    classMembers?: SetUserMapper[];
+    classCreatedAt?: String;
+    classUpdatedAt?: String;
   
     constructor({
       classId,
@@ -17,17 +18,19 @@ export class SetClassMapper {
       classDiscipline,
       classRoom,
       classCreator,
+      classMembers,
       classCreatedAt,
       classUpdatedAt,
     }: {
-      classId?: string;
-      className?: string;
-      classSection?: string;
-      classDiscipline?: string;
-      classRoom?: string;
+      classId?: String;
+      className?: String;
+      classSection?: String;
+      classDiscipline?: String;
+      classRoom?: String;
       classCreator?: SetUserMapper;
-      classCreatedAt?: string;
-      classUpdatedAt?: string;
+      classMembers?: SetUserMapper[];
+      classCreatedAt?: String;
+      classUpdatedAt?: String;
     } = {}) {
       this.classId = classId;
       this.className = className;
@@ -35,6 +38,7 @@ export class SetClassMapper {
       this.classDiscipline = classDiscipline;
       this.classRoom = classRoom;
       this.classCreator = classCreator;
+      this.classMembers = classMembers;
       this.classCreatedAt = classCreatedAt;
       this.classUpdatedAt = classUpdatedAt;
     }
@@ -46,6 +50,7 @@ export class SetClassMapper {
         this.classDiscipline = json.discipline;
         this.classRoom = json.room;
         this.classCreator = new SetUserMapper().mapFromJson(json.creator);
+        this.classMembers = json.members?.map((member: any) => new SetUserMapper().mapFromJson(member));
         this.classCreatedAt = json.createdAt;
         this.classUpdatedAt = json.updatedAt;
         
@@ -60,6 +65,7 @@ export class SetClassMapper {
         discipline: this.classDiscipline,
         room: this.classRoom,
         creator: this.classCreator,
+        members: this.classMembers,
         createdAt: this.classCreatedAt,
         updatedAt: this.classUpdatedAt,
       };

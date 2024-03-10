@@ -6,63 +6,53 @@ import { CommonModule } from '@angular/common';
 
 import { ClassBusiness } from '../../../../business/class_business';
 import { AuthBusiness } from '../../../../business/auth_business';
-import { CreateClassCommand } from '../../../../../domain/models/commands/create_class_command';
+import { JoinClassCommand } from '../../../../../domain/models/commands/join_class_command';
 import { SetClassMapper } from '../../../../../domain/models/mappers/set_class_mapper';
 
 @Component({
-  selector: 'gc-create-class-page',
+  selector: 'gc-join-class-page',
   standalone: true,
-  templateUrl: './create-class-page.component.html',
-  styleUrl: './create-class-page.component.css',
   imports: [ReactiveFormsModule, CommonModule],
+  templateUrl: './join-class-page.component.html',
+  styleUrl: './join-class-page.component.css'
 })
-export class CreateClassPageComponent {
+
+export class JoinClassPageComponent {
     
     classData: SetClassMapper | null = null;
-    createClassForm: FormGroup;
+    joinClassForm: FormGroup;
     errorMessage: String | null = null;
     
     constructor(
       private fb: FormBuilder,
       private classBusiness: ClassBusiness,
       private authBusiness: AuthBusiness,
-      private dialogRef: MatDialogRef<CreateClassPageComponent>
+      private dialogRef: MatDialogRef<JoinClassPageComponent>
   ) {
-    this.createClassForm = this.fb.group({
-      name: ['', Validators.required],
-      section: [''], // Adicione os campos section, discipline e room aqui
-      discipline: [''],
-      room: ['']
+    this.joinClassForm = this.fb.group({
+      classId: ['', Validators.required],
     });
-    
   }
 
   async onSubmit() {
-    console.error('Método onSubmit() chamado!');
     this.errorMessage = null;
-    if (this.createClassForm.valid) {
-      const name = this.createClassForm.value.name;
-      const section = this.createClassForm.value.section;
-      const discipline = this.createClassForm.value.discipline;
-      const room = this.createClassForm.value.room;
+    if (this.joinClassForm.valid) {
+      const classId = this.joinClassForm.value.classId;
       
-      const createClassCommand = new CreateClassCommand(
-        name,
-        section,
-        discipline,
-        room,
+      const joinClassCommand = new JoinClassCommand(
+        classId,
       );
 
       try {
         var token = await this.authBusiness.getAuthToken();
         console.log(token);
-        const result = await this.classBusiness.createClass(createClassCommand, token);
+        const result = await this.classBusiness.joinClass(joinClassCommand, token);
         console.log(result);
 
         if (result) {
           this.closeForm();
         } else {
-          throw Error("Erro ao criar turma. Por favor, tente novamente mais tarde.")
+          throw Error("Erro ao entrar na turma. Por favor, tente novamente mais tarde.")
         }
       } catch (error: any) {
         this.errorMessage = error.message;

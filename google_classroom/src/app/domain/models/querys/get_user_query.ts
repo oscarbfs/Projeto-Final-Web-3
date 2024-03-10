@@ -8,7 +8,7 @@ export class GetUserQuery {
   status?: boolean;
   code?: number;
   success?: boolean;
-  errorMessage?: string | null;
+  errorMessage?: String | null;
 
   mapFromSearch(response: HttpResponse<any>): GetUserQuery {
     try {
