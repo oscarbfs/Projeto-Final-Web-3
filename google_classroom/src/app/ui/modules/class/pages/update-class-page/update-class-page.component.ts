@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { ClassBusiness } from '../../../../business/class_business';
 import { AuthBusiness } from '../../../../business/auth_business';
 import { UpdateClassCommand } from '../../../../../domain/models/commands/update_class_command';
-import { SetClassMapper } from '../../../../../domain/models/mappers/set_class_mapper';
 
 @Component({
   selector: 'gc-update-class-page',
@@ -18,7 +17,7 @@ import { SetClassMapper } from '../../../../../domain/models/mappers/set_class_m
 })
 export class UpdateClassPageComponent {
     
-    classData: SetClassMapper | null = null;
+    classId: String = "";
     updateClassForm: FormGroup;
     errorMessage: String | null = null;
     
@@ -29,6 +28,8 @@ export class UpdateClassPageComponent {
       private dialogRef: MatDialogRef<UpdateClassPageComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any // Injetando os dados da turma
   ) {
+    this.classId = data.classId;
+
     this.updateClassForm = this.fb.group({
       name: [data.className || '', Validators.required], // Use os dados da turma para preencher os campos do formulário
       section: [data.classSection || ''],
@@ -46,6 +47,7 @@ export class UpdateClassPageComponent {
       const room = this.updateClassForm.value.room;
       
       const updateClassCommand = new UpdateClassCommand(
+        this.classId,
         name,
         section,
         discipline,
