@@ -26,7 +26,7 @@ export class SetAuthMapper {
     }
   
     mapFromJson(json: any): SetAuthMapper {
-      this.userId = json['id'];
+      this.userId = json['id'] ?? json['user_id'];
       this.userName = json['name'];
       this.userEmail = json['email'];
       this.userPassword = json['password'];

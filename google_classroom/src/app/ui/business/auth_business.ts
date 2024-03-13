@@ -59,6 +59,19 @@ export class AuthBusiness {
     }
   }
 
+  async getUserIdByToken(token: String): Promise<String | undefined | null> {
+    try {
+      const result = await this.authService.checkToken(token);
+      if (result.success) {
+        return result.auth?.userId;
+      } else {
+        throw new Error(`${result.errorMessage}`);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getAuthToken(): Promise<String> {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     if(token) return token;

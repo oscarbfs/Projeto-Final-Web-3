@@ -64,7 +64,7 @@ export class AuthService {
   }
   
   async checkToken(token: String): Promise<GetAuthQuery> {
-    const route = '/users/checkToken';
+    const route = '/auth/checkToken';
     
     try {
       const data = await this.http.get(`${Settings.applicationEndPoint}${route}`, {
@@ -73,7 +73,7 @@ export class AuthService {
 
       const response = new HttpResponse({ body: data });
       const query = new GetAuthQuery();
-      query.mapFromLogin(response);
+      query.mapFromCheckToken(response);
 
       return query;
     } catch (error) {
@@ -81,7 +81,7 @@ export class AuthService {
       if (error instanceof HttpErrorResponse) {
         const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
         const query = new GetAuthQuery();
-        query.mapFromLogin(response); 
+        query.mapFromCheckToken(response); 
         return query;
       }
 

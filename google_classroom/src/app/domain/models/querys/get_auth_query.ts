@@ -42,7 +42,10 @@ export class GetAuthQuery {
 
   mapFromCheckToken(response: HttpResponse<any>): GetAuthQuery {
     try {
-      this.isValid = response.body['isValid'];
+      const data = response.body;
+      
+      this.auth = new SetAuthMapper().mapFromJson(data);
+      this.isValid = data['isValid'];
       this.code = response.status;
       this.success = response.statusText === 'OK';
       this.errorMessage = response.body.error ?? null;

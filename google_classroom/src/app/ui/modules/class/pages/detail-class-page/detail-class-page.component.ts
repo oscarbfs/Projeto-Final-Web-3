@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { SetClassMapper } from '../../../../../domain/models/mappers/set_class_mapper';
 import { ClassBusiness } from '../../../../business/class_business';
 import { AuthBusiness } from '../../../../business/auth_business';
+import { DeleteClassCommand } from '../../../../../domain/models/commands/delete_class_command';
 
 @Component({
   selector: 'gc-detail-class-page',
@@ -17,6 +18,7 @@ import { AuthBusiness } from '../../../../business/auth_business';
 export class DetailClassPageComponent {
   errorMessage: String | null = null;
   classToDetail: SetClassMapper | null = null;
+  userIsCreator: boolean = false;
 
   constructor(
     private classBusiness: ClassBusiness,
@@ -42,14 +44,43 @@ export class DetailClassPageComponent {
       const classToDetail = await this.classBusiness.getClass(token, classId);
 
       if (classToDetail) {
+        this.userIsCreator = await this.authBusiness.getUserIdByToken(token) === classToDetail.classCreator?.userId;
         this.classToDetail = classToDetail; 
       } else {
         throw Error("Erro ao carregar turmas. Por favor, tente novamente mais tarde.")
       }
     } catch (error: any) {
-      console.error('Failed to load classes:', error.message);
       this.errorMessage = error.message;
-      this.router.navigate(['/']);
     }
   }
+
+  async deleteClass() {
+    try {
+        const token = await this.authBusiness.getAuthToken();
+
+        const deleteClassCommand = new DeleteClassCommand(
+          this.classToDetail?.classId,
+        );
+
+        await this.classBusiness.deleteClass(deleteClassCommand, token);
+        // Redirecione para uma página após a exclusão
+    } catch (error: any) {
+        this.errorMessage = error.message;
+    }
+  }
+
+  editClass() {
+      // Implemente a lógica para redirecionar para a página de edição da turma
+  }
+
+  async leaveClass() {
+      try {
+          const token = await this.authBusiness.getAuthToken();
+          // await this.classBusiness.leaveClass(token, this.classToDetail?.classId);
+          // Redirecione para uma página após sair da turma
+      } catch (error: any) {
+          this.errorMessage = error.message;
+      }
+  }
+
 }

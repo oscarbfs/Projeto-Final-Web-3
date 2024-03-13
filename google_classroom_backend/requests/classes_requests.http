@@ -1,30 +1,30 @@
 GET http://localhost:3000/classes/searchClasses
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 GET http://localhost:3000/classes/searchClasses?name=Turma 1 ADS
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 GET http://localhost:3000/classes/searchClasses?discipline=IHC
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 GET http://localhost:3000/classes/searchClasses?name=Turma 1 ADS&discipline=algoritmo
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 GET http://localhost:3000/classes/getClass?id=4
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 GET http://localhost:3000/classes/getUserClasses
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 POST http://localhost:3000/classes/createClass
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 {
     "name": "Turma 1 ADS",
@@ -35,7 +35,7 @@ Authorization: token gakpy8w0pu3qg24wephv2
 
 POST http://localhost:3000/classes/createClass
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 {
     "name": "Turma 1 ADS",
@@ -46,15 +46,15 @@ Authorization: token gakpy8w0pu3qg24wephv2
 
 POST http://localhost:3000/classes/joinClass
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 {
-    "id": "4"
+    "id": "8"
 }
 
 DELETE http://localhost:3000/classes/leaveClass
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 {
     "id": "4"
@@ -62,7 +62,7 @@ Authorization: token gakpy8w0pu3qg24wephv2
 
 PUT http://localhost:3000/classes/updateClass
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 {
     "id": "8",
@@ -71,7 +71,7 @@ Authorization: token gakpy8w0pu3qg24wephv2
 
 DELETE http://localhost:3000/classes/deleteClass
 content-type: application/json
-Authorization: token gakpy8w0pu3qg24wephv2
+Authorization: token zppyesx3xzl3epsflz2kqr
 
 {
     "id": "7"

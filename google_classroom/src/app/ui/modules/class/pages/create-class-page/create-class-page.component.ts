@@ -55,9 +55,7 @@ export class CreateClassPageComponent {
 
       try {
         var token = await this.authBusiness.getAuthToken();
-        console.log(token);
         const result = await this.classBusiness.createClass(createClassCommand, token);
-        console.log(result);
 
         if (result) {
           this.closeForm();
