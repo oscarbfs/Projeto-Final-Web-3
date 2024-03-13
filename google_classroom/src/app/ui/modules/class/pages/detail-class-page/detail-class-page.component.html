@@ -5,11 +5,11 @@
 <div class="card-header d-flex justify-content-between align-items-center">
     <h2 class="m-0">Detalhes da Turma</h2>
     <div *ngIf="userIsCreator; else nonCreatorButtons">
-        <button class="btn btn-danger" (click)="deleteClass()">Deletar</button>
-        <button class="btn btn-primary" (click)="editClass()">Editar</button>
+        <button class="btn btn-danger" (click)="openDeleteClassDialog()">Deletar</button>
+        <button class="btn btn-primary" (click)="openUpdateClassForm()">Editar</button>
     </div>
     <ng-template #nonCreatorButtons>
-        <button class="btn btn-secondary" (click)="leaveClass()">Sair da Turma</button>
+        <button class="btn btn-secondary" (click)="openLeaveClassDialog()">Sair da Turma</button>
     </ng-template>
 </div>
 <div class="card-body" *ngIf="classToDetail">

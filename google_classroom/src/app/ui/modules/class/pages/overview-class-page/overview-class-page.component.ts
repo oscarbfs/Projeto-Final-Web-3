@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ClassBusiness } from '../../../../business/class_business';
@@ -25,7 +24,6 @@ export class OverviewClassPageComponent implements OnInit {
     private classBusiness: ClassBusiness,
     private authBusiness: AuthBusiness,
     public dialog: MatDialog,
-    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -49,15 +47,23 @@ export class OverviewClassPageComponent implements OnInit {
     }
   }
 
-  openCreateClassForm(): void {
-    this.dialog.open(CreateClassPageComponent, {
+  async openCreateClassForm(): Promise<void> {
+    const dialogRef = this.dialog.open(CreateClassPageComponent, {
       width: '500px', 
     });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadClasses();
+    });
   }
-
-  openJoinClassForm(): void {
-    this.dialog.open(JoinClassPageComponent, {
+  
+  async openJoinClassForm(): Promise<void> {
+    const dialogRef = this.dialog.open(JoinClassPageComponent, {
       width: '500px', 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.loadClasses();
     });
   }
 }

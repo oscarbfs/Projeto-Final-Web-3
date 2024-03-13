@@ -89,8 +89,34 @@ function generateAuthToken() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
 
+async function getTokenData(token) {
+    const sql = 'SELECT * FROM user_tokens WHERE token = ?';
+    try {
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, [token], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+        if (result.length > 0) {
+            const tokenData = result[0];
+            const expirationDate = new Date(tokenData.expires_at);
+            const isValid = expirationDate > new Date(); 
+            return { isValid, user_id: tokenData.user_id };
+        } else {
+            return { isValid: false };
+        }
+    } catch (err) {
+        return { isValid: false, error: 'Erro ao buscar dados do token.' };
+    }
+}
+
 module.exports = {
     login,
     logout,
     checkToken,
+    getTokenData,
 };

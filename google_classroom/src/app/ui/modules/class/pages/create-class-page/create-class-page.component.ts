@@ -38,7 +38,6 @@ export class CreateClassPageComponent {
   }
 
   async onSubmit() {
-    console.error('Método onSubmit() chamado!');
     this.errorMessage = null;
     if (this.createClassForm.valid) {
       const name = this.createClassForm.value.name;

@@ -2,11 +2,14 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 
 import { SetClassMapper } from '../../../../../domain/models/mappers/set_class_mapper';
 import { ClassBusiness } from '../../../../business/class_business';
 import { AuthBusiness } from '../../../../business/auth_business';
-import { DeleteClassCommand } from '../../../../../domain/models/commands/delete_class_command';
+import { UpdateClassPageComponent } from '../update-class-page/update-class-page.component';
+import { DeleteClassPageComponent } from '../delete-class-page/delete-class-page.component';
+import { LeaveClassPageComponent } from '../leave-class-page/leave-class-page.component';
 
 @Component({
   selector: 'gc-detail-class-page',
@@ -19,21 +22,21 @@ export class DetailClassPageComponent {
   errorMessage: String | null = null;
   classToDetail: SetClassMapper | null = null;
   userIsCreator: boolean = false;
+  classId: String = "";
 
   constructor(
     private classBusiness: ClassBusiness,
     private authBusiness: AuthBusiness,
     private route: ActivatedRoute,
-    private router: Router,
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
-    var classId: String = "";
     this.route.paramMap.subscribe(params => {
-      classId = params.get('id')??"";
+      this.classId = params.get('id')??"";
     });
 
-    this.getClass(classId);
+    this.getClass(this.classId);
   }
 
   async getClass(classId: String) {
@@ -54,33 +57,36 @@ export class DetailClassPageComponent {
     }
   }
 
-  async deleteClass() {
-    try {
-        const token = await this.authBusiness.getAuthToken();
+  openUpdateClassForm(): void {
+    const dialogRef = this.dialog.open(UpdateClassPageComponent, {
+      width: '500px', 
+      data: this.classToDetail,
+    });
 
-        const deleteClassCommand = new DeleteClassCommand(
-          this.classToDetail?.classId,
-        );
-
-        await this.classBusiness.deleteClass(deleteClassCommand, token);
-        // Redirecione para uma página após a exclusão
-    } catch (error: any) {
-        this.errorMessage = error.message;
-    }
+    dialogRef.afterClosed().subscribe(result => {
+      this.getClass(this.classId);
+    });
   }
 
-  editClass() {
-      // Implemente a lógica para redirecionar para a página de edição da turma
+  openDeleteClassDialog(): void {
+    const dialogRef =  this.dialog.open(DeleteClassPageComponent, {
+      width: '500px', 
+      data: this.classToDetail
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getClass(this.classId);
+    });
   }
 
-  async leaveClass() {
-      try {
-          const token = await this.authBusiness.getAuthToken();
-          // await this.classBusiness.leaveClass(token, this.classToDetail?.classId);
-          // Redirecione para uma página após sair da turma
-      } catch (error: any) {
-          this.errorMessage = error.message;
-      }
+  openLeaveClassDialog(): void {
+    const dialogRef =  this.dialog.open(LeaveClassPageComponent, {
+      width: '500px', 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getClass(this.classId);
+    });
   }
 
 }
