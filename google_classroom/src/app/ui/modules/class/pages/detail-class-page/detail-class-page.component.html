@@ -3,6 +3,7 @@
 </div>
 
 <div class="card-header d-flex justify-content-between align-items-center">
+    <button class="btn btn-secondary" (click)="goBack()">Voltar</button>
     <h2 class="m-0">Detalhes da Turma</h2>
     <div *ngIf="userIsCreator; else nonCreatorButtons">
         <button class="btn btn-danger" (click)="openDeleteClassDialog()">Deletar</button>
@@ -12,15 +13,24 @@
         <button class="btn btn-secondary" (click)="openLeaveClassDialog()">Sair da Turma</button>
     </ng-template>
 </div>
+
 <div class="card-body" *ngIf="classToDetail">
-    <p><strong>ID:</strong> {{ classToDetail.classId }}</p>
-    <p><strong>Nome:</strong> {{ classToDetail.className }}</p>
-    <p><strong>Seção:</strong> {{ classToDetail.classSection }}</p>
-    <p><strong>Sala:</strong> {{ classToDetail.classRoom }}</p>
-    <p><strong>Disciplina:</strong> {{ classToDetail.classDiscipline }}</p>
-    <p><strong>Criador:</strong> {{ classToDetail.classCreator?.userName }}</p>
-    <p><strong>Membros:</strong></p>
-    <ul>
-        <li *ngFor="let member of classToDetail.classMembers">{{ member }}</li>
-    </ul>
+    <mat-tab-group>
+        <mat-tab label="Mural">
+            <p><strong>ID:</strong> {{ classToDetail.classId }}</p>
+            <p><strong>Nome:</strong> {{ classToDetail.className }}</p>
+            <p><strong>Seção:</strong> {{ classToDetail.classSection }}</p>
+            <p><strong>Sala:</strong> {{ classToDetail.classRoom }}</p>
+            <p><strong>Disciplina:</strong> {{ classToDetail.classDiscipline }}</p>
+            <p><strong>Criador:</strong> {{ classToDetail.classCreator?.userName }}</p>
+        </mat-tab>
+        <mat-tab label="Atividades">
+            <!-- Conteúdo das Atividades aqui -->
+            <p>Conteúdo das Atividades...</p>
+        </mat-tab>
+        <mat-tab label="Pessoas">
+            <!-- Conteúdo de Pessoas aqui -->
+            <p>Conteúdo de Pessoas...</p>
+        </mat-tab>
+    </mat-tab-group>
 </div>

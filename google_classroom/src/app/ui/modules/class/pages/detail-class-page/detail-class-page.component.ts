@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { SetClassMapper } from '../../../../../domain/models/mappers/set_class_mapper';
 import { ClassBusiness } from '../../../../business/class_business';
@@ -14,7 +14,10 @@ import { LeaveClassPageComponent } from '../leave-class-page/leave-class-page.co
 @Component({
   selector: 'gc-detail-class-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatTabsModule, 
+  ],
   templateUrl: './detail-class-page.component.html',
   styleUrl: './detail-class-page.component.css'
 })
@@ -28,12 +31,13 @@ export class DetailClassPageComponent {
     private classBusiness: ClassBusiness,
     private authBusiness: AuthBusiness,
     private route: ActivatedRoute,
+    private router: Router, // Adicione o Router
     public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.classId = params.get('id')??"";
+      this.classId = params.get('id') ?? "";
     });
 
     this.getClass(this.classId);
@@ -48,7 +52,7 @@ export class DetailClassPageComponent {
 
       if (classToDetail) {
         this.userIsCreator = await this.authBusiness.getUserIdByToken(token) === classToDetail.classCreator?.userId;
-        this.classToDetail = classToDetail; 
+        this.classToDetail = classToDetail;
       } else {
         throw Error("Erro ao carregar turmas. Por favor, tente novamente mais tarde.")
       }
@@ -59,7 +63,7 @@ export class DetailClassPageComponent {
 
   openUpdateClassForm(): void {
     const dialogRef = this.dialog.open(UpdateClassPageComponent, {
-      width: '500px', 
+      width: '500px',
       data: this.classToDetail,
     });
 
@@ -69,24 +73,20 @@ export class DetailClassPageComponent {
   }
 
   openDeleteClassDialog(): void {
-    const dialogRef =  this.dialog.open(DeleteClassPageComponent, {
-      width: '500px', 
-      data: this.classToDetail
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.getClass(this.classId);
+    this.dialog.open(DeleteClassPageComponent, {
+      width: '500px',
+      data: this.classToDetail,
     });
   }
 
   openLeaveClassDialog(): void {
-    const dialogRef =  this.dialog.open(LeaveClassPageComponent, {
-      width: '500px', 
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.getClass(this.classId);
+    this.dialog.open(LeaveClassPageComponent, {
+      width: '500px',
+      data: this.classToDetail,
     });
   }
 
+  goBack(): void {
+    this.router.navigate(['/classes']);
+  }
 }
