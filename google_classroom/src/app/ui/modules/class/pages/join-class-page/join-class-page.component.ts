@@ -22,6 +22,7 @@ export class JoinClassPageComponent {
     classData: SetClassMapper | null = null;
     joinClassForm: FormGroup;
     errorMessage: String | null = null;
+    classNotFound: boolean = false;
     
     constructor(
       private fb: FormBuilder,
@@ -45,14 +46,12 @@ export class JoinClassPageComponent {
 
       try {
         var token = await this.authBusiness.getAuthToken();
-        console.log(token);
         const result = await this.classBusiness.joinClass(joinClassCommand, token);
-        console.log(result);
-
+        
         if (result) {
           this.closeForm();
         } else {
-          throw Error("Erro ao entrar na turma. Por favor, tente novamente mais tarde.")
+          this.classNotFound = true;
         }
       } catch (error: any) {
         this.errorMessage = error.message;

@@ -1,11 +1,19 @@
+<div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+</div>
+
+<div *ngIf="classNotFound" class="alert alert-warning">
+    Turma não encontrada.
+</div>
+
 <div class="card-header">
     <h2>Entrar em uma Turma</h2>
 </div>
 <div class="card-body">
     <form [formGroup]="joinClassForm" (ngSubmit)="onSubmit()" ngNoForm>
         <div class="mb-3">
-            <label for="id" class="form-label">Id da turma:</label>
-            <input type="text" class="form-control" id="id" placeholder="Digite o id da turma" formControlName="name" ngDefaultControl required>
+            <label for="classId" class="form-label">Id da turma:</label>
+            <input type="text" class="form-control" id="classId" placeholder="Digite o id da turma" formControlName="classId" ngDefaultControl required>
         </div>
         <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-secondary" (click)="closeForm()">Fechar</button>
