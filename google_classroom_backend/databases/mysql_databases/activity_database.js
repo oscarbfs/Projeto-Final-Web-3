@@ -7,7 +7,7 @@ async function createActivity(activityData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [class_id, user_id, title, body], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -38,7 +38,7 @@ async function editResponseInActivity(activityData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [response, new Date().toISOString(), activity_id, response_id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -62,7 +62,7 @@ async function addResponseToActivity(activityData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [activity_id, user_id, response, new Date().toISOString()], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -81,7 +81,7 @@ async function getClassActivities(class_id, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [class_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -113,7 +113,7 @@ async function updateActivity(activityData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [title, body, new Date().toISOString(), id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -137,7 +137,7 @@ async function deleteActivity(activityData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }

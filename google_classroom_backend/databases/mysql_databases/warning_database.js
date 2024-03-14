@@ -7,7 +7,7 @@ async function createWarning(warningData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [user_id, class_id, message], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -35,7 +35,7 @@ async function getClassWarnings(class_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [class_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -66,7 +66,7 @@ async function updateWarning(warningData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [message, new Date().toISOString(), id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -90,7 +90,7 @@ async function deleteWarning(warningData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }

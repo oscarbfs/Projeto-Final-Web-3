@@ -24,7 +24,7 @@ async function deletePreviousTokens(userId) {
     await new Promise((resolve, reject) => {
         connectionDB.query(sqlDelete, [userId], (err, result) => {
             if (err) {
-                reject(err);
+                resolve(err);
             } else {
                 resolve(result);
             }
@@ -37,7 +37,7 @@ async function saveToken(userId, token, expiresAt) {
     await new Promise((resolve, reject) => {
         connectionDB.query(sqlInsert, [userId, token, expiresAt], (err, result) => {
             if (err) {
-                reject(err);
+                resolve(err);
             } else {
                 resolve(result);
             }
@@ -51,7 +51,7 @@ async function logout(token) {
         await new Promise((resolve, reject) => {
             connectionDB.query(sql, [token], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -69,7 +69,7 @@ async function checkToken(token) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [token], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -95,7 +95,7 @@ async function getTokenData(token) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [token], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }

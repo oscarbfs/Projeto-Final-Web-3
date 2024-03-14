@@ -7,7 +7,7 @@ async function createUser(userData) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [name, email, password], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -31,7 +31,7 @@ async function getUser(id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -60,7 +60,7 @@ async function getClassUsers(creator_id, members_ids) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, params, (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -92,7 +92,7 @@ async function searchUsers(name, email) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, params, (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -116,7 +116,7 @@ async function updateUser(userData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [name, email, password, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -139,7 +139,7 @@ async function deleteUser(user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -161,7 +161,7 @@ async function verifyCredentials(email, password) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [email, password], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }

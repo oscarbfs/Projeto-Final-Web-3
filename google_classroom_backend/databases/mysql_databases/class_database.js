@@ -7,7 +7,7 @@ async function createClass(classData, creator_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [name, creator_id, section, discipline, room], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -46,7 +46,7 @@ async function getClass(id, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [id, user_id, id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -112,7 +112,7 @@ async function searchClasses(name, discipline, section, room, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, params, (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -151,7 +151,7 @@ async function updateClass(classData, user_id) {
         const isCreatorResult = await new Promise((resolve, reject) => {
             connectionDB.query(isCreatorQuery, [id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -186,7 +186,7 @@ async function updateClass(classData, user_id) {
         const updateResult = await new Promise((resolve, reject) => {
             connectionDB.query(updateQuery, updateValues, (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -211,7 +211,7 @@ async function deleteClass(classData, user_id) {
         const isCreatorResult = await new Promise((resolve, reject) => {
             connectionDB.query(isCreatorQuery, [id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -226,7 +226,7 @@ async function deleteClass(classData, user_id) {
         await new Promise((resolve, reject) => {
             connectionDB.query(deleteMembersQuery, [id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -237,7 +237,7 @@ async function deleteClass(classData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(deleteClassQuery, [id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -263,7 +263,7 @@ async function joinClass(classData, user_id) {
         const isMemberOrCreatorResult = await new Promise((resolve, reject) => {
             connectionDB.query(isMemberOrCreatorQuery, [id, user_id, id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -278,7 +278,7 @@ async function joinClass(classData, user_id) {
         const insertResult = await new Promise((resolve, reject) => {
             connectionDB.query(insertQuery, [id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -288,7 +288,7 @@ async function joinClass(classData, user_id) {
         if (insertResult.affectedRows > 0) {
             return { responseData: { message: 'Entrou na turma com sucesso' }, status: 200 };
         } else {
-            return { responseData: { error: `Turma não encontrada ou você é o criador da turma.` }, status: 404 };
+            return { responseData: { error: `Turma não encontrada.` }, status: 404 };
         }
     } catch (error) {
         return { responseData: { error: `Erro ao entrar na turma. ${error}` }, status: 400 };
@@ -303,7 +303,7 @@ async function leaveClass(classData, user_id) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [id, user_id], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
@@ -326,7 +326,7 @@ async function isCreator(classId, userId) {
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [classId], (err, result) => {
                 if (err) {
-                    reject(err);
+                    resolve(err);
                 } else {
                     resolve(result);
                 }
