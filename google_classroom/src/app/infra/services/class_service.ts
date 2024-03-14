@@ -8,6 +8,7 @@ import { CreateClassCommand } from '../../domain/models/commands/create_class_co
 import { UpdateClassCommand } from '../../domain/models/commands/update_class_command';
 import { DeleteClassCommand } from '../../domain/models/commands/delete_class_command';
 import { JoinClassCommand } from '../../domain/models/commands/join_class_command';
+import { LeaveClassCommand } from '../../domain/models/commands/leave_class_command';
 
 @Injectable({
   providedIn: 'root',
@@ -173,6 +174,33 @@ export class ClassService {
       }).toPromise();
 
       const response = new HttpResponse<SetClassMapper>({ body: data });
+      const query = new GetClassQuery();
+      query.mapFromJoinLeave(response);
+
+      return query;
+    } catch (error) {
+
+      if (error instanceof HttpErrorResponse) {
+        const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
+        const query = new GetClassQuery();
+        query.mapFromJoinLeave(response); 
+        return query;
+      }
+
+      return new GetClassQuery();
+    }
+  }
+
+  async leave(command: LeaveClassCommand, token: String): Promise<GetClassQuery> {
+    const route = '/classes/leaveClass';
+
+    try {
+      const data = await this.http.delete(`${Settings.applicationEndPoint}${route}`, {
+        body: command.mapToJson(),
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).toPromise();
+
+      const response = new HttpResponse({ body: data });
       const query = new GetClassQuery();
       query.mapFromJoinLeave(response);
 

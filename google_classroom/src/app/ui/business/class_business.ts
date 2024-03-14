@@ -5,6 +5,7 @@ import { CreateClassCommand } from '../../domain/models/commands/create_class_co
 import { UpdateClassCommand } from '../../domain/models/commands/update_class_command';
 import { DeleteClassCommand } from '../../domain/models/commands/delete_class_command';
 import { JoinClassCommand } from '../../domain/models/commands/join_class_command';
+import { LeaveClassCommand } from '../../domain/models/commands/leave_class_command';
 
 @Injectable({
   providedIn: 'root'
@@ -93,7 +94,21 @@ export class ClassBusiness {
   async joinClass(command: JoinClassCommand, token: String): Promise<boolean> {
     try {
         const result = await this.classService.join(command, token);
-        if (result.success && result.class) {
+        if (result.success) {
+            return true;
+        } else {
+            throw new Error(`${result.errorMessage}`);
+        }
+    } catch (error) {
+        console.log("error:", error)
+        throw error;
+    }
+  }
+
+  async leaveClass(command: LeaveClassCommand, token: String): Promise<boolean> {
+    try {
+        const result = await this.classService.leave(command, token);
+        if (result.success) {
             return true;
         } else {
             throw new Error(`${result.errorMessage}`);
