@@ -10,6 +10,8 @@ import { AuthBusiness } from '../../../../business/auth_business';
 import { UpdateClassPageComponent } from '../update-class-page/update-class-page.component';
 import { DeleteClassPageComponent } from '../delete-class-page/delete-class-page.component';
 import { LeaveClassPageComponent } from '../leave-class-page/leave-class-page.component';
+import { OverviewWarningPageComponent } from '../../../warning/pages/overview-warning-page/overview-warning-page.component';
+import { DataClassComponentComponent } from '../../components/data-class-component/data-class-component.component';
 
 @Component({
   selector: 'gc-detail-class-page',
@@ -17,6 +19,8 @@ import { LeaveClassPageComponent } from '../leave-class-page/leave-class-page.co
   imports: [
     CommonModule,
     MatTabsModule, 
+    OverviewWarningPageComponent,
+    DataClassComponentComponent,
   ],
   templateUrl: './detail-class-page.component.html',
   styleUrl: './detail-class-page.component.css'
@@ -31,7 +35,7 @@ export class DetailClassPageComponent {
     private classBusiness: ClassBusiness,
     private authBusiness: AuthBusiness,
     private route: ActivatedRoute,
-    private router: Router, // Adicione o Router
+    private router: Router,
     public dialog: MatDialog,
   ) {}
 

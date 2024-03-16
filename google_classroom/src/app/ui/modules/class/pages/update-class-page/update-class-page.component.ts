@@ -26,12 +26,12 @@ export class UpdateClassPageComponent {
       private classBusiness: ClassBusiness,
       private authBusiness: AuthBusiness,
       private dialogRef: MatDialogRef<UpdateClassPageComponent>,
-      @Inject(MAT_DIALOG_DATA) public data: any // Injetando os dados da turma
+      @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.classId = data.classId;
 
     this.updateClassForm = this.fb.group({
-      name: [data.className || '', Validators.required], // Use os dados da turma para preencher os campos do formulário
+      name: [data.className || '', Validators.required],
       section: [data.classSection || ''],
       discipline: [data.classDiscipline || ''],
       room: [data.classRoom || '']

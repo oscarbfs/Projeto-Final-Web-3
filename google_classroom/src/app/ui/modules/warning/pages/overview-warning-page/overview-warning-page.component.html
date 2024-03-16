@@ -1,0 +1,19 @@
+<div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+</div>
+
+<div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="m-0">Avisos</h3>
+        <button class="btn btn-primary" (click)="openCreateWarningForm()">Adicionar Aviso</button>
+    </div>
+
+    <div *ngFor="let warning of loadedWarnings" class="col mb-4">
+        <gc-card-warning-tile 
+            [classId]="classId"
+            [warningId]="warning.warningId"
+            [warningUserName]="warning.warningUserName"
+            [warningMessage]="warning.warningMessage"
+        ></gc-card-warning-tile>
+    </div>
+</div>

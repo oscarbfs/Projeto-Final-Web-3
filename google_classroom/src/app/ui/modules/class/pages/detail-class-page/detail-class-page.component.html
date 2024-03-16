@@ -6,8 +6,8 @@
     <button class="btn btn-secondary" (click)="goBack()">Voltar</button>
     <h2 class="m-0">Detalhes da Turma</h2>
     <div *ngIf="userIsCreator; else nonCreatorButtons">
-        <button class="btn btn-danger" (click)="openDeleteClassDialog()">Deletar</button>
         <button class="btn btn-primary" (click)="openUpdateClassForm()">Editar</button>
+        <button class="btn btn-danger" (click)="openDeleteClassDialog()">Deletar</button>
     </div>
     <ng-template #nonCreatorButtons>
         <button class="btn btn-secondary" (click)="openLeaveClassDialog()">Sair da Turma</button>
@@ -17,12 +17,12 @@
 <div class="card-body" *ngIf="classToDetail">
     <mat-tab-group>
         <mat-tab label="Mural">
-            <p><strong>ID:</strong> {{ classToDetail.classId }}</p>
-            <p><strong>Nome:</strong> {{ classToDetail.className }}</p>
-            <p><strong>Seção:</strong> {{ classToDetail.classSection }}</p>
-            <p><strong>Sala:</strong> {{ classToDetail.classRoom }}</p>
-            <p><strong>Disciplina:</strong> {{ classToDetail.classDiscipline }}</p>
-            <p><strong>Criador:</strong> {{ classToDetail.classCreator?.userName }}</p>
+            <gc-data-class-component
+                [classData]="classToDetail"
+            ></gc-data-class-component>
+            <gc-overview-warning-page
+                [classId]="classToDetail.classId"
+            ></gc-overview-warning-page>
         </mat-tab>
         <mat-tab label="Atividades">
             <!-- Conteúdo das Atividades aqui -->
