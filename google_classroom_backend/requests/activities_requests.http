@@ -1,4 +1,4 @@
-GET http://localhost:3000/activitys/getClassActivityes?class_id=1
+GET http://localhost:3000/activitys/getClassActivitys?class_id=1
 content-type: application/json
 Authorization: token emh7s79mvcema880k82c99
 

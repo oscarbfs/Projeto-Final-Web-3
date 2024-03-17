@@ -12,6 +12,8 @@ import { DeleteClassPageComponent } from '../delete-class-page/delete-class-page
 import { LeaveClassPageComponent } from '../leave-class-page/leave-class-page.component';
 import { OverviewWarningPageComponent } from '../../../warning/pages/overview-warning-page/overview-warning-page.component';
 import { DataClassComponentComponent } from '../../components/data-class-component/data-class-component.component';
+import { OverviewActivityPageComponent } from '../../../activity/pages/overview-activity-page/overview-activity-page.component';
+import { OverviewUserPageComponent } from '../../../user/pages/overview-user-page/overview-user-page.component';
 
 @Component({
   selector: 'gc-detail-class-page',
@@ -21,6 +23,8 @@ import { DataClassComponentComponent } from '../../components/data-class-compone
     MatTabsModule, 
     OverviewWarningPageComponent,
     DataClassComponentComponent,
+    OverviewActivityPageComponent,
+    OverviewUserPageComponent,
   ],
   templateUrl: './detail-class-page.component.html',
   styleUrl: './detail-class-page.component.css'

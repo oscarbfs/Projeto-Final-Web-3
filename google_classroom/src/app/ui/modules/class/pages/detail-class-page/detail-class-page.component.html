@@ -25,12 +25,14 @@
             ></gc-overview-warning-page>
         </mat-tab>
         <mat-tab label="Atividades">
-            <!-- Conteúdo das Atividades aqui -->
-            <p>Conteúdo das Atividades...</p>
+            <gc-overview-activity-page
+                [classId]="classToDetail.classId"
+            ></gc-overview-activity-page>
         </mat-tab>
         <mat-tab label="Pessoas">
-            <!-- Conteúdo de Pessoas aqui -->
-            <p>Conteúdo de Pessoas...</p>
+            <gc-overview-user-page
+                [members]="classToDetail.members"
+            ></gc-overview-user-page>
         </mat-tab>
     </mat-tab-group>
 </div>

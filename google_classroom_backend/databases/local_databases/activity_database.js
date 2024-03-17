@@ -1,4 +1,4 @@
-let activityes = [];
+let activitys = [];
 let activityIdCounter = 1;
 
 function createActivity(activityData, user_id) {
@@ -22,7 +22,7 @@ function createActivity(activityData, user_id) {
             updated_at: null,
         };
 
-        activityes.push(activity);
+        activitys.push(activity);
         return { responseData: activity, status: 201 };
     } catch (error) {
         return { responseData: { error: `Falha ao criar aviso. ${error}` }, status: 400 };
@@ -35,15 +35,15 @@ function editResponseInActivity(activityData, user_id) {
             return { responseData: { error: "Os IDs da atividade (activity_id) e resposta (response_id) são obrigatórios." }, status: 400 };
         }
 
-        const activityIndex = activityes.findIndex(activity => activity.id === activityData.activity_id);
+        const activityIndex = activitys.findIndex(activity => activity.id === activityData.activity_id);
 
         if (activityIndex !== -1) {
-            const responseIndex = activityes[activityIndex].responses.findIndex(response => response.user_id === user_id && response.id === activityData.response_id);
+            const responseIndex = activitys[activityIndex].responses.findIndex(response => response.user_id === user_id && response.id === activityData.response_id);
 
             if (responseIndex !== -1) {
-                activityes[activityIndex].responses[responseIndex].response = activityData.response;
-                activityes[activityIndex].responses[responseIndex].updated_at = new Date().toISOString();
-                return { responseData: activityes[activityIndex], status: 200 };
+                activitys[activityIndex].responses[responseIndex].response = activityData.response;
+                activitys[activityIndex].responses[responseIndex].updated_at = new Date().toISOString();
+                return { responseData: activitys[activityIndex], status: 200 };
             } else {
                 return { responseData: { error: `Resposta não encontrada para este usuário nesta atividade.` }, status: 404 };
             }
@@ -61,22 +61,22 @@ function addResponseToActivity(activityData, user_id) {
             return { responseData: { error: "O ID da atividade (activity_id) é obrigatório." }, status: 400 };
         }
 
-        const index = activityes.findIndex(activity => activity.id === activityData.activity_id);
+        const index = activitys.findIndex(activity => activity.id === activityData.activity_id);
 
         if (index !== -1) {
-            const existingResponseIndex = activityes[index].responses.findIndex(response => response.user_id === user_id);
+            const existingResponseIndex = activitys[index].responses.findIndex(response => response.user_id === user_id);
 
             if (existingResponseIndex === -1) {
                 const userResponse = {
-                    id: (activityes[index].responses.length + 1).toString(),
+                    id: (activitys[index].responses.length + 1).toString(),
                     user_id: user_id,
                     response: activityData.response,
                     created_at: new Date().toISOString(),
                     updated_at: null,
                 };
 
-                activityes[index].responses.push(userResponse);
-                return { responseData: activityes[index], status: 200 };
+                activitys[index].responses.push(userResponse);
+                return { responseData: activitys[index], status: 200 };
             } else {
                 return { responseData: { error: `Usuário já respondeu a esta atividade.` }, status: 400 };
             }
@@ -88,11 +88,11 @@ function addResponseToActivity(activityData, user_id) {
     }
 }
 
-function getClassActivityes(class_id, user_id) {
+function getClassActivitys(class_id, user_id) {
     try {
-        const classActivityes = activityes.filter((activity) => activity.class_id === class_id);
+        const classActivitys = activitys.filter((activity) => activity.class_id === class_id);
 
-        const modifiedActivities = classActivityes.map(activity => {
+        const modifiedActivities = classActivitys.map(activity => {
             const modifiedActivity = { ...activity };
             if (user_id !== activity.user_id) {
                 modifiedActivity.response = modifiedActivity.responses.find(
@@ -116,23 +116,23 @@ function updateActivity(activityData, user_id) {
             return { responseData: { error: "O ID da atividade (id) é obrigatório." }, status: 400 };
         }
 
-        const index = activityes.findIndex(
+        const index = activitys.findIndex(
             (activity) => activity.id === activityData.id && activity.user_id === user_id
         );
 
         if (index !== -1) {
-            activityes[index] = {
-                id: activityes[index].id,
-                class_id: activityes[index].class_id,
-                user_id: activityes[index].user_id,
-                title: activityData.title ?? activityes[index].title,
-                body: activityData.body ?? activityes[index].body,
-                responses: activityes[index].responses,
-                created_at: activityes[index].created_at,
+            activitys[index] = {
+                id: activitys[index].id,
+                class_id: activitys[index].class_id,
+                user_id: activitys[index].user_id,
+                title: activityData.title ?? activitys[index].title,
+                body: activityData.body ?? activitys[index].body,
+                responses: activitys[index].responses,
+                created_at: activitys[index].created_at,
                 updated_at: new Date().toISOString(),
             }
 
-            return { responseData: activityes[index], status: 200 };
+            return { responseData: activitys[index], status: 200 };
         } else {
             return { responseData: { error: `Atividade não encontrada ou você não tem permissão.` }, status: 404 };
         }
@@ -147,12 +147,12 @@ function deleteActivity(activityData, user_id) {
             return { responseData: { error: "O ID da atividade (id) é obrigatório." }, status: 400 };
         }
 
-        const index = activityes.findIndex(
+        const index = activitys.findIndex(
             (activity) => activity.id === activityData.id && activity.user_id === user_id
         );
 
         if (index !== -1) {
-            activityes.splice(index, 1);
+            activitys.splice(index, 1);
             return { responseData: { message: 'Atividade removida com sucesso' }, status: 200 };
         } else {
             return { responseData: { error: `Atividade não encontrada ou você não tem permissão.` }, status: 404 };
@@ -166,7 +166,7 @@ module.exports = {
     createActivity,
     editResponseInActivity,
     addResponseToActivity,
-    getClassActivityes,
+    getClassActivitys,
     updateActivity,
     deleteActivity,
 };

@@ -14,24 +14,12 @@ async function control(request, response, requestBody, queryParams, headers) {
             responseData: { error: "Token inválido" },
             status: 400
         };
-    } else if (request.method === 'GET' && request.url.includes('/activitys/getClassActivityes')) {
-        console.log(`Rodando getClassActivityes`);
-        const isCreator = await classDB.isCreator(queryParams.class_id, tokenData.user_id);
-        result = isCreator === true || isCreator === false
-            ? await activitysDB.getClassActivityes(queryParams.class_id)
-            : {
-                responseData: { error: "Somente os participantes da turma podem visualizar as atividades" },
-                status: 400
-            };
+    } else if (request.method === 'GET' && request.url.includes('/activitys/getClassActivitys')) {
+        console.log(`Rodando getClassActivitys`);
+        result =  await activitysDB.getClassActivitys(queryParams.class_id);
     } else if (request.method === 'POST' && request.url.includes('/activitys/createActivity')) {
         console.log(`Rodando createActivity`);
-        const isCreator = await classDB.isCreator(data.class_id, tokenData.user_id);
-        result = isCreator 
-            ? await activitysDB.createActivity(data, tokenData.user_id) 
-            : {
-                responseData: { error: "Somente o criador da turma pode criar atividades" },
-                status: 400
-            };
+        result = await activitysDB.createActivity(data, tokenData.user_id);
     } else if (request.method === 'POST' && request.url.includes('/activitys/updateResponse')) {
         console.log(`Rodando editResponseInActivity`);
         result = await activitysDB.editResponseInActivity(data, tokenData.user_id);
