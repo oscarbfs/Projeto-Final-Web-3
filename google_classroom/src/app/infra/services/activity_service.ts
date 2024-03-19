@@ -42,6 +42,31 @@ export class ActivityService {
     }
   }
 
+  async getActivity(token?: String, activityId?: String): Promise<GetActivityQuery> {
+    let route = `/activitys/getActivity?id=${activityId}`;
+    try {
+      const data = await this.http.get<SetActivityMapper>(`${Settings.applicationEndPoint}${route}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).toPromise();
+
+      const response = new HttpResponse<SetActivityMapper>({ body: data });
+      const query = new GetActivityQuery();
+      query.mapFromCreateUpdateGetDelete(response);
+
+      return query;
+    } catch (error) {
+
+      if (error instanceof HttpErrorResponse) {
+        const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
+        const query = new GetActivityQuery();
+        query.mapFromCreateUpdateGetDelete(response); 
+        return query;
+      }
+
+      return new GetActivityQuery();
+    }
+  }
+
   async create(command: CreateActivityCommand, token: String): Promise<GetActivityQuery> {
     const route = '/activitys/createActivity';
 
@@ -52,7 +77,7 @@ export class ActivityService {
 
       const response = new HttpResponse<SetActivityMapper>({ body: data });
       const query = new GetActivityQuery();
-      query.mapFromCreateUpdateDelete(response);
+      query.mapFromCreateUpdateGetDelete(response);
 
       return query;
     } catch (error) {
@@ -60,7 +85,7 @@ export class ActivityService {
       if (error instanceof HttpErrorResponse) {
         const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
         const query = new GetActivityQuery();
-        query.mapFromCreateUpdateDelete(response); 
+        query.mapFromCreateUpdateGetDelete(response); 
         return query;
       }
 
@@ -78,7 +103,7 @@ export class ActivityService {
 
       const response = new HttpResponse({ body: data });
       const query = new GetActivityQuery();
-      query.mapFromCreateUpdateDelete(response);
+      query.mapFromCreateUpdateGetDelete(response);
 
       return query;
     } catch (error) {
@@ -86,7 +111,7 @@ export class ActivityService {
       if (error instanceof HttpErrorResponse) {
         const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
         const query = new GetActivityQuery();
-        query.mapFromCreateUpdateDelete(response); 
+        query.mapFromCreateUpdateGetDelete(response); 
         return query;
       }
 
@@ -105,7 +130,7 @@ export class ActivityService {
 
       const response = new HttpResponse({ body: data });
       const query = new GetActivityQuery();
-      query.mapFromCreateUpdateDelete(response);
+      query.mapFromCreateUpdateGetDelete(response);
 
       return query;
     } catch (error) {
@@ -113,7 +138,7 @@ export class ActivityService {
       if (error instanceof HttpErrorResponse) {
         const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
         const query = new GetActivityQuery();
-        query.mapFromCreateUpdateDelete(response); 
+        query.mapFromCreateUpdateGetDelete(response); 
         return query;
       }
 

@@ -28,8 +28,9 @@ export class UpdateActivityPageComponent {
       @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.updateActivityForm = this.fb.group({
-      id: [data.id || ''],
-      message: [data.message || '', Validators.required],
+      classId: [data.classId || ''],
+      title: [data.activityTitle || '', Validators.required],
+      body: [data.activityBody || '', Validators.required],
     });
     
   }
@@ -37,12 +38,14 @@ export class UpdateActivityPageComponent {
   async onSubmit() {
     this.errorMessage = null;
     if (this.updateActivityForm.valid) {
-      const id = this.updateActivityForm.value.id;
-      const message = this.updateActivityForm.value.message;
+      const classId = this.updateActivityForm.value.classId;
+      const title = this.updateActivityForm.value.title;
+      const body = this.updateActivityForm.value.body;
       
       const updateActivityCommand = new UpdateActivityCommand(
-        id,
-        message,
+        classId,
+        title,
+        body,
       );
 
       try {
@@ -52,7 +55,7 @@ export class UpdateActivityPageComponent {
         if (result) {
           this.closeForm();
         } else {
-          throw Error("Erro ao editar aviso. Por favor, tente novamente mais tarde.")
+          throw Error("Erro ao criar aviso. Por favor, tente novamente mais tarde.")
         }
       } catch (error: any) {
         this.errorMessage = error.message;

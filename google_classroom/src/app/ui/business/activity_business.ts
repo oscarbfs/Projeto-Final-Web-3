@@ -27,6 +27,20 @@ export class ActivityBusiness {
     }
   }
 
+  async getActivity(token?: String, activityId?: String): Promise<SetActivityMapper> {
+    try {
+        const result = await this.activityService.getActivity(token, activityId);
+        if (result.success) {
+            return result.activity!;
+        } else {
+            throw new Error(`${result.errorMessage}`);
+        }
+    } catch (error) {
+        console.log("error:", error)
+        throw error;
+    }
+  }
+
   async createActivity(command: CreateActivityCommand, token: String): Promise<boolean> {
     try {
         const result = await this.activityService.create(command, token);

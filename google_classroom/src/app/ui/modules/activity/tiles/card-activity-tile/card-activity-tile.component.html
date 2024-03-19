@@ -1,6 +1,8 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span (click)="goToDetail()">{{ activityTitle }}</span>
+        <div (click)="goToDetail()">
+            <span>{{ activityTitle }}</span>
+        </div>
         <div *ngIf="userIsCreator">
             <button class="btn btn-primary mr-2" (click)="openUpdateActivityForm()">Editar</button>
             <button class="btn btn-danger" (click)="openDeleteActivityDialog()">Deletar</button>

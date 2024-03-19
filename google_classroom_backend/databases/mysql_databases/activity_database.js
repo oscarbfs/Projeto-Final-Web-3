@@ -106,6 +106,43 @@ async function getClassActivitys(class_id, user_id) {
     }
 }
 
+async function getActivity(activity_id) {
+    try {
+        const sql = 'SELECT * FROM activitys WHERE id = ?';
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, [activity_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        if (result.length === 0) {
+            return { responseData: { error: `Atividade não encontrada.` }, status: 404 };
+        }
+
+        const activity = result[0];
+
+        return {
+            responseData: {
+                id: activity.id,
+                class_id: activity.class_id,
+                user_id: activity.user_id,
+                title: activity.title,
+                body: activity.body,
+                created_at: activity.created_at,
+                updated_at: activity.updated_at,
+            },
+            status: 200
+        };
+    } catch (error) {
+        return { responseData: { error: `Erro ao buscar atividade. ${error}` }, status: 400 };
+    }
+}
+
+
 async function updateActivity(activityData, user_id) {
     try {
         const { id, title, body } = activityData;
@@ -159,6 +196,7 @@ module.exports = {
     editResponseInActivity,
     addResponseToActivity,
     getClassActivitys,
+    getActivity,
     updateActivity,
     deleteActivity,
 };

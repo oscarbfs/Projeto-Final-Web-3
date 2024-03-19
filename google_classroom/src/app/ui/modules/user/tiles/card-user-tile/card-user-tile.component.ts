@@ -10,9 +10,4 @@ import { Component, Input } from '@angular/core';
 export class CardUserTileComponent {
   @Input() userName: String | undefined;
   @Input() userEmail: String | undefined;
-
-  ngOnInit(): void {
-    console.log(this.userName)
-    console.log(this.userEmail)
-  }
 }

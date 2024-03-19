@@ -1,1 +1,17 @@
-<p>detail-activity-page works!</p>
+<div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+</div>
+
+<div class="card-header d-flex justify-content-between align-items-center">
+    <button class="btn btn-secondary" (click)="goBack()">Voltar</button>
+    <h2 class="m-0">Atividade</h2>
+    <div *ngIf="userIsCreator">
+        <button class="btn btn-primary" (click)="openUpdateActivityForm()">Editar</button>
+        <button class="btn btn-danger" (click)="openDeleteActivityDialog()">Deletar</button>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="activityToDetail">
+    <p> {{ activityToDetail.activityTitle }}</p>
+    <p> {{ activityToDetail.activityBody }}</p>
+</div>

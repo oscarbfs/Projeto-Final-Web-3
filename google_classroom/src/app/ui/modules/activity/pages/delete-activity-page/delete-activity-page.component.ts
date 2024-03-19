@@ -22,6 +22,7 @@ import { DeleteActivityCommand } from '../../../../../domain/models/commands/del
 })
 export class DeleteActivityPageComponent {
   
+  classId: String = "";
   activityId: String = "";
   errorMessage: String | null = null;
   
@@ -32,7 +33,8 @@ export class DeleteActivityPageComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router,
   ) {
-    this.activityId = data.id;
+    this.classId = data.activityClassId;
+    this.activityId = data.activityId;
   }
 
   async onDelete() {
@@ -48,9 +50,9 @@ export class DeleteActivityPageComponent {
 
       if (result) {
         this.closeForm();
-        this.router.navigate(['/activityes']);
+        this.router.navigate(['/detailClass', this.classId]);
       } else {
-        throw Error("Erro ao deletar aviso. Por favor, tente novamente mais tarde.")
+        throw Error("Erro ao deletar atividade. Por favor, tente novamente mais tarde.")
       }
     } catch (error: any) {
       this.errorMessage = error.message;

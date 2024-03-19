@@ -29,7 +29,7 @@ export class GetActivityQuery {
     return this;
   }
 
-  mapFromCreateUpdateDelete(response: HttpResponse<any>): GetActivityQuery {
+  mapFromCreateUpdateGetDelete(response: HttpResponse<any>): GetActivityQuery {
     try {
       const data = response.body;
       

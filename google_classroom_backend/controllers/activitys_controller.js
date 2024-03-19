@@ -1,6 +1,5 @@
 const activitysDB = require('../databases/mysql_databases/activity_database');
 const authDB = require('../databases/mysql_databases/auth_database');
-const classDB = require('../databases/mysql_databases/class_database');
 
 async function control(request, response, requestBody, queryParams, headers) {
     const data = requestBody ? JSON.parse(requestBody) : {};
@@ -17,18 +16,27 @@ async function control(request, response, requestBody, queryParams, headers) {
     } else if (request.method === 'GET' && request.url.includes('/activitys/getClassActivitys')) {
         console.log(`Rodando getClassActivitys`);
         result =  await activitysDB.getClassActivitys(queryParams.class_id);
+
+    } else if (request.method === 'GET' && request.url.includes('/activitys/getActivity')) {
+        console.log(`Rodando getActivity`);
+        result = await activitysDB.getActivity(queryParams.id);
+
     } else if (request.method === 'POST' && request.url.includes('/activitys/createActivity')) {
         console.log(`Rodando createActivity`);
         result = await activitysDB.createActivity(data, tokenData.user_id);
+
     } else if (request.method === 'POST' && request.url.includes('/activitys/updateResponse')) {
         console.log(`Rodando editResponseInActivity`);
         result = await activitysDB.editResponseInActivity(data, tokenData.user_id);
+
     } else if (request.method === 'POST' && request.url.includes('/activitys/addResponse')) {
         console.log(`Rodando addResponseToActivity`);
         result = await activitysDB.addResponseToActivity(data, tokenData.user_id);
+
     } else if (request.method === 'PUT' && request.url.includes('/activitys/updateActivity')) {
         console.log(`Rodando updateActivity`);
         result = await activitysDB.updateActivity(data, tokenData.user_id);
+
     } else if (request.method === 'DELETE' && request.url.includes('/activitys/deleteActivity')) {
         console.log(`Rodando deleteActivity`);
         result = await activitysDB.deleteActivity(data, tokenData.user_id);

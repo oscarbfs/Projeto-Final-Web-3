@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { UpdateActivityPageComponent } from '../../pages/update-activity-page/update-activity-page.component';
 import { DeleteActivityPageComponent } from '../../pages/delete-activity-page/delete-activity-page.component';
@@ -9,7 +10,9 @@ import { OverviewActivityPageComponent } from '../../pages/overview-activity-pag
 @Component({
   selector: 'gc-card-activity-tile',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+  ],
   templateUrl: './card-activity-tile.component.html',
   styleUrl: './card-activity-tile.component.css'
 })
@@ -55,6 +58,6 @@ export class CardActivityTileComponent {
   }
 
   goToDetail() {
-    this.router.navigate(['/detailActivity', this.classId]);
+    this.router.navigate(['/detailActivity', this.activityId]);
   }
 }
