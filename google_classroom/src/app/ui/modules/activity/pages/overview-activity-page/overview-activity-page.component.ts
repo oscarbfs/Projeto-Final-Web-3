@@ -19,6 +19,7 @@ export class OverviewActivityPageComponent implements OnInit {
   errorMessage: String | null = null;
   loadedActivitys: SetActivityMapper[] | any[] = [];
   @Input() classId: String | undefined;
+  @Input() userIsCreator: boolean | undefined;
 
   constructor(
     private activityBusiness: ActivityBusiness,

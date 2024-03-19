@@ -88,8 +88,8 @@ connection.connect(function(err) {
         }
     });
 
-    const createTableActivities = `
-        CREATE TABLE IF NOT EXISTS activities (
+    const createTableActivitys = `
+        CREATE TABLE IF NOT EXISTS activitys (
             id INT AUTO_INCREMENT PRIMARY KEY,
             class_id INT NOT NULL,
             user_id INT NOT NULL,
@@ -102,7 +102,7 @@ connection.connect(function(err) {
         )
     `;
 
-    connection.query(createTableActivities, function(err, result) {
+    connection.query(createTableActivitys, function(err, result) {
         if (err) {
             console.error('Erro ao criar tabela de atividades:', err);
             return;
@@ -117,7 +117,7 @@ connection.connect(function(err) {
             response_text TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            FOREIGN KEY (activity_id) REFERENCES activities(id),
+            FOREIGN KEY (activity_id) REFERENCES activitys(id),
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
     `;

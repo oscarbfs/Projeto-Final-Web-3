@@ -3,7 +3,7 @@ const url = require('url');
 const authController = require('./controllers/auth_controller');
 const userController = require('./controllers/users_controller');
 const classController = require('./controllers/classes_controller');
-const activityController = require('./controllers/activities_controller');
+const activityController = require('./controllers/activitys_controller');
 const warningController = require('./controllers/warnings_controller');
 
 const server = http.createServer((request, response) => {

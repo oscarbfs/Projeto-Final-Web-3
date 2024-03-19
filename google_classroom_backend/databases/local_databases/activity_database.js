@@ -92,7 +92,7 @@ function getClassActivitys(class_id, user_id) {
     try {
         const classActivitys = activitys.filter((activity) => activity.class_id === class_id);
 
-        const modifiedActivities = classActivitys.map(activity => {
+        const modifiedActivitys = classActivitys.map(activity => {
             const modifiedActivity = { ...activity };
             if (user_id !== activity.user_id) {
                 modifiedActivity.response = modifiedActivity.responses.find(
@@ -103,7 +103,7 @@ function getClassActivitys(class_id, user_id) {
             return modifiedActivity;
         });
 
-        return { responseData: modifiedActivities, status: 200 };
+        return { responseData: modifiedActivitys, status: 200 };
     } catch (error) {
         return { responseData: { error: `Erro ao buscar atividades. ${error}` }, status: 400 };
     }

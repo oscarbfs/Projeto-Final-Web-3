@@ -5,6 +5,7 @@ import { SignupAuthPageComponent } from './ui/modules/auth/pages/signup-auth-pag
 import { OverviewClassPageComponent } from './ui/modules/class/pages/overview-class-page/overview-class-page.component';
 import { CreateClassPageComponent } from './ui/modules/class/pages/create-class-page/create-class-page.component';
 import { DetailClassPageComponent } from './ui/modules/class/pages/detail-class-page/detail-class-page.component';
+import { DetailActivityPageComponent } from './ui/modules/activity/pages/detail-activity-page/detail-activity-page.component';
 
 const routeConfig: Routes = [
     {
@@ -32,6 +33,11 @@ const routeConfig: Routes = [
         path: 'detailClass/:id',
         component: DetailClassPageComponent,
         title: "Turma"
+    },
+    {
+        path: 'detailActivity/:id',
+        component: DetailActivityPageComponent,
+        title: "Atividade"
     },
 ];
 

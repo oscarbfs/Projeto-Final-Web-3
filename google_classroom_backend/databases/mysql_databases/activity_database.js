@@ -3,7 +3,7 @@ const connectionDB = require('../connections/mysql_connection');
 async function createActivity(activityData, user_id) {
     try {
         const { class_id, title, body } = activityData;
-        const sql = 'INSERT INTO activities (class_id, user_id, title, body) VALUES (?, ?, ?, ?)';
+        const sql = 'INSERT INTO activitys (class_id, user_id, title, body) VALUES (?, ?, ?, ?)';
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [class_id, user_id, title, body], (err, result) => {
                 if (err) {
@@ -75,9 +75,9 @@ async function addResponseToActivity(activityData, user_id) {
     }
 }
 
-async function getClassActivities(class_id, user_id) {
+async function getClassActivitys(class_id, user_id) {
     try {
-        const sql = 'SELECT * FROM activities WHERE class_id = ?';
+        const sql = 'SELECT * FROM activitys WHERE class_id = ?';
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [class_id], (err, result) => {
                 if (err) {
@@ -88,7 +88,7 @@ async function getClassActivities(class_id, user_id) {
             });
         });
 
-        const activities = result.map(activity => {
+        const activitys = result.map(activity => {
             return {
                 id: activity.id,
                 class_id: activity.class_id,
@@ -100,7 +100,7 @@ async function getClassActivities(class_id, user_id) {
             };
         });
 
-        return { responseData: activities, status: 200 };
+        return { responseData: activitys, status: 200 };
     } catch (error) {
         return { responseData: { error: `Erro ao buscar atividades. ${error}` }, status: 400 };
     }
@@ -109,7 +109,7 @@ async function getClassActivities(class_id, user_id) {
 async function updateActivity(activityData, user_id) {
     try {
         const { id, title, body } = activityData;
-        const sql = 'UPDATE activities SET title = ?, body = ?, updated_at = ? WHERE id = ? AND user_id = ?';
+        const sql = 'UPDATE activitys SET title = ?, body = ?, updated_at = ? WHERE id = ? AND user_id = ?';
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [title, body, new Date().toISOString(), id, user_id], (err, result) => {
                 if (err) {
@@ -133,7 +133,7 @@ async function updateActivity(activityData, user_id) {
 async function deleteActivity(activityData, user_id) {
     try {
         const { id } = activityData;
-        const sql = 'DELETE FROM activities WHERE id = ? AND user_id = ?';
+        const sql = 'DELETE FROM activitys WHERE id = ? AND user_id = ?';
         const result = await new Promise((resolve, reject) => {
             connectionDB.query(sql, [id, user_id], (err, result) => {
                 if (err) {
@@ -158,7 +158,7 @@ module.exports = {
     createActivity,
     editResponseInActivity,
     addResponseToActivity,
-    getClassActivities,
+    getClassActivitys,
     updateActivity,
     deleteActivity,
 };

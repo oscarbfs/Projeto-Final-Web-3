@@ -29,7 +29,8 @@ export class UpdateResponseActivityPageComponent {
   ) {
     this.updateActivityForm = this.fb.group({
       id: [data.id || ''],
-      message: [data.message || '', Validators.required],
+      title: [data.title || '', Validators.required],
+      body: [data.body || '', Validators.required],
     });
     
   }
@@ -38,11 +39,13 @@ export class UpdateResponseActivityPageComponent {
     this.errorMessage = null;
     if (this.updateActivityForm.valid) {
       const id = this.updateActivityForm.value.id;
-      const message = this.updateActivityForm.value.message;
+      const title = this.updateActivityForm.value.title;
+      const body = this.updateActivityForm.value.body;
       
       const updateActivityCommand = new UpdateActivityCommand(
         id,
-        message,
+        title,
+        body,
       );
 
       try {

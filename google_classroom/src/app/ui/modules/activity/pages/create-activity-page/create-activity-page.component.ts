@@ -29,7 +29,8 @@ export class CreateActivityPageComponent {
   ) {
     this.createActivityForm = this.fb.group({
       classId: [data.classId || ''],
-      message: ['', Validators.required],
+      title: ['', Validators.required],
+      body: ['', Validators.required],
     });
     
   }
@@ -38,11 +39,13 @@ export class CreateActivityPageComponent {
     this.errorMessage = null;
     if (this.createActivityForm.valid) {
       const classId = this.createActivityForm.value.classId;
-      const message = this.createActivityForm.value.message;
+      const title = this.createActivityForm.value.title;
+      const body = this.createActivityForm.value.body;
       
       const createActivityCommand = new CreateActivityCommand(
         classId,
-        message,
+        title,
+        body,
       );
 
       try {

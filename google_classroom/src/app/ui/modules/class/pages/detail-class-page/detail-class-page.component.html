@@ -17,22 +17,29 @@
 <div class="card-body" *ngIf="classToDetail">
     <mat-tab-group>
         <mat-tab label="Mural">
-            <gc-data-class-component
-                [classData]="classToDetail"
-            ></gc-data-class-component>
-            <gc-overview-warning-page
-                [classId]="classToDetail.classId"
-            ></gc-overview-warning-page>
+            <div class="mt-3">
+                <gc-data-class-component
+                    [classData]="classToDetail"
+                ></gc-data-class-component>
+                <gc-overview-warning-page
+                    [classId]="classToDetail.classId"
+                ></gc-overview-warning-page>
+            </div>
         </mat-tab>
         <mat-tab label="Atividades">
-            <gc-overview-activity-page
-                [classId]="classToDetail.classId"
-            ></gc-overview-activity-page>
+            <div class="mt-3">
+                <gc-overview-activity-page
+                    [classId]="classToDetail.classId"
+                    [userIsCreator]="userIsCreator"
+                ></gc-overview-activity-page>
+            </div>
         </mat-tab>
         <mat-tab label="Pessoas">
-            <gc-overview-user-page
-                [members]="classToDetail.members"
-            ></gc-overview-user-page>
+            <div class="mt-3">
+                <gc-overview-user-page
+                    [members]="classToDetail.classMembers"
+                ></gc-overview-user-page>
+            </div>
         </mat-tab>
     </mat-tab-group>
 </div>

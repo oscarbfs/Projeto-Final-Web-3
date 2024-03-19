@@ -4,16 +4,19 @@
 
 <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="m-0">Avisos</h3>
-        <button class="btn btn-primary" (click)="openCreateActivityForm()">Adicionar Aviso</button>
+        <h3 class="m-0">Atividades</h3>
+        <div *ngIf="userIsCreator">
+            <button class="btn btn-primary" (click)="openCreateActivityForm()">Adicionar Atividade</button>
+        </div>
     </div>
 
     <div *ngFor="let activity of loadedActivitys" class="col mb-4">
         <gc-card-activity-tile 
+            [userIsCreator]="userIsCreator"
             [classId]="classId"
             [activityId]="activity.activityId"
-            [activityUserName]="activity.activityUserName"
-            [activityMessage]="activity.activityMessage"
+            [activityTitle]="activity.activityTitle"
+            [activityBody]="activity.activityBody"
         ></gc-card-activity-tile>
     </div>
 </div>

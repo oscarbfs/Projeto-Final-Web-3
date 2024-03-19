@@ -14,10 +14,11 @@ import { OverviewActivityPageComponent } from '../../pages/overview-activity-pag
   styleUrl: './card-activity-tile.component.css'
 })
 export class CardActivityTileComponent {
+  @Input() userIsCreator: boolean | undefined;
   @Input() classId: String | undefined;
   @Input() activityId: String | undefined;
-  @Input() activityUserName: String | undefined;
-  @Input() activityMessage: String | undefined;
+  @Input() activityTitle: String | undefined;
+  @Input() activityBody: String | undefined;
 
   constructor(
     public dialog: MatDialog,
@@ -30,7 +31,8 @@ export class CardActivityTileComponent {
       width: '500px',
       data: {
         id: this.activityId,
-        message: this.activityMessage,
+        title: this.activityTitle,
+        body: this.activityBody,
       }
     });
 
@@ -50,5 +52,9 @@ export class CardActivityTileComponent {
     dialogRef.afterClosed().subscribe(result => {
       this.parentComponent.loadActivityes(); 
     });
+  }
+
+  goToDetail() {
+    this.router.navigate(['/detailActivity', this.classId]);
   }
 }
