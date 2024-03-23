@@ -6,13 +6,13 @@ import { CommonModule } from '@angular/common';
 
 import { ActivityBusiness } from '../../../../business/activity_business';
 import { AuthBusiness } from '../../../../business/auth_business';
-import { CreateActivityCommand } from '../../../../../domain/models/commands/create_activity_command';
+import { CreateResponseActivityCommand } from '../../../../../domain/models/commands/create_response_activity_command';
 
 @Component({
-  selector: 'gc-create-activity-page',
+  selector: 'gc-create-response-activity-page',
   standalone: true,
-  templateUrl: './create-activity-page.component.html',
-  styleUrl: './create-activity-page.component.css',
+  templateUrl: './create-response-activity-page.component.html',
+  styleUrl: './create-response-activity-page.component.css',
   imports: [ReactiveFormsModule, CommonModule],
 })
 export class CreateResponseActivityPageComponent {
@@ -28,8 +28,8 @@ export class CreateResponseActivityPageComponent {
       @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.createActivityForm = this.fb.group({
-      classId: [data.classId || ''],
-      message: ['', Validators.required],
+      activityId: [data.activityId || ''],
+      response: ['', Validators.required],
     });
     
   }
@@ -37,17 +37,17 @@ export class CreateResponseActivityPageComponent {
   async onSubmit() {
     this.errorMessage = null;
     if (this.createActivityForm.valid) {
-      const classId = this.createActivityForm.value.classId;
-      const message = this.createActivityForm.value.message;
+      const activityId = this.createActivityForm.value.activityId;
+      const response = this.createActivityForm.value.response;
       
-      const createActivityCommand = new CreateActivityCommand(
-        classId,
-        message,
+      const createActivityCommand = new CreateResponseActivityCommand(
+        activityId,
+        response,
       );
 
       try {
         var token = await this.authBusiness.getAuthToken();
-        const result = await this.activityBusiness.createActivity(createActivityCommand, token);
+        const result = await this.activityBusiness.createResponse(createActivityCommand, token);
 
         if (result) {
           this.closeForm();

@@ -4,16 +4,22 @@
 
 <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="m-0">Avisos</h3>
-        <button class="btn btn-primary" (click)="openCreateActivityForm()">Adicionar Aviso</button>
+        <h3 class="m-0">Respostas</h3>
+        <div *ngIf="!userIsCreator">
+            <button class="btn btn-primary" (click)="openCreateResponseActivityForm()">Adicionar Resposta</button>
+        </div>
     </div>
 
-    <div *ngFor="let activity of loadedActivitys" class="col mb-4">
-        <gc-card-activity-tile 
-            [classId]="classId"
-            [activityId]="activity.activityId"
-            [activityUserName]="activity.activityUserName"
-            [activityMessage]="activity.activityMessage"
-        ></gc-card-activity-tile>
+    <div *ngFor="let response of loadedResponses" class="col mb-4">
+        <gc-card-response-activity-tile 
+            [userId]="userId"
+            [responseId]="response.responseId"
+            [responseActivityId]="response.responseActivityId"
+            [responseUserId]="response.responseUserId"
+            [responseUserName]="response.responseUserName"
+            [responseText]="response.responseText"
+            [responseCreatedAt]="response.responseCreatedAt"
+            [responseUpdatedAt]="response.responseUpdatedAt"
+        ></gc-card-response-activity-tile>
     </div>
 </div>

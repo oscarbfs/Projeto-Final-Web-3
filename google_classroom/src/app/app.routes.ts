@@ -6,6 +6,7 @@ import { OverviewClassPageComponent } from './ui/modules/class/pages/overview-cl
 import { CreateClassPageComponent } from './ui/modules/class/pages/create-class-page/create-class-page.component';
 import { DetailClassPageComponent } from './ui/modules/class/pages/detail-class-page/detail-class-page.component';
 import { DetailActivityPageComponent } from './ui/modules/activity/pages/detail-activity-page/detail-activity-page.component';
+import { DetailResponseActivityPageComponent } from './ui/modules/activity/pages/detail-response-activity-page/detail-response-activity-page.component';
 
 const routeConfig: Routes = [
     {
@@ -38,6 +39,11 @@ const routeConfig: Routes = [
         path: 'detailActivity/:id',
         component: DetailActivityPageComponent,
         title: "Atividade"
+    },
+    {
+        path: 'detailResponseActivity/:id',
+        component: DetailResponseActivityPageComponent,
+        title: "Resposta da Atividade"
     },
 ];
 

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { ActivityBusiness } from '../../../../business/activity_business';
 import { AuthBusiness } from '../../../../business/auth_business';
-import { SetActivityMapper } from '../../../../../domain/models/mappers/set_activity_mapper';
+import { SetResponseMapper } from '../../../../../domain/models/mappers/set_response_activity_mapper';
 import { CardResponseActivityTileComponent } from '../../tiles/card-response-activity-tile/card-response-activity-tile.component';
 import { CreateResponseActivityPageComponent } from '../create-response-activity-page/create-response-activity-page.component';
 
@@ -17,8 +17,11 @@ import { CreateResponseActivityPageComponent } from '../create-response-activity
 })
 export class OverviewResponseActivityPageComponent implements OnInit {
   errorMessage: String | null = null;
-  loadedActivitys: SetActivityMapper[] | any[] = [];
-  @Input() classId: String | undefined;
+  loadedResponses: SetResponseMapper[] | any[] = [];
+  userId: String | null | undefined = null;
+
+  @Input() activityId: String | undefined;
+  @Input() userIsCreator: boolean | undefined;
 
   constructor(
     private activityBusiness: ActivityBusiness,
@@ -28,36 +31,37 @@ export class OverviewResponseActivityPageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.loadActivityes();
+    this.loadResponsees();
   }
 
-  async loadActivityes() {
+  async loadResponsees() {
     this.errorMessage = null;
 
     try {
       const token = await this.authBusiness.getAuthToken();
-      const activitys = await this.activityBusiness.getClassActivitys(token, this.classId);
+      const responses = await this.activityBusiness.getResponsesActivity(token, this.activityId);
 
-      if (activitys) {
-        this.loadedActivitys = activitys; 
+      if (responses) {
+        this.userId = await this.authBusiness.getUserIdByToken(token);
+        this.loadedResponses = responses; 
       } else {
-        throw Error("Erro ao carregar avisos. Por favor, tente novamente mais tarde.")
+        throw Error("Erro ao carregar respostas. Por favor, tente novamente mais tarde.")
       }
     } catch (error: any) {
       this.errorMessage = error.message;
     }
   }
 
-  async openCreateActivityForm(): Promise<void> {
+  async openCreateResponseActivityForm(): Promise<void> {
     const dialogRef = this.dialog.open(CreateResponseActivityPageComponent, {
       width: '500px', 
       data: {
-        classId: this.classId,
+        activityId: this.activityId,
       }
     });
     
     dialogRef.afterClosed().subscribe(result => {
-      this.loadActivityes();
+      this.loadResponsees();
     });
   }
 }

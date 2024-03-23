@@ -33,19 +33,35 @@ async function createActivity(activityData, user_id) {
 
 async function editResponseInActivity(activityData, user_id) {
     try {
-        const { activity_id, response_id, response } = activityData;
-        const sql = 'UPDATE activity_responses SET response = ?, updated_at = ? WHERE activity_id = ? AND response_id = ? AND user_id = ?';
-        const result = await new Promise((resolve, reject) => {
-            connectionDB.query(sql, [response, new Date().toISOString(), activity_id, response_id, user_id], (err, result) => {
+        const { activity_id, response_id, response_text } = activityData;
+        
+        const checkOwnershipQuery = 'SELECT user_id FROM activity_responses WHERE activity_id = ? AND response_id = ?';
+        const ownershipResult = await new Promise((resolve, reject) => {
+            connectionDB.query(checkOwnershipQuery, [activity_id, response_id], (err, result) => {
                 if (err) {
-                    resolve(err);
+                    reject(err);
                 } else {
                     resolve(result);
                 }
             });
         });
 
-        if (result.affectedRows > 0) {
+        if (ownershipResult.length === 0 || ownershipResult[0].user_id !== user_id) {
+            return { responseData: { error: `Você não tem permissão para editar esta resposta.` }, status: 403 };
+        }
+
+        const updateQuery = 'UPDATE activity_responses SET response_text = ?, updated_at = ? WHERE activity_id = ? AND response_id = ?';
+        const updateResult = await new Promise((resolve, reject) => {
+            connectionDB.query(updateQuery, [response_text, new Date().toISOString(), activity_id, response_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        if (updateResult.affectedRows > 0) {
             return { responseData: { message: 'Resposta editada com sucesso' }, status: 200 };
         } else {
             return { responseData: { error: `Resposta não encontrada para este usuário nesta atividade.` }, status: 404 };
@@ -55,14 +71,54 @@ async function editResponseInActivity(activityData, user_id) {
     }
 }
 
+async function deleteResponseInActivity(activityData, user_id) {
+    try {
+        const { activity_id, response_id } = activityData;
+
+        const checkOwnershipQuery = 'SELECT user_id FROM activity_responses WHERE activity_id = ? AND response_id = ?';
+        const ownershipResult = await new Promise((resolve, reject) => {
+            connectionDB.query(checkOwnershipQuery, [activity_id, response_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        if (ownershipResult.length === 0 || ownershipResult[0].user_id !== user_id) {
+            return { responseData: { error: `Você não tem permissão para excluir esta resposta.` }, status: 403 };
+        }
+
+        const deleteQuery = 'DELETE FROM activity_responses WHERE activity_id = ? AND response_id = ?';
+        const deleteResult = await new Promise((resolve, reject) => {
+            connectionDB.query(deleteQuery, [activity_id, response_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        if (deleteResult.affectedRows > 0) {
+            return { responseData: { message: 'Resposta removida com sucesso' }, status: 200 };
+        } else {
+            return { responseData: { error: `Resposta não encontrada para este usuário nesta atividade.` }, status: 404 };
+        }
+    } catch (error) {
+        return { responseData: { error: `Erro ao remover resposta da atividade. ${error}` }, status: 400 };
+    }
+}
+
 async function addResponseToActivity(activityData, user_id) {
     try {
-        const { activity_id, response } = activityData;
-        const sql = 'INSERT INTO activity_responses (activity_id, user_id, response, created_at) VALUES (?, ?, ?, ?)';
+        const { activity_id, response_text } = activityData;
+        const sql = 'INSERT INTO activity_responses (activity_id, user_id, response_text, created_at) VALUES (?, ?, ?, ?)';
         const result = await new Promise((resolve, reject) => {
-            connectionDB.query(sql, [activity_id, user_id, response, new Date().toISOString()], (err, result) => {
+            connectionDB.query(sql, [activity_id, user_id, response_text, new Date().toISOString()], (err, result) => {
                 if (err) {
-                    resolve(err);
+                    reject(err);
                 } else {
                     resolve(result);
                 }
@@ -72,6 +128,41 @@ async function addResponseToActivity(activityData, user_id) {
         return { responseData: { message: 'Resposta adicionada com sucesso' }, status: 200 };
     } catch (error) {
         return { responseData: { error: `Erro ao adicionar resposta à atividade. ${error}` }, status: 400 };
+    }
+}
+
+async function getResponsesActivity(activity_id) {
+    try {
+        const sql = `
+            SELECT ar.response_id, ar.user_id, ar.response_text, ar.created_at, ar.updated_at, u.name AS user_name
+            FROM activity_responses AS ar
+            INNER JOIN users AS u ON ar.user_id = u.id
+            WHERE ar.activity_id = ?
+        `;
+        const result = await new Promise((resolve, reject) => {
+            connectionDB.query(sql, [activity_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        const responses = result.map(response => {
+            return {
+                response_id: response.response_id,
+                user_id: response.user_id,
+                user_name: response.user_name,
+                response_text: response.response_text,
+                created_at: response.created_at,
+                updated_at: response.updated_at,
+            };
+        });
+
+        return { responseData: responses, status: 200 };
+    } catch (error) {
+        return { responseData: { error: `Erro ao buscar respostas da atividade. ${error}` }, status: 400 };
     }
 }
 
@@ -193,6 +284,8 @@ async function deleteActivity(activityData, user_id) {
 
 module.exports = {
     createActivity,
+    getResponsesActivity,
+    deleteResponseInActivity,
     editResponseInActivity,
     addResponseToActivity,
     getClassActivitys,

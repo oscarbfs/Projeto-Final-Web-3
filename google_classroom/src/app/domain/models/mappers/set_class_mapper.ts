@@ -51,8 +51,8 @@ export class SetClassMapper {
         this.classRoom = json.room;
         this.classCreator = new SetUserMapper().mapFromJson(json.creator);
         this.classMembers = json.members?.map((member: any) => new SetUserMapper().mapFromJson(member));
-        this.classCreatedAt = json.createdAt;
-        this.classUpdatedAt = json.updatedAt;
+        this.classCreatedAt = json.created_at;
+        this.classUpdatedAt = json.updated_at;
         
         return this;
     }

@@ -6,6 +6,8 @@ import { UpdateActivityCommand } from '../../domain/models/commands/update_activ
 import { DeleteActivityCommand } from '../../domain/models/commands/delete_activity_command';
 import { CreateResponseActivityCommand } from '../../domain/models/commands/create_response_activity_command';
 import { UpdateResponseActivityCommand } from '../../domain/models/commands/update_response_activity_command';
+import { DeleteResponseActivityCommand } from '../../domain/models/commands/delete_response_activity_command';
+import { SetResponseMapper } from '../../domain/models/mappers/set_response_activity_mapper';
 
 @Injectable({
   providedIn: 'root'
@@ -83,10 +85,38 @@ export class ActivityBusiness {
     }
   }
 
+  async getResponsesActivity(token?: String, activityId?: String): Promise<SetResponseMapper[]> {
+    try {
+        const result = await this.activityService.getResponsesActivity(token, activityId);
+        if (result.success) {
+            return result.responses!;
+        } else {
+            throw new Error(`${result.errorMessage}`);
+        }
+    } catch (error) {
+        console.log("error:", error)
+        throw error;
+    }
+  }
+
+  async getResponseActivity(token?: String, responseId?: String): Promise<SetResponseMapper> {
+    try {
+        const result = await this.activityService.getResponseActivity(token, responseId);
+        if (result.success) {
+            return result.response!;
+        } else {
+            throw new Error(`${result.errorMessage}`);
+        }
+    } catch (error) {
+        console.log("error:", error)
+        throw error;
+    }
+  }
+
   async createResponse(command: CreateResponseActivityCommand, token: String): Promise<boolean> {
     try {
-        const result = await this.activityService.create(command, token);
-        if (result.success && result.activity) {
+        const result = await this.activityService.createResponse(command, token);
+        if (result.success) {
             return true;
         } else {
             throw new Error(`${result.errorMessage}`);
@@ -99,8 +129,22 @@ export class ActivityBusiness {
 
   async updateResponse(command: UpdateResponseActivityCommand, token: String): Promise<boolean> {
     try {
-        const result = await this.activityService.update(command, token);
-        if (result.success && result.activity) {
+        const result = await this.activityService.updateResponse(command, token);
+        if (result.success) {
+            return true;
+        } else {
+            throw new Error(`${result.errorMessage}`);
+        }
+    } catch (error) {
+        console.log("error:", error)
+        throw error;
+    }
+  }
+
+  async deleterResponse(command: DeleteResponseActivityCommand, token: String): Promise<boolean> {
+    try {
+        const result = await this.activityService.deleteResponse(command, token);
+        if (result.success) {
             return true;
         } else {
             throw new Error(`${result.errorMessage}`);

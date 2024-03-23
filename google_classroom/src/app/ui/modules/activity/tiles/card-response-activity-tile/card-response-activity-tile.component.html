@@ -1,12 +1,15 @@
-<div class="card">
+<div class="card" (click)="goToDetail()">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span>{{ activityUserName }}</span>
-        <div>
-            <button class="btn btn-primary mr-2" (click)="openUpdateActivityForm()">Editar</button>
-            <button class="btn btn-danger" (click)="openDeleteActivityDialog()">Deletar</button>
+        <span>{{ responseUserName }}</span>
+        <div *ngIf="userId === responseUserId">
+            <button class="btn btn-primary mr-2" (click)="openUpdateResponseActivityForm()">Editar</button>
+            <button class="btn btn-danger" (click)="openDeleteResponseActivityDialog()">Deletar</button>
         </div>
     </div>
     <div class="card-body">
-        <p>{{ activityMessage }}</p>
+        <p>Resposta criada em: {{ responseCreatedAt }}</p>
+        <div *ngIf="responseUpdatedAt === responseCreatedAt">
+            <p>Resposta editada em: {{ responseUpdatedAt }}</p>
+        </div>
     </div>
 </div>

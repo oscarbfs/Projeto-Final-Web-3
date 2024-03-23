@@ -1,0 +1,17 @@
+<div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+</div>
+
+<div class="card-header d-flex justify-content-between align-items-center">
+    <button class="btn btn-secondary" (click)="goBack()">Voltar</button>
+    <h2 class="m-0">Resposta</h2>
+    <div *ngIf="userIsCreator">
+        <button class="btn btn-primary" (click)="openUpdateResponseActivityForm()">Editar</button>
+        <button class="btn btn-danger" (click)="openDeleteResponseActivityDialog()">Deletar</button>
+    </div>
+</div>
+
+<div class="card-body" *ngIf="responseToDetail">
+    <h4>{{ responseToDetail.responseTitle }}</h4>
+    <p>{{ responseToDetail.responseBody }}</p>
+</div>

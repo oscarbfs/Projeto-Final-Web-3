@@ -3,17 +3,17 @@
 </div>
 
 <div class="card-header">
-    <h2>Criar Aviso</h2>
+    <h2>Criar Resposta</h2>
 </div>
 <div class="card-body">
     <form [formGroup]="createActivityForm" (ngSubmit)="onSubmit()" ngNoForm>
         <div class="mb-3">
-            <label for="message" class="form-label">Mensagem:</label>
-            <input type="text" class="form-control" id="message" placeholder="Digite a mensagem do aviso" formControlName="message" ngDefaultControl required>
+            <label for="response" class="form-label">Resposta:</label>
+            <input type="text" class="form-control" id="response" placeholder="Digite a resposta da atividade" formControlName="response" ngDefaultControl required>
         </div>   
         <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-secondary" (click)="closeForm()">Fechar</button>
-            <button type="submit" class="btn btn-primary">Criar Aviso</button>
+            <button type="submit" class="btn btn-primary">Criar Resposta</button>
         </div>
     </form>
 </div>

@@ -41,8 +41,8 @@ export class SetWarningMapper {
         this.warningUserName = json.user_name;
         this.warningClassId = json.class_id;
         this.warningMessage = json.message;
-        this.warningCreatedAt = json.createdAt;
-        this.warningUpdatedAt = json.updatedAt;
+        this.warningCreatedAt = json.created_at;
+        this.warningUpdatedAt = json.updated_at;
         
         return this;
     }

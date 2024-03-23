@@ -12,6 +12,11 @@
 </div>
 
 <div class="card-body" *ngIf="activityToDetail">
-    <p> {{ activityToDetail.activityTitle }}</p>
-    <p> {{ activityToDetail.activityBody }}</p>
+    <h4>{{ activityToDetail.activityTitle }}</h4>
+    <p>{{ activityToDetail.activityBody }}</p>
 </div>
+
+<gc-overview-response-activity-page
+    [activityId]="activityId"
+    [userIsCreator]="userIsCreator">    
+</gc-overview-response-activity-page>

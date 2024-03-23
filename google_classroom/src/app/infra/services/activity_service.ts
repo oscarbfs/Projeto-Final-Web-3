@@ -9,6 +9,8 @@ import { UpdateActivityCommand } from '../../domain/models/commands/update_activ
 import { DeleteActivityCommand } from '../../domain/models/commands/delete_activity_command';
 import { CreateResponseActivityCommand } from '../../domain/models/commands/create_response_activity_command';
 import { UpdateResponseActivityCommand } from '../../domain/models/commands/update_response_activity_command';
+import { DeleteResponseActivityCommand } from '../../domain/models/commands/delete_response_activity_command';
+import { SetResponseMapper } from '../../domain/models/mappers/set_response_activity_mapper';
 
 @Injectable({
   providedIn: 'root',
@@ -146,17 +148,67 @@ export class ActivityService {
     }
   }
 
+  async getResponsesActivity(token?: String, activityId?: String): Promise<GetActivityQuery> {
+    let route = `/activitys/getResponsesActivity?activity_id=${activityId}`;
+    try {
+      const data = await this.http.get<SetResponseMapper>(`${Settings.applicationEndPoint}${route}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).toPromise();
+      
+      const response = new HttpResponse<SetResponseMapper>({ body: data });
+      const query = new GetActivityQuery();
+      query.mapFromGetActivityResponses(response);
+      
+      return query;
+    } catch (error) {
+
+      if (error instanceof HttpErrorResponse) {
+        const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
+        const query = new GetActivityQuery();
+        query.mapFromGetActivityResponses(response); 
+        return query;
+      }
+
+      return new GetActivityQuery();
+    }
+  }
+
+  async getResponseActivity(token?: String, responseId?: String): Promise<GetActivityQuery> {
+    let route = `/activitys/getResponseActivity?response_id=${responseId}`;
+    try {
+      const data = await this.http.get<SetResponseMapper>(`${Settings.applicationEndPoint}${route}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).toPromise();
+      
+      const response = new HttpResponse<SetResponseMapper>({ body: data });
+      const query = new GetActivityQuery();
+      query.mapFromGetActivityResponse(response);
+      
+      return query;
+    } catch (error) {
+
+      if (error instanceof HttpErrorResponse) {
+        const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
+        const query = new GetActivityQuery();
+        query.mapFromGetActivityResponse(response); 
+        return query;
+      }
+
+      return new GetActivityQuery();
+    }
+  }
+
   async createResponse(command: CreateResponseActivityCommand, token: String): Promise<GetActivityQuery> {
     const route = '/activitys/addResponse';
 
     try {
-      const data = await this.http.post<SetActivityMapper>(`${Settings.applicationEndPoint}${route}`, command.mapToJson(), {
+      const data = await this.http.post<SetResponseMapper>(`${Settings.applicationEndPoint}${route}`, command.mapToJson(), {
         headers: { 'Authorization': `Bearer ${token}` }
       }).toPromise();
 
-      const response = new HttpResponse<SetActivityMapper>({ body: data });
+      const response = new HttpResponse<SetResponseMapper>({ body: data });
       const query = new GetActivityQuery();
-      query.mapFromCreateUpdateResponse(response);
+      query.mapFromCreateUpdateDeleteResponse(response);
 
       return query;
     } catch (error) {
@@ -164,7 +216,7 @@ export class ActivityService {
       if (error instanceof HttpErrorResponse) {
         const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
         const query = new GetActivityQuery();
-        query.mapFromCreateUpdateResponse(response); 
+        query.mapFromCreateUpdateDeleteResponse(response); 
         return query;
       }
 
@@ -182,7 +234,7 @@ export class ActivityService {
 
       const response = new HttpResponse({ body: data });
       const query = new GetActivityQuery();
-      query.mapFromCreateUpdateResponse(response);
+      query.mapFromCreateUpdateDeleteResponse(response);
 
       return query;
     } catch (error) {
@@ -190,7 +242,34 @@ export class ActivityService {
       if (error instanceof HttpErrorResponse) {
         const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
         const query = new GetActivityQuery();
-        query.mapFromCreateUpdateResponse(response); 
+        query.mapFromCreateUpdateDeleteResponse(response); 
+        return query;
+      }
+
+      return new GetActivityQuery();
+    }
+  }
+
+  async deleteResponse(command: DeleteResponseActivityCommand, token: String): Promise<GetActivityQuery> {
+    const route = '/activitys/deleteResponse';
+    
+    try {
+      const data = await this.http.delete(`${Settings.applicationEndPoint}${route}`, {
+        body: command.mapToJson(),
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).toPromise();
+
+      const response = new HttpResponse({ body: data });
+      const query = new GetActivityQuery();
+      query.mapFromCreateUpdateGetDelete(response);
+
+      return query;
+    } catch (error) {
+
+      if (error instanceof HttpErrorResponse) {
+        const response = new HttpResponse({ body: error.error, status: error.status, statusText: error.statusText });
+        const query = new GetActivityQuery();
+        query.mapFromCreateUpdateGetDelete(response); 
         return query;
       }
 

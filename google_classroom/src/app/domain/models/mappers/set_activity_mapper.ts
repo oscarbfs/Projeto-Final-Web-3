@@ -44,8 +44,8 @@ export class SetActivityMapper {
         this.activityClassId = json.class_id;
         this.activityTitle = json.title;
         this.activityBody = json.body;
-        this.activityCreatedAt = json.createdAt;
-        this.activityUpdatedAt = json.updatedAt;
+        this.activityCreatedAt = json.created_at;
+        this.activityUpdatedAt = json.updated_at;
         
         return this;
     }

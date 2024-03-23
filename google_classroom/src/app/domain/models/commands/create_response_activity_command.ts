@@ -1,16 +1,16 @@
 export class CreateResponseActivityCommand {
   activityId?: String;
-  response?: String;
+  responseText?: String;
 
-  constructor(activityId?: String, response?: String) {
+  constructor(activityId?: String, responseText?: String) {
     this.activityId = activityId;
-    this.response = response;
+    this.responseText = responseText;
   }
 
   mapToJson(): any {
     return {
       activity_id: this.activityId,
-      response: this.response,
+      response_text: this.responseText,
     };
   }
 }

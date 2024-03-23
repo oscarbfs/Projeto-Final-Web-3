@@ -1,28 +1,32 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
-import { SetActivityMapper } from '../../../../../domain/models/mappers/set_activity_mapper';
 import { ActivityBusiness } from '../../../../business/activity_business';
 import { AuthBusiness } from '../../../../business/auth_business';
+import { SetActivityMapper } from '../../../../../domain/models/mappers/set_activity_mapper';
+import { SetResponseMapper } from '../../../../../domain/models/mappers/set_response_activity_mapper';
 import { UpdateActivityPageComponent } from '../update-activity-page/update-activity-page.component';
 import { DeleteActivityPageComponent } from '../delete-activity-page/delete-activity-page.component';
+import { OverviewResponseActivityPageComponent } from '../overview-response-activity-page/overview-response-activity-page.component';
 
 @Component({
   selector: 'gc-detail-activity-page',
+  templateUrl: './detail-activity-page.component.html',
+  styleUrls: ['./detail-activity-page.component.css'],
   standalone: true,
   imports: [
     CommonModule,
+    OverviewResponseActivityPageComponent,
   ],
-  templateUrl: './detail-activity-page.component.html',
-  styleUrl: './detail-activity-page.component.css'
 })
 export class DetailActivityPageComponent {
-  errorMessage: String | null = null;
+  errorMessage: string | null = null;
   activityToDetail: SetActivityMapper | null = null;
+  activityResponses: SetResponseMapper[] | null = null;
   userIsCreator: boolean = false;
-  activityId: String = "";
+  activityId: string = "";
 
   constructor(
     private activityBusiness: ActivityBusiness,
@@ -37,21 +41,23 @@ export class DetailActivityPageComponent {
       this.activityId = params.get('id') ?? "";
     });
 
-    this.getActivity(this.activityId);
+    this.getActivityData(this.activityId);
   }
 
-  async getActivity(activityId: String) {
+  async getActivityData(activityId: string) {
     this.errorMessage = null;
 
     try {
       const token = await this.authBusiness.getAuthToken();
       const activityToDetail = await this.activityBusiness.getActivity(token, activityId);
-
-      if (activityToDetail) {
+      const activityResponsesToDetail = await this.activityBusiness.getResponsesActivity(token, activityId);
+      
+      if (activityToDetail && activityResponsesToDetail) {
         this.userIsCreator = await this.authBusiness.getUserIdByToken(token) === activityToDetail.activityUserId;
         this.activityToDetail = activityToDetail;
+        this.activityResponses = activityResponsesToDetail;
       } else {
-        throw Error("Erro ao carregar turmas. Por favor, tente novamente mais tarde.")
+        throw new Error("Erro ao carregar turmas. Por favor, tente novamente mais tarde.");
       }
     } catch (error: any) {
       this.errorMessage = error.message;
@@ -65,7 +71,7 @@ export class DetailActivityPageComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getActivity(this.activityId);
+      this.getActivityData(this.activityId);
     });
   }
 
