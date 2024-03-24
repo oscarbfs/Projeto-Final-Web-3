@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 import { ActivityBusiness } from '../../../../business/activity_business';
 import { AuthBusiness } from '../../../../business/auth_business';
@@ -32,12 +33,19 @@ export class DetailResponseActivityPageComponent {
     public dialog: MatDialog,
   ) {}
 
-  ngOnInit(): void {
+  responseCreatedAtDate: Date | undefined;
+  responseUpdatedAtDate: Date | undefined;
+  
+  async ngOnInit(): Promise<void> {
+    
     this.route.paramMap.subscribe(params => {
       this.responseId = params.get('id') ?? "";
     });
+    
+    await this.getResponseActivityData(this.responseId);
 
-    this.getResponseActivityData(this.responseId);
+    this.responseCreatedAtDate = this.responseToDetail?.responseCreatedAt ? new Date(this.responseToDetail?.responseCreatedAt) : undefined;
+    this.responseUpdatedAtDate = this.responseToDetail?.responseUpdatedAt ? new Date(this.responseToDetail?.responseUpdatedAt) : undefined;
   }
 
   async getResponseActivityData(responseId: string) {
@@ -70,13 +78,17 @@ export class DetailResponseActivityPageComponent {
   }
 
   openDeleteResponseActivityDialog(): void {
-    this.dialog.open(DeleteResponseActivityPageComponent, {
+    const dialogRef = this.dialog.open(DeleteResponseActivityPageComponent, {
       width: '500px',
       data: this.responseToDetail,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {this.goBack()}
     });
   }
 
   goBack(): void {
-    this.router.navigate(['/detailClass', this.responseToDetail?.responseClassId]);
+    this.router.navigate(['/detailActivity', this.responseToDetail?.responseActivityId]);
   }
 }

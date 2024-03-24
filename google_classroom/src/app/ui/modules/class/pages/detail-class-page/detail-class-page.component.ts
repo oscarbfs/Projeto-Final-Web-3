@@ -33,6 +33,7 @@ export class DetailClassPageComponent {
   errorMessage: String | null = null;
   classToDetail: SetClassMapper | null = null;
   userIsCreator: boolean = false;
+  userId: String | null | undefined = "";
   classId: String = "";
 
   constructor(
@@ -59,7 +60,8 @@ export class DetailClassPageComponent {
       const classToDetail = await this.classBusiness.getClass(token, classId);
 
       if (classToDetail) {
-        this.userIsCreator = await this.authBusiness.getUserIdByToken(token) === classToDetail.classCreator?.userId;
+        this.userId = await this.authBusiness.getUserIdByToken(token);
+        this.userIsCreator = this.userId === classToDetail.classCreator?.userId;
         this.classToDetail = classToDetail;
       } else {
         throw Error("Erro ao carregar turmas. Por favor, tente novamente mais tarde.")

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ClassBusiness } from '../../../../business/class_business';
@@ -23,6 +24,7 @@ export class OverviewClassPageComponent implements OnInit {
   constructor(
     private classBusiness: ClassBusiness,
     private authBusiness: AuthBusiness,
+    private router: Router,
     public dialog: MatDialog,
   ) {}
 
@@ -65,5 +67,14 @@ export class OverviewClassPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.loadClasses();
     });
+  }
+
+  async goLogout(): Promise<void> {
+    const token = await this.authBusiness.getAuthToken();
+    const logoutComplete = await this.authBusiness.logout(token);
+    
+    if(logoutComplete) {
+      this.router.navigate(['']);
+    }
   }
 }

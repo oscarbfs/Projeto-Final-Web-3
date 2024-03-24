@@ -28,7 +28,7 @@ export class UpdateActivityPageComponent {
       @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.updateActivityForm = this.fb.group({
-      classId: [data.classId || ''],
+      id: [data.activityId || ''],
       title: [data.activityTitle || '', Validators.required],
       body: [data.activityBody || '', Validators.required],
     });
@@ -38,12 +38,12 @@ export class UpdateActivityPageComponent {
   async onSubmit() {
     this.errorMessage = null;
     if (this.updateActivityForm.valid) {
-      const classId = this.updateActivityForm.value.classId;
+      const id = this.updateActivityForm.value.id;
       const title = this.updateActivityForm.value.title;
       const body = this.updateActivityForm.value.body;
       
       const updateActivityCommand = new UpdateActivityCommand(
-        classId,
+        id,
         title,
         body,
       );

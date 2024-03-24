@@ -12,6 +12,13 @@
 </div>
 
 <div class="card-body" *ngIf="responseToDetail">
-    <h4>{{ responseToDetail.responseTitle }}</h4>
-    <p>{{ responseToDetail.responseBody }}</p>
+    <h4>Aluno: {{ responseToDetail.responseUserName }}</h4>
+    <p>Resposta criada em {{ responseCreatedAtDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+    <p *ngIf="responseToDetail.responseUpdatedAt !== null && responseToDetail.responseUpdatedAt !== undefined">Resposta editada em {{ responseUpdatedAtDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+    <br>
+    <h3>Atividade:</h3>
+    <p>{{ responseToDetail.activityBody }}</p>
+    <br>
+    <h3>Resposta:</h3>
+    <p>{{ responseToDetail.responseText }}</p>
 </div>

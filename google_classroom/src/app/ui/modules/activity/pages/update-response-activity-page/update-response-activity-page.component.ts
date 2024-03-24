@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 
 import { ActivityBusiness } from '../../../../business/activity_business';
 import { AuthBusiness } from '../../../../business/auth_business';
-import { UpdateActivityCommand } from '../../../../../domain/models/commands/update_activity_command';
+import { UpdateResponseActivityCommand } from '../../../../../domain/models/commands/update_response_activity_command';
 
 @Component({
   selector: 'gc-update-response-activity-page',
@@ -17,7 +17,7 @@ import { UpdateActivityCommand } from '../../../../../domain/models/commands/upd
 })
 export class UpdateResponseActivityPageComponent {
     
-    updateActivityForm: FormGroup;
+    updateResponseActivityForm: FormGroup;
     errorMessage: String | null = null;
     
     constructor(
@@ -27,35 +27,32 @@ export class UpdateResponseActivityPageComponent {
       private dialogRef: MatDialogRef<UpdateResponseActivityPageComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.updateActivityForm = this.fb.group({
-      id: [data.id || ''],
-      title: [data.title || '', Validators.required],
-      body: [data.body || '', Validators.required],
+    this.updateResponseActivityForm = this.fb.group({
+      id: [data.responseId || ''],
+      responseText: [data.responseText || '', Validators.required],
     });
     
   }
 
   async onSubmit() {
     this.errorMessage = null;
-    if (this.updateActivityForm.valid) {
-      const id = this.updateActivityForm.value.id;
-      const title = this.updateActivityForm.value.title;
-      const body = this.updateActivityForm.value.body;
+    if (this.updateResponseActivityForm.valid) {
+      const id = this.updateResponseActivityForm.value.id;
+      const responseText = this.updateResponseActivityForm.value.responseText;
       
-      const updateActivityCommand = new UpdateActivityCommand(
+      const updateResponseActivityCommand = new UpdateResponseActivityCommand(
         id,
-        title,
-        body,
+        responseText,
       );
 
       try {
         var token = await this.authBusiness.getAuthToken();
-        const result = await this.activityBusiness.updateActivity(updateActivityCommand, token);
+        const result = await this.activityBusiness.updateResponse(updateResponseActivityCommand, token);
 
         if (result) {
           this.closeForm();
         } else {
-          throw Error("Erro ao editar aviso. Por favor, tente novamente mais tarde.")
+          throw Error("Erro ao editar resposta. Por favor, tente novamente mais tarde.")
         }
       } catch (error: any) {
         this.errorMessage = error.message;

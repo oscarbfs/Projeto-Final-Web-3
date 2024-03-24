@@ -19,6 +19,7 @@ export class OverviewWarningPageComponent implements OnInit {
   errorMessage: String | null = null;
   loadedWarnings: SetWarningMapper[] | any[] = [];
   @Input() classId: String | undefined;
+  @Input() userId: String | null | undefined;
 
   constructor(
     private warningBusiness: WarningBusiness,

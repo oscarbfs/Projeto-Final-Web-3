@@ -12,7 +12,6 @@
 
     <div *ngFor="let activity of loadedActivitys" class="col mb-4">
         <gc-card-activity-tile 
-            [userIsCreator]="userIsCreator"
             [classId]="classId"
             [activityId]="activity.activityId"
             [activityTitle]="activity.activityTitle"

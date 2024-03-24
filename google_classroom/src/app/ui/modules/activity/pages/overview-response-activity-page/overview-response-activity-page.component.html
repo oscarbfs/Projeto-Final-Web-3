@@ -12,6 +12,7 @@
 
     <div *ngFor="let response of loadedResponses" class="col mb-4">
         <gc-card-response-activity-tile 
+            [userIsCreator]="userIsCreator"
             [userId]="userId"
             [responseId]="response.responseId"
             [responseActivityId]="response.responseActivityId"

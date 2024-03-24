@@ -3,7 +3,7 @@ export class UpdateActivityCommand {
   title?: String;
   body?: String;
 
-  constructor(id?: String, classId?: String, title?: String, body?: String) {
+  constructor(id?: String, title?: String, body?: String) {
     this.id = id;
     this.title = title;
     this.body = body;

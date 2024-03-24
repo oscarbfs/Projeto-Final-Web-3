@@ -28,10 +28,10 @@ export class GetActivityQuery {
       this.success = response.statusText === 'OK';
       this.errorMessage = this.success ? null : 'Erro no tratamento dos dados da resposta do servidor';
     }
-
+    
     return this;
   }
-
+  
   mapFromGetActivityResponses(response: HttpResponse<any>): GetActivityQuery {
     try {
       const data = response.body;

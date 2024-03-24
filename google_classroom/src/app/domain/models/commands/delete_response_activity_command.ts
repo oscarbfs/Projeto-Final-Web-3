@@ -1,13 +1,13 @@
 export class DeleteResponseActivityCommand {
-    id?: String;
+    responseId?: String;
   
-    constructor(id?: String) {
-      this.id = id;
+    constructor(responseId?: String) {
+      this.responseId = responseId;
     }
   
     mapToJson(): any {
       return {
-        id: this.id,
+        response_id: this.responseId,
       };
     }
   }

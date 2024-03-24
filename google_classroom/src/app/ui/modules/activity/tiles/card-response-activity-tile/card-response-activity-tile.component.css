@@ -1,0 +1,7 @@
+.user-response .card-header {
+    background-color: blue;
+}
+
+.user-response .card-header .text-white {
+    color: white;
+}

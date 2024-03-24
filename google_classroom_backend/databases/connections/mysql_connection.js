@@ -21,7 +21,7 @@ connection.connect(function(err) {
             email VARCHAR(255) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
         )
     `;
 
@@ -59,7 +59,7 @@ connection.connect(function(err) {
             room VARCHAR(255),
             creator_id INT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (creator_id) REFERENCES users(id)
         )
     `;
@@ -96,7 +96,7 @@ connection.connect(function(err) {
             title VARCHAR(255) NOT NULL,
             body TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (class_id) REFERENCES classes(id),
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
@@ -116,7 +116,7 @@ connection.connect(function(err) {
             user_id INT NOT NULL,
             response_text TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (activity_id) REFERENCES activitys(id),
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
@@ -136,7 +136,7 @@ connection.connect(function(err) {
             user_id INT NOT NULL,
             message TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             FOREIGN KEY (class_id) REFERENCES classes(id),
             FOREIGN KEY (user_id) REFERENCES users(id)
         )

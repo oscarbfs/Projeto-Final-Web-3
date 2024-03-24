@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { ActivityBusiness } from '../../../../business/activity_business';
 import { AuthBusiness } from '../../../../business/auth_business';
 import { SetActivityMapper } from '../../../../../domain/models/mappers/set_activity_mapper';
-import { SetResponseMapper } from '../../../../../domain/models/mappers/set_response_activity_mapper';
 import { UpdateActivityPageComponent } from '../update-activity-page/update-activity-page.component';
 import { DeleteActivityPageComponent } from '../delete-activity-page/delete-activity-page.component';
 import { OverviewResponseActivityPageComponent } from '../overview-response-activity-page/overview-response-activity-page.component';
@@ -24,7 +23,6 @@ import { OverviewResponseActivityPageComponent } from '../overview-response-acti
 export class DetailActivityPageComponent {
   errorMessage: string | null = null;
   activityToDetail: SetActivityMapper | null = null;
-  activityResponses: SetResponseMapper[] | null = null;
   userIsCreator: boolean = false;
   activityId: string = "";
 
@@ -50,12 +48,10 @@ export class DetailActivityPageComponent {
     try {
       const token = await this.authBusiness.getAuthToken();
       const activityToDetail = await this.activityBusiness.getActivity(token, activityId);
-      const activityResponsesToDetail = await this.activityBusiness.getResponsesActivity(token, activityId);
       
-      if (activityToDetail && activityResponsesToDetail) {
+      if (activityToDetail) {
         this.userIsCreator = await this.authBusiness.getUserIdByToken(token) === activityToDetail.activityUserId;
         this.activityToDetail = activityToDetail;
-        this.activityResponses = activityResponsesToDetail;
       } else {
         throw new Error("Erro ao carregar turmas. Por favor, tente novamente mais tarde.");
       }
@@ -76,9 +72,13 @@ export class DetailActivityPageComponent {
   }
 
   openDeleteActivityDialog(): void {
-    this.dialog.open(DeleteActivityPageComponent, {
+    const dialogRef =  this.dialog.open(DeleteActivityPageComponent, {
       width: '500px',
       data: this.activityToDetail,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {this.goBack()}
     });
   }
 

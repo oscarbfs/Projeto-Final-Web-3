@@ -33,11 +33,15 @@ async function control(request, response, requestBody, queryParams, headers) {
         console.log(`Rodando deleteActivity`);
         result = await activitysDB.deleteActivity(data, tokenData.user_id);
         
+    } else if (request.method === 'GET' && request.url.includes('/activitys/getResponseActivity')) {
+        console.log(`Rodando getResponseActivity`);
+        result = await activitysDB.getResponseActivity(queryParams.response_id);
+
     } else if (request.method === 'GET' && request.url.includes('/activitys/getResponsesActivity')) {
         console.log(`Rodando getResponsesActivity`);
         result = await activitysDB.getResponsesActivity(queryParams.activity_id);
     
-    } else if (request.method === 'POST' && request.url.includes('/activitys/updateResponse')) {
+    } else if (request.method === 'PUT' && request.url.includes('/activitys/updateResponse')) {
         console.log(`Rodando editResponseInActivity`);
         result = await activitysDB.editResponseInActivity(data, tokenData.user_id);
     

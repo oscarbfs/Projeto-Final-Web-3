@@ -222,9 +222,42 @@ async function deleteClass(classData, user_id) {
             return { responseData: { error: `Turma não encontrada ou você não é o criador da turma.` }, status: 404 };
         }
 
+        const deleteResponsesQuery = 'DELETE FROM activity_responses WHERE activity_id IN (SELECT id FROM activitys WHERE class_id = ?)';
+        await new Promise((resolve, reject) => {
+            connectionDB.query(deleteResponsesQuery, [id], (err, result) => {
+                if (err) {
+                    resolve(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
         const deleteMembersQuery = 'DELETE FROM class_members WHERE class_id = ?';
         await new Promise((resolve, reject) => {
             connectionDB.query(deleteMembersQuery, [id], (err, result) => {
+                if (err) {
+                    resolve(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        const deleteWarningsQuery = 'DELETE FROM warnings WHERE class_id = ?';
+        await new Promise((resolve, reject) => {
+            connectionDB.query(deleteWarningsQuery, [id], (err, result) => {
+                if (err) {
+                    resolve(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        const deleteActivitiesQuery = 'DELETE FROM activitys WHERE class_id = ?';
+        await new Promise((resolve, reject) => {
+            connectionDB.query(deleteActivitiesQuery, [id], (err, result) => {
                 if (err) {
                     resolve(err);
                 } else {
@@ -253,6 +286,7 @@ async function deleteClass(classData, user_id) {
         return { responseData: { error: `Erro ao deletar turma. ${error}` }, status: 400 };
     }
 }
+
 
 
 async function joinClass(classData, user_id) {

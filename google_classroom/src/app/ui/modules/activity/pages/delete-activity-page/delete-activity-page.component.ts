@@ -33,8 +33,9 @@ export class DeleteActivityPageComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router,
   ) {
-    this.classId = data.activityClassId;
+    console.log(data)
     this.activityId = data.activityId;
+    this.classId = data.cassId;
   }
 
   async onDelete() {
@@ -49,7 +50,7 @@ export class DeleteActivityPageComponent {
       const result = await this.activityBusiness.deleteActivity(deleteActivityCommand, token);
 
       if (result) {
-        this.closeForm();
+        this.dialogRef.close(true);
         this.router.navigate(['/detailClass', this.classId]);
       } else {
         throw Error("Erro ao deletar atividade. Por favor, tente novamente mais tarde.")

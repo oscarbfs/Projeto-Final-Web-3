@@ -17,7 +17,6 @@ import { OverviewActivityPageComponent } from '../../pages/overview-activity-pag
   styleUrl: './card-activity-tile.component.css'
 })
 export class CardActivityTileComponent {
-  @Input() userIsCreator: boolean | undefined;
   @Input() classId: String | undefined;
   @Input() activityId: String | undefined;
   @Input() activityTitle: String | undefined;
@@ -49,6 +48,7 @@ export class CardActivityTileComponent {
       width: '500px',
       data: {
         id: this.activityId,
+        classId: this.classId,
       }
     });
 

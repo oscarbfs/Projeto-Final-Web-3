@@ -3,21 +3,17 @@
 </div>
 
 <div class="card-header">
-    <h2>Editar Atividade</h2>
+    <h2>Editar Resposta</h2>
 </div>
 <div class="card-body">
-    <form [formGroup]="updateActivityForm" (ngSubmit)="onSubmit()" ngNoForm>
+    <form [formGroup]="updateResponseActivityForm" (ngSubmit)="onSubmit()" ngNoForm>
         <div class="mb-3">
-            <label for="title" class="form-label">Titulo:</label>
-            <input type="text" class="form-control" id="title" placeholder="Digite o titulo do aviso" formControlName="title" ngDefaultControl required>
+            <label for="responseText" class="form-label">Resposta:</label>
+            <input type="text" class="form-control" id="responseText" placeholder="Digite a resposta da atividade" formControlName="responseText" ngDefaultControl required>
         </div>   
-        <div class="mb-3">
-            <label for="body" class="form-label">Questões:</label>
-            <input type="text" class="form-control" id="body" placeholder="Digite as questões do aviso" formControlName="body" ngDefaultControl required>
-        </div>  
         <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-secondary" (click)="closeForm()">Fechar</button>
-            <button type="submit" class="btn btn-primary">Editar Atividade</button>
+            <button type="submit" class="btn btn-primary">Editar Resposta</button>
         </div>
     </form>
 </div>

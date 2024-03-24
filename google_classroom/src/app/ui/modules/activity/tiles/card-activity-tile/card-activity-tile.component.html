@@ -3,9 +3,5 @@
         <div (click)="goToDetail()">
             <span>{{ activityTitle }}</span>
         </div>
-        <div *ngIf="userIsCreator">
-            <button class="btn btn-primary mr-2" (click)="openUpdateActivityForm()">Editar</button>
-            <button class="btn btn-danger" (click)="openDeleteActivityDialog()">Deletar</button>
-        </div>
     </div>
 </div>

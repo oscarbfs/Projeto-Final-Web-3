@@ -35,6 +35,7 @@ const routeConfig: Routes = [
         component: DetailClassPageComponent,
         title: "Turma"
     },
+    
     {
         path: 'detailActivity/:id',
         component: DetailActivityPageComponent,
@@ -44,7 +45,7 @@ const routeConfig: Routes = [
         path: 'detailResponseActivity/:id',
         component: DetailResponseActivityPageComponent,
         title: "Resposta da Atividade"
-    },
+    }
 ];
 
 export default routeConfig;

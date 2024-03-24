@@ -1,12 +1,15 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <span>{{ warningUserName }}</span>
-        <div>
+        <div *ngIf="userId === warningUserId">
             <button class="btn btn-primary mr-2" (click)="openUpdateWarningForm()">Editar</button>
             <button class="btn btn-danger" (click)="openDeleteWarningDialog()">Deletar</button>
         </div>
     </div>
     <div class="card-body">
         <p>{{ warningMessage }}</p>
+        <br>
+        <p>Aviso criado em {{ warningCreatedAtDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+        <p *ngIf="warningUpdatedAt !== null && warningUpdatedAt !== undefined">Aviso editado em {{ warningUpdatedAtDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
     </div>
 </div>

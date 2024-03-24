@@ -1,15 +1,11 @@
-<div class="card" (click)="goToDetail()">
+<div class="card" (click)="goToDetail()" [ngClass]="{'user-response': userId === responseUserId}">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span>{{ responseUserName }}</span>
-        <div *ngIf="userId === responseUserId">
-            <button class="btn btn-primary mr-2" (click)="openUpdateResponseActivityForm()">Editar</button>
-            <button class="btn btn-danger" (click)="openDeleteResponseActivityDialog()">Deletar</button>
-        </div>
+        <span [ngClass]="{'text-white': userId === responseUserId}">{{ responseUserName }}</span>
     </div>
     <div class="card-body">
-        <p>Resposta criada em: {{ responseCreatedAt }}</p>
-        <div *ngIf="responseUpdatedAt === responseCreatedAt">
-            <p>Resposta editada em: {{ responseUpdatedAt }}</p>
+        <p>Resposta criada em: {{ responseCreatedAtDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+        <div *ngIf="responseUpdatedAt !== null && responseUpdatedAt !== undefined">
+            <p>Resposta editada em: {{ responseUpdatedAtDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
         </div>
     </div>
 </div>

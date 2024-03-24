@@ -11,9 +11,13 @@
     <div *ngFor="let warning of loadedWarnings" class="col mb-4">
         <gc-card-warning-tile 
             [classId]="classId"
+            [userId]="userId"
             [warningId]="warning.warningId"
+            [warningUserId]="warning.warningUserId"
             [warningUserName]="warning.warningUserName"
             [warningMessage]="warning.warningMessage"
+            [warningCreatedAt]="warning.warningCreatedAt"
+            [warningUpdatedAt]="warning.warningUpdatedAt"
         ></gc-card-warning-tile>
     </div>
 </div>
